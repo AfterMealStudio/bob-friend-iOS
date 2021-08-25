@@ -8,13 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		0B2978F126D617B4002AD75A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2978F026D617B4002AD75A /* AppDelegate.swift */; };
-		0B2978F326D617B4002AD75A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2978F226D617B4002AD75A /* SceneDelegate.swift */; };
-		0B2978F526D617B4002AD75A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2978F426D617B4002AD75A /* ViewController.swift */; };
-		0B2978F826D617B4002AD75A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0B2978F626D617B4002AD75A /* Main.storyboard */; };
 		0B2978FA26D617B6002AD75A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0B2978F926D617B6002AD75A /* Assets.xcassets */; };
 		0B2978FD26D617B6002AD75A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0B2978FB26D617B6002AD75A /* LaunchScreen.storyboard */; };
 		0B29790826D617B7002AD75A /* bob_friend_iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B29790726D617B7002AD75A /* bob_friend_iOSTests.swift */; };
 		0B29791326D617B7002AD75A /* bob_friend_iOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B29791226D617B7002AD75A /* bob_friend_iOSUITests.swift */; };
+		0B29792C26D6256F002AD75A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B29792A26D6256F002AD75A /* ViewController.swift */; };
+		0B29792D26D6256F002AD75A /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B29792B26D6256F002AD75A /* ViewController.xib */; };
 		29A77F66B06D132C4F517847 /* Pods_bob_friend_iOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F71173E71FC11E1417A6BB4B /* Pods_bob_friend_iOSTests.framework */; };
 		7743AF2E3DE45DCC31775245 /* Pods_bob_friend_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C45F4DD2A79A0558D2902BC /* Pods_bob_friend_iOS.framework */; };
 		CE24FA122D98204D49D88218 /* Pods_bob_friend_iOS_bob_friend_iOSUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A9DB9DB30C1E8F70A065E96 /* Pods_bob_friend_iOS_bob_friend_iOSUITests.framework */; };
@@ -40,9 +39,6 @@
 /* Begin PBXFileReference section */
 		0B2978ED26D617B4002AD75A /* bob-friend-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "bob-friend-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B2978F026D617B4002AD75A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		0B2978F226D617B4002AD75A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		0B2978F426D617B4002AD75A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		0B2978F726D617B4002AD75A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		0B2978F926D617B6002AD75A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0B2978FC26D617B6002AD75A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0B2978FE26D617B6002AD75A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -52,6 +48,8 @@
 		0B29790E26D617B7002AD75A /* bob-friend-iOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "bob-friend-iOSUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B29791226D617B7002AD75A /* bob_friend_iOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bob_friend_iOSUITests.swift; sourceTree = "<group>"; };
 		0B29791426D617B7002AD75A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0B29792A26D6256F002AD75A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		0B29792B26D6256F002AD75A /* ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
 		4C45F4DD2A79A0558D2902BC /* Pods_bob_friend_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bob_friend_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DC00887C36D6D8012C4743A /* Pods-bob-friend-iOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bob-friend-iOSTests.release.xcconfig"; path = "Target Support Files/Pods-bob-friend-iOSTests/Pods-bob-friend-iOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		90EA6DC28E0DEF9487B3FA18 /* Pods-bob-friend-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bob-friend-iOS.release.xcconfig"; path = "Target Support Files/Pods-bob-friend-iOS/Pods-bob-friend-iOS.release.xcconfig"; sourceTree = "<group>"; };
@@ -117,12 +115,11 @@
 			isa = PBXGroup;
 			children = (
 				0B2978F026D617B4002AD75A /* AppDelegate.swift */,
-				0B2978F226D617B4002AD75A /* SceneDelegate.swift */,
-				0B2978F426D617B4002AD75A /* ViewController.swift */,
-				0B2978F626D617B4002AD75A /* Main.storyboard */,
 				0B2978F926D617B6002AD75A /* Assets.xcassets */,
 				0B2978FB26D617B6002AD75A /* LaunchScreen.storyboard */,
 				0B2978FE26D617B6002AD75A /* Info.plist */,
+				0B29792A26D6256F002AD75A /* ViewController.swift */,
+				0B29792B26D6256F002AD75A /* ViewController.xib */,
 			);
 			path = "bob-friend-iOS";
 			sourceTree = "<group>";
@@ -155,7 +152,6 @@
 				F8B45B750546C414EDD4B917 /* Pods-bob-friend-iOSTests.debug.xcconfig */,
 				8DC00887C36D6D8012C4743A /* Pods-bob-friend-iOSTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -276,8 +272,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				0B2978FD26D617B6002AD75A /* LaunchScreen.storyboard in Resources */,
+				0B29792D26D6256F002AD75A /* ViewController.xib in Resources */,
 				0B2978FA26D617B6002AD75A /* Assets.xcassets in Resources */,
-				0B2978F826D617B4002AD75A /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -371,9 +367,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0B2978F526D617B4002AD75A /* ViewController.swift in Sources */,
+				0B29792C26D6256F002AD75A /* ViewController.swift in Sources */,
 				0B2978F126D617B4002AD75A /* AppDelegate.swift in Sources */,
-				0B2978F326D617B4002AD75A /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -409,14 +404,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		0B2978F626D617B4002AD75A /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0B2978F726D617B4002AD75A /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		0B2978FB26D617B6002AD75A /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
