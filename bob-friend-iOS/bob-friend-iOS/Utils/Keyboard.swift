@@ -24,10 +24,12 @@ class Keyboard {
         enrollRemoveKeyboard()
     }
     
+    
     func enrollNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
+    
     
     @objc func keyboardWillShow(_ sender: Notification) {
         if keyBoardFlag {
@@ -44,14 +46,17 @@ class Keyboard {
         keyBoardFlag = true
     }
     
+    
     @objc func keyboardWillHide(_ sender: Notification) {
         vc.view.frame.size.height += keyHeight!
         keyBoardFlag = false
     }
     
+    
     func remove() {
         vc.view.endEditing(true)
     }
+    
     
     func enrollRemoveKeyboard() {
         if let scrollView = scrollView {
@@ -60,6 +65,7 @@ class Keyboard {
         }
         
     }
+    
     
     @objc func TapOtherMethod(sender: UITapGestureRecognizer) {
         vc.view.endEditing(true)

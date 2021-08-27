@@ -8,9 +8,11 @@
 import UIKit
 
 extension CALayer {
+    
     func addUnderBar() {
         self.addBorder([.bottom], color: .lightGray, width: 1.2)
     }
+    
     
     func addBorder(_ arr_edge: [UIRectEdge], color: UIColor, width: CGFloat) {
         for edge in arr_edge {
@@ -35,4 +37,6 @@ extension CALayer {
             self.addSublayer(border)
         }
     }
+    
+    
 }

@@ -11,6 +11,7 @@ class LoginVC: UIViewController {
     
     var keyboard: Keyboard?
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         scrollView.delegate = self
@@ -18,10 +19,12 @@ class LoginVC: UIViewController {
         
     }
     
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         setUI()
     }
+    
     
     @IBOutlet weak var scrollView: UIScrollView!
     
@@ -30,21 +33,25 @@ class LoginVC: UIViewController {
     @IBOutlet weak var pwdTxtField: UITextField!
     @IBOutlet weak var loginBtn: UIButton!
     
+    
     func setUI() {
         setLogoImageView()
         setTxtFields()
         setLoginBtn()
     }
     
+    
     func setLogoImageView() {
         logoImgView.image = logoImgView.image?.withRenderingMode(.alwaysTemplate)
         logoImgView.tintColor = UIColor(named: "MainColor1")
     }
     
+    
     func setTxtFields() {
         idTxtField.layer.addUnderBar()
         pwdTxtField.layer.addUnderBar()
     }
+    
     
     func setLoginBtn() {
         loginBtn.layer.cornerRadius = 5

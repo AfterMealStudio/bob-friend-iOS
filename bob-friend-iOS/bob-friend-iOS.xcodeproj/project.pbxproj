@@ -12,8 +12,6 @@
 		0B2978FD26D617B6002AD75A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0B2978FB26D617B6002AD75A /* LaunchScreen.storyboard */; };
 		0B29790826D617B7002AD75A /* bob_friend_iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B29790726D617B7002AD75A /* bob_friend_iOSTests.swift */; };
 		0B29791326D617B7002AD75A /* bob_friend_iOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B29791226D617B7002AD75A /* bob_friend_iOSUITests.swift */; };
-		0B29792C26D6256F002AD75A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B29792A26D6256F002AD75A /* ViewController.swift */; };
-		0B29792D26D6256F002AD75A /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B29792B26D6256F002AD75A /* ViewController.xib */; };
 		0B29793526D62F04002AD75A /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B29793326D62F04002AD75A /* LoginVC.swift */; };
 		0B29793626D62F04002AD75A /* LoginVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B29793426D62F04002AD75A /* LoginVC.xib */; };
 		0B29797426D8D13C002AD75A /* CALayer+Border.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B29797326D8D13C002AD75A /* CALayer+Border.swift */; };
@@ -52,8 +50,6 @@
 		0B29790E26D617B7002AD75A /* bob-friend-iOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "bob-friend-iOSUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B29791226D617B7002AD75A /* bob_friend_iOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bob_friend_iOSUITests.swift; sourceTree = "<group>"; };
 		0B29791426D617B7002AD75A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0B29792A26D6256F002AD75A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		0B29792B26D6256F002AD75A /* ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewController.xib; sourceTree = "<group>"; };
 		0B29793326D62F04002AD75A /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		0B29793426D62F04002AD75A /* LoginVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoginVC.xib; sourceTree = "<group>"; };
 		0B29797326D8D13C002AD75A /* CALayer+Border.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Border.swift"; sourceTree = "<group>"; };
@@ -122,16 +118,11 @@
 		0B2978EF26D617B4002AD75A /* bob-friend-iOS */ = {
 			isa = PBXGroup;
 			children = (
-				0B2978F026D617B4002AD75A /* AppDelegate.swift */,
-				0B2978F926D617B6002AD75A /* Assets.xcassets */,
-				0B2978FB26D617B6002AD75A /* LaunchScreen.storyboard */,
+				0B29798426D92160002AD75A /* ViewController */,
+				0B29798326D9208A002AD75A /* SupportingFiles */,
+				0B29798226D9206E002AD75A /* Utils */,
+				0B29798026D92047002AD75A /* Extension */,
 				0B2978FE26D617B6002AD75A /* Info.plist */,
-				0B29792A26D6256F002AD75A /* ViewController.swift */,
-				0B29792B26D6256F002AD75A /* ViewController.xib */,
-				0B29793326D62F04002AD75A /* LoginVC.swift */,
-				0B29793426D62F04002AD75A /* LoginVC.xib */,
-				0B29797326D8D13C002AD75A /* CALayer+Border.swift */,
-				0B29797B26D903C1002AD75A /* Keyboard.swift */,
 			);
 			path = "bob-friend-iOS";
 			sourceTree = "<group>";
@@ -152,6 +143,41 @@
 				0B29791426D617B7002AD75A /* Info.plist */,
 			);
 			path = "bob-friend-iOSUITests";
+			sourceTree = "<group>";
+		};
+		0B29798026D92047002AD75A /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				0B29797326D8D13C002AD75A /* CALayer+Border.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		0B29798226D9206E002AD75A /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				0B29797B26D903C1002AD75A /* Keyboard.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		0B29798326D9208A002AD75A /* SupportingFiles */ = {
+			isa = PBXGroup;
+			children = (
+				0B2978F026D617B4002AD75A /* AppDelegate.swift */,
+				0B2978FB26D617B6002AD75A /* LaunchScreen.storyboard */,
+				0B2978F926D617B6002AD75A /* Assets.xcassets */,
+			);
+			path = SupportingFiles;
+			sourceTree = "<group>";
+		};
+		0B29798426D92160002AD75A /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				0B29793326D62F04002AD75A /* LoginVC.swift */,
+				0B29793426D62F04002AD75A /* LoginVC.xib */,
+			);
+			path = ViewController;
 			sourceTree = "<group>";
 		};
 		A75D96A0F16F508EF72D2C5C /* Pods */ = {
@@ -285,7 +311,6 @@
 			files = (
 				0B29793626D62F04002AD75A /* LoginVC.xib in Resources */,
 				0B2978FD26D617B6002AD75A /* LaunchScreen.storyboard in Resources */,
-				0B29792D26D6256F002AD75A /* ViewController.xib in Resources */,
 				0B2978FA26D617B6002AD75A /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -380,7 +405,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0B29792C26D6256F002AD75A /* ViewController.swift in Sources */,
 				0B29797426D8D13C002AD75A /* CALayer+Border.swift in Sources */,
 				0B29797C26D903C1002AD75A /* Keyboard.swift in Sources */,
 				0B29793526D62F04002AD75A /* LoginVC.swift in Sources */,
