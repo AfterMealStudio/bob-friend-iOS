@@ -17,6 +17,7 @@
 		0B29793526D62F04002AD75A /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B29793326D62F04002AD75A /* LoginVC.swift */; };
 		0B29793626D62F04002AD75A /* LoginVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B29793426D62F04002AD75A /* LoginVC.xib */; };
 		0B29797426D8D13C002AD75A /* CALayer+Border.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B29797326D8D13C002AD75A /* CALayer+Border.swift */; };
+		0B29797C26D903C1002AD75A /* Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B29797B26D903C1002AD75A /* Keyboard.swift */; };
 		29A77F66B06D132C4F517847 /* Pods_bob_friend_iOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F71173E71FC11E1417A6BB4B /* Pods_bob_friend_iOSTests.framework */; };
 		7743AF2E3DE45DCC31775245 /* Pods_bob_friend_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C45F4DD2A79A0558D2902BC /* Pods_bob_friend_iOS.framework */; };
 		CE24FA122D98204D49D88218 /* Pods_bob_friend_iOS_bob_friend_iOSUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A9DB9DB30C1E8F70A065E96 /* Pods_bob_friend_iOS_bob_friend_iOSUITests.framework */; };
@@ -56,6 +57,7 @@
 		0B29793326D62F04002AD75A /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		0B29793426D62F04002AD75A /* LoginVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoginVC.xib; sourceTree = "<group>"; };
 		0B29797326D8D13C002AD75A /* CALayer+Border.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Border.swift"; sourceTree = "<group>"; };
+		0B29797B26D903C1002AD75A /* Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keyboard.swift; sourceTree = "<group>"; };
 		4C45F4DD2A79A0558D2902BC /* Pods_bob_friend_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bob_friend_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DC00887C36D6D8012C4743A /* Pods-bob-friend-iOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bob-friend-iOSTests.release.xcconfig"; path = "Target Support Files/Pods-bob-friend-iOSTests/Pods-bob-friend-iOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		90EA6DC28E0DEF9487B3FA18 /* Pods-bob-friend-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bob-friend-iOS.release.xcconfig"; path = "Target Support Files/Pods-bob-friend-iOS/Pods-bob-friend-iOS.release.xcconfig"; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 				0B29793326D62F04002AD75A /* LoginVC.swift */,
 				0B29793426D62F04002AD75A /* LoginVC.xib */,
 				0B29797326D8D13C002AD75A /* CALayer+Border.swift */,
+				0B29797B26D903C1002AD75A /* Keyboard.swift */,
 			);
 			path = "bob-friend-iOS";
 			sourceTree = "<group>";
@@ -379,6 +382,7 @@
 			files = (
 				0B29792C26D6256F002AD75A /* ViewController.swift in Sources */,
 				0B29797426D8D13C002AD75A /* CALayer+Border.swift in Sources */,
+				0B29797C26D903C1002AD75A /* Keyboard.swift in Sources */,
 				0B29793526D62F04002AD75A /* LoginVC.swift in Sources */,
 				0B2978F126D617B4002AD75A /* AppDelegate.swift in Sources */,
 			);

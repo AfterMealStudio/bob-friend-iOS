@@ -8,15 +8,22 @@
 import UIKit
 
 class LoginVC: UIViewController {
-
+    
+    var keyboard: Keyboard?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        keyboard = Keyboard(self)
         
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         setUI()
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        keyboard?.remove()
     }
 
     @IBOutlet weak var logoImgView: UIImageView!
@@ -45,5 +52,11 @@ class LoginVC: UIViewController {
         loginBtn.setTitleColor(UIColor(named: "White"), for: .normal)
         loginBtn.backgroundColor = UIColor(named: "MainColor1")
     }
-
+    
+    
+    @IBAction func loginBtnClicked(_ sender: Any) {
+        keyboard?.remove()
+    }
+    
+    
 }
