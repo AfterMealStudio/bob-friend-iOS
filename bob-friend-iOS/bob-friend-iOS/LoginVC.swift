@@ -58,3 +58,11 @@ class LoginVC: UIViewController {
     
     
 }
+
+extension LoginVC: UIScrollViewDelegate {
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        self.view.endEditing(true)
+    }
+    
+}
