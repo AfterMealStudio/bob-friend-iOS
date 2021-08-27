@@ -13,7 +13,7 @@ class LoginVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        keyboard = Keyboard(self)
+        keyboard = Keyboard(self, mainScrollView: scrollView)
         
     }
     
@@ -22,10 +22,8 @@ class LoginVC: UIViewController {
         setUI()
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        keyboard?.remove()
-    }
-
+    @IBOutlet weak var scrollView: UIScrollView!
+    
     @IBOutlet weak var logoImgView: UIImageView!
     @IBOutlet weak var idTxtField: UITextField!
     @IBOutlet weak var pwdTxtField: UITextField!

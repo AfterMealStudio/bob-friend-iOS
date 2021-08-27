@@ -15,6 +15,7 @@
                 <outlet property="loginBtn" destination="A5k-aX-fut" id="qI7-bp-JhF"/>
                 <outlet property="logoImgView" destination="BEV-2G-l5d" id="zI0-US-91L"/>
                 <outlet property="pwdTxtField" destination="fXW-tU-7Z3" id="bpV-dG-SNE"/>
+                <outlet property="scrollView" destination="gbW-tS-YOu" id="6iQ-ji-rAY"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

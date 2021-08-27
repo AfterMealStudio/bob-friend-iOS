@@ -11,12 +11,17 @@ class Keyboard {
     
     let vc: UIViewController
     
+    var scrollView: UIScrollView?
+    
     var keyHeight: CGFloat?
     var keyBoardFlag = false
     
-    init (_ vc: UIViewController) {
+    init (_ vc: UIViewController, mainScrollView: UIScrollView?) {
         self.vc = vc
+        self.scrollView = mainScrollView
         enrollNotification()
+        
+        enrollRemoveKeyboard()
     }
     
     func enrollNotification() {
@@ -44,14 +49,19 @@ class Keyboard {
         keyBoardFlag = false
     }
     
-
-    func remove(keyboardUsers: [UIView]) { // keyboardUsers = [txtField, ...]
-        keyboardUsers.forEach({
-            $0.resignFirstResponder()
-        })
+    func remove() {
+        vc.view.endEditing(true)
     }
     
-    func remove() {
+    func enrollRemoveKeyboard() {
+        if let scrollView = scrollView {
+            let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(TapOtherMethod))
+            scrollView.addGestureRecognizer(singleTapGestureRecognizer)
+        }
+        
+    }
+    
+    @objc func TapOtherMethod(sender: UITapGestureRecognizer) {
         vc.view.endEditing(true)
     }
     
