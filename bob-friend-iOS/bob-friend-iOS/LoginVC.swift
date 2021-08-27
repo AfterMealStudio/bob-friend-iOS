@@ -13,6 +13,7 @@ class LoginVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        scrollView.delegate = self
         keyboard = Keyboard(self, mainScrollView: scrollView)
         
     }
