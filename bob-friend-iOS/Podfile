@@ -6,6 +6,8 @@ target 'bob-friend-iOS' do
   use_frameworks!
 
   # Pods for bob-friend-iOS
+  
+  pod 'Alamofire', '~> 5.1'
 
   target 'bob-friend-iOSTests' do
     inherit! :search_paths
