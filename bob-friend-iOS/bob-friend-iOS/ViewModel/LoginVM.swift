@@ -25,7 +25,6 @@ class LoginVM: Login {
                 break
             case .failure(let err):
                 NotificationCenter.default.post(name: Notification.Name("LoginFailure"), object: err)
-                print("login error : \(err)")
                 break
             }
             
