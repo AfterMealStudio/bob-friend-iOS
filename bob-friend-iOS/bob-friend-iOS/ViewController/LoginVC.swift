@@ -9,11 +9,14 @@ import UIKit
 
 class LoginVC: UIViewController {
     
+    var loginVM: LoginVM?
     var keyboard: Keyboard?
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        loginVM = LoginVM(self)
         scrollView.delegate = self
         keyboard = Keyboard(self, mainScrollView: scrollView)
         
@@ -22,6 +25,7 @@ class LoginVC: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
+        
         setUI()
     }
     
@@ -62,6 +66,9 @@ class LoginVC: UIViewController {
     
     @IBAction func loginBtnClicked(_ sender: Any) {
         keyboard?.remove()
+        if let id = idTxtField.text, let pwd = pwdTxtField.text {
+            loginVM?.login(id: id, pwd: pwd)
+        }
     }
     
     
@@ -71,6 +78,18 @@ extension LoginVC: UIScrollViewDelegate {
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         self.view.endEditing(true)
+    }
+    
+}
+
+extension LoginVC: Login {
+
+    func didSuccessLogin(_ notification: NSNotification) {
+        print(notification.object ?? "")
+    }
+    
+    func didFailLogin(_ notification: NSNotification) {
+        print(notification.object ?? "")
     }
     
 }
