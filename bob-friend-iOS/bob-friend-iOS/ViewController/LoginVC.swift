@@ -89,7 +89,13 @@ extension LoginVC: Login {
     }
     
     func didFailLogin(_ notification: NSNotification) {
-        print(notification.object ?? "")
+        let alertController = UIAlertController(title: "로그인 실패 하였습니다", message: nil, preferredStyle: .alert)
+        let okBtn = UIAlertAction(title: "확인", style: .default) { _ in
+            self.dismiss(animated: true, completion: nil)
+        }
+        alertController.addAction(okBtn)
+        self.present(alertController, animated: true, completion: nil)
+        
     }
     
 }
