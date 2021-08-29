@@ -55,6 +55,11 @@ class Keyboard {
     }
     
     
+    func remove() {
+        vc.view.endEditing(true)
+    }
+    
+    
     func enrollRemoveKeyboard() {
         if let scrollView = scrollView {
             let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(TapOtherMethod))
