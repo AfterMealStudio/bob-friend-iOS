@@ -48,13 +48,10 @@ class Keyboard {
     
     
     @objc func keyboardWillHide(_ sender: Notification) {
-        vc.view.frame.size.height += keyHeight!
+        if keyBoardFlag {
+            vc.view.frame.size.height += keyHeight!
+        }
         keyBoardFlag = false
-    }
-    
-    
-    func remove() {
-        vc.view.endEditing(true)
     }
     
     

@@ -65,7 +65,6 @@ class LoginVC: UIViewController {
     
     
     @IBAction func loginBtnClicked(_ sender: Any) {
-        keyboard?.remove()
         if let id = idTxtField.text, let pwd = pwdTxtField.text {
             loginVM?.login(id: id, pwd: pwd)
         }
