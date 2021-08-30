@@ -22,10 +22,8 @@ class LoginVM: Login {
             switch result {
             case .success(let token):
                 NotificationCenter.default.post(name: Notification.Name("LoginSuccess"), object: token)
-                break
             case .failure(let err):
                 NotificationCenter.default.post(name: Notification.Name("LoginFailure"), object: err)
-                break
             }
             
         }
