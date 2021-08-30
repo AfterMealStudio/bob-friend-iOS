@@ -9,7 +9,7 @@ import UIKit
 
 class Keyboard {
     
-    let vc: UIViewController
+    var vc: UIViewController?
     
     var scrollView: UIScrollView?
     
@@ -32,8 +32,8 @@ class Keyboard {
     
     
     @objc func keyboardWillShow(_ sender: Notification) {
-        if keyBoardFlag {
-            vc.view.frame.size.height += keyHeight!
+        if let keyHeight = keyHeight, keyBoardFlag {
+            vc?.view.frame.size.height += keyHeight
             keyBoardFlag = false
         }
         let userInfo: NSDictionary = sender.userInfo! as NSDictionary
@@ -42,21 +42,21 @@ class Keyboard {
         let keyboardHeight = keyboardRectangle.height
         keyHeight = keyboardHeight
         
-        vc.view.frame.size.height -= keyboardHeight
+        vc?.view.frame.size.height -= keyboardHeight
         keyBoardFlag = true
     }
     
     
     @objc func keyboardWillHide(_ sender: Notification) {
-        if keyBoardFlag {
-            vc.view.frame.size.height += keyHeight!
+        if let keyHeight = keyHeight, keyBoardFlag {
+            vc?.view.frame.size.height += keyHeight
         }
         keyBoardFlag = false
     }
     
     
     func remove() {
-        vc.view.endEditing(true)
+        vc?.view.endEditing(true)
     }
     
     
@@ -70,7 +70,7 @@ class Keyboard {
     
     
     @objc func TapOtherMethod(sender: UITapGestureRecognizer) {
-        vc.view.endEditing(true)
+        vc?.view.endEditing(true)
     }
     
 }
