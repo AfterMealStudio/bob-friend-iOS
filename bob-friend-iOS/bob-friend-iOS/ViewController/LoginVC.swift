@@ -10,15 +10,20 @@ import UIKit
 class LoginVC: UIViewController {
     
     var loginVM: LoginVM?
-    var keyboard: Keyboard?
     
+    // keyboard
+    var keyBoardFlag = false
+    var keyHeight: CGFloat?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         loginVM = LoginVM(self)
         scrollView.delegate = self
-        keyboard = Keyboard(self, mainScrollView: scrollView)
+        
+        // keyboard
+        enrollNotification()
+        enrollRemoveKeyboard()
         
     }
     
@@ -65,7 +70,7 @@ class LoginVC: UIViewController {
     
     
     @IBAction func loginBtnClicked(_ sender: Any) {
-        keyboard?.remove()
+        removeKeyboard()
         if let id = idTxtField.text, let pwd = pwdTxtField.text {
             loginVM?.login(id: id, pwd: pwd)
         }
@@ -74,6 +79,8 @@ class LoginVC: UIViewController {
     
 }
 
+
+
 extension LoginVC: UIScrollViewDelegate {
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
@@ -81,6 +88,8 @@ extension LoginVC: UIScrollViewDelegate {
     }
     
 }
+
+
 
 extension LoginVC: Login {
 
@@ -96,6 +105,59 @@ extension LoginVC: Login {
         alertController.addAction(okBtn)
         self.present(alertController, animated: true, completion: nil)
         
+    }
+    
+}
+
+
+
+extension LoginVC { //keyboard Management
+    
+    func enrollNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    
+    @objc func keyboardWillShow(_ sender: Notification) {
+        if let keyHeight = keyHeight, keyBoardFlag {
+            self.view.frame.size.height += keyHeight
+            keyBoardFlag = false
+        }
+        let userInfo: NSDictionary = sender.userInfo! as NSDictionary
+        let keyboardFrame: NSValue = userInfo.value(forKey: UIResponder.keyboardFrameEndUserInfoKey) as! NSValue
+        let keyboardRectangle = keyboardFrame.cgRectValue
+        let keyboardHeight = keyboardRectangle.height
+        keyHeight = keyboardHeight
+        
+        self.view.frame.size.height -= keyboardHeight
+        keyBoardFlag = true
+    }
+    
+    
+    @objc func keyboardWillHide(_ sender: Notification) {
+        if let keyHeight = keyHeight, keyBoardFlag {
+            self.view.frame.size.height += keyHeight
+        }
+        keyBoardFlag = false
+    }
+    
+    func removeKeyboard() {
+        self.view.endEditing(true)
+    }
+    
+    
+    func enrollRemoveKeyboard() {
+        if let scrollView = scrollView {
+            let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(TapOtherMethod))
+            scrollView.addGestureRecognizer(singleTapGestureRecognizer)
+        }
+        
+    }
+    
+    
+    @objc func TapOtherMethod(sender: UITapGestureRecognizer) {
+        self.view.endEditing(true)
     }
     
 }
