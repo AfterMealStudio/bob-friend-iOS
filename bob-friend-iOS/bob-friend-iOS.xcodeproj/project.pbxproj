@@ -62,8 +62,6 @@
 		0BB9877826DA523100E0CC12 /* LoginProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginProtocol.swift; sourceTree = "<group>"; };
 		0BB9877B26DA571D00E0CC12 /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
 		0BB9877D26DA573B00E0CC12 /* TokenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenModel.swift; sourceTree = "<group>"; };
-		0BB9878126DA598B00E0CC12 /* Production.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Production.xcconfig; sourceTree = "<group>"; };
-		0BB9878226DA5A1E00E0CC12 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		4C45F4DD2A79A0558D2902BC /* Pods_bob_friend_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bob_friend_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DC00887C36D6D8012C4743A /* Pods-bob-friend-iOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bob-friend-iOSTests.release.xcconfig"; path = "Target Support Files/Pods-bob-friend-iOSTests/Pods-bob-friend-iOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		90EA6DC28E0DEF9487B3FA18 /* Pods-bob-friend-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bob-friend-iOS.release.xcconfig"; path = "Target Support Files/Pods-bob-friend-iOS/Pods-bob-friend-iOS.release.xcconfig"; sourceTree = "<group>"; };
@@ -128,13 +126,11 @@
 		0B2978EF26D617B4002AD75A /* bob-friend-iOS */ = {
 			isa = PBXGroup;
 			children = (
-				0BB9878026DA595700E0CC12 /* Config */,
 				0BB9877F26DA574800E0CC12 /* Protocols */,
 				0B29798626DA1890002AD75A /* Model */,
 				0B29798526DA1886002AD75A /* ViewModel */,
 				0B29798426D92160002AD75A /* ViewController */,
 				0B29798326D9208A002AD75A /* SupportingFiles */,
-				0B29798226D9206E002AD75A /* Utils */,
 				0B29798026D92047002AD75A /* Extension */,
 				0B2978FE26D617B6002AD75A /* Info.plist */,
 			);
@@ -165,13 +161,6 @@
 				0B29797326D8D13C002AD75A /* CALayer+Border.swift */,
 			);
 			path = Extension;
-			sourceTree = "<group>";
-		};
-		0B29798226D9206E002AD75A /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Utils;
 			sourceTree = "<group>";
 		};
 		0B29798326D9208A002AD75A /* SupportingFiles */ = {
@@ -225,15 +214,6 @@
 				0BB9877826DA523100E0CC12 /* LoginProtocol.swift */,
 			);
 			path = Protocols;
-			sourceTree = "<group>";
-		};
-		0BB9878026DA595700E0CC12 /* Config */ = {
-			isa = PBXGroup;
-			children = (
-				0BB9878126DA598B00E0CC12 /* Production.xcconfig */,
-				0BB9878226DA5A1E00E0CC12 /* Debug.xcconfig */,
-			);
-			path = Config;
 			sourceTree = "<group>";
 		};
 		A75D96A0F16F508EF72D2C5C /* Pods */ = {
@@ -602,7 +582,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -657,7 +637,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -669,12 +649,12 @@
 		};
 		0B29791826D617B7002AD75A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0BB9878226DA5A1E00E0CC12 /* Debug.xcconfig */;
+			baseConfigurationReference = BCA3538B8821CDA56B4234C3 /* Pods-bob-friend-iOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 6XPJ277622;
+				DEVELOPMENT_TEAM = Y4TX5PVNK4;
 				INFOPLIST_FILE = "bob-friend-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -689,7 +669,7 @@
 		};
 		0B29791926D617B7002AD75A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0BB9878126DA598B00E0CC12 /* Production.xcconfig */;
+			baseConfigurationReference = 90EA6DC28E0DEF9487B3FA18 /* Pods-bob-friend-iOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
