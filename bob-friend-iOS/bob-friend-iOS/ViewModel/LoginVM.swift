@@ -12,7 +12,12 @@ class LoginVM: Login {
     let network: Network = Network()
     
     init(_ object: Login) {
-        enrollObserver(object: object)
+        weak var object = object
+        
+        if object != nil {
+            enrollObserver(object: object!)
+        }
+        
     }
     
     
