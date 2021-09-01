@@ -9,17 +9,13 @@ import Foundation
 import Alamofire
 
 class Network {
-    
-    static let shared = Network()
-    
-    private init() {}
-    
-    let baseUrl: String = Bundle.main.infoDictionary!["API_BASE_URL"] as! String
+            
+    private let baseUrl: String = Bundle.main.infoDictionary!["API_BASE_URL"] as! String
         
-    enum API: String {
+    private enum API: String {
         case login = "api/signin"
     }
-    
+
     
     func loginRequest(loginInfo: LoginModel, completion: @escaping (Result<TokenModel, AFError>) -> Void) {
         let url = baseUrl + API.login.rawValue

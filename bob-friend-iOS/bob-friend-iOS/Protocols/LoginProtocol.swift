@@ -8,7 +8,7 @@
 import Foundation
 
 @objc protocol Login {
-    func didSuccessLogin(_ notification: NSNotification) -> Void
+    func didSuccessLogin(_ notification: Notification) -> Void
     
-    func didFailLogin(_ notification: NSNotification) -> Void
+    func didFailLogin(_ notification: Notification) -> Void
 }

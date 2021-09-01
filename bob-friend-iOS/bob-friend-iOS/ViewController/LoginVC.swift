@@ -15,6 +15,8 @@ class LoginVC: UIViewController {
     var keyBoardFlag = false
     var keyHeight: CGFloat?
     
+    private var uiFlag = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -31,7 +33,10 @@ class LoginVC: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         
-        setUI()
+        if uiFlag == false {
+            setUI()
+        }
+        
     }
     
     
@@ -84,7 +89,7 @@ class LoginVC: UIViewController {
 extension LoginVC: UIScrollViewDelegate {
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        self.view.endEditing(true)
+        removeKeyboard()
     }
     
 }
@@ -93,17 +98,18 @@ extension LoginVC: UIScrollViewDelegate {
 
 extension LoginVC: Login {
 
-    func didSuccessLogin(_ notification: NSNotification) {
+    func didSuccessLogin(_ notification: Notification) {
         print(notification.object ?? "")
     }
     
-    func didFailLogin(_ notification: NSNotification) {
+    func didFailLogin(_ notification: Notification) {
         let alertController = UIAlertController(title: "로그인 실패 하였습니다", message: nil, preferredStyle: .alert)
-        let okBtn = UIAlertAction(title: "확인", style: .default) { _ in
-            self.dismiss(animated: true, completion: nil)
+        let okBtn = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
+            self?.dismiss(animated: true, completion: nil)
         }
+        
         alertController.addAction(okBtn)
-        self.present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
         
     }
     
@@ -121,7 +127,7 @@ extension LoginVC { //keyboard Management
     
     @objc func keyboardWillShow(_ sender: Notification) {
         if let keyHeight = keyHeight, keyBoardFlag {
-            self.view.frame.size.height += keyHeight
+            view.frame.size.height += keyHeight
             keyBoardFlag = false
         }
         let userInfo: NSDictionary = sender.userInfo! as NSDictionary
@@ -130,20 +136,20 @@ extension LoginVC { //keyboard Management
         let keyboardHeight = keyboardRectangle.height
         keyHeight = keyboardHeight
         
-        self.view.frame.size.height -= keyboardHeight
+        view.frame.size.height -= keyboardHeight
         keyBoardFlag = true
     }
     
     
     @objc func keyboardWillHide(_ sender: Notification) {
         if let keyHeight = keyHeight, keyBoardFlag {
-            self.view.frame.size.height += keyHeight
+            view.frame.size.height += keyHeight
         }
         keyBoardFlag = false
     }
     
     func removeKeyboard() {
-        self.view.endEditing(true)
+        view.endEditing(true)
     }
     
     
@@ -157,7 +163,7 @@ extension LoginVC { //keyboard Management
     
     
     @objc func TapOtherMethod(sender: UITapGestureRecognizer) {
-        self.view.endEditing(true)
+        removeKeyboard()
     }
     
 }

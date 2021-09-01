@@ -9,8 +9,10 @@ import UIKit
 
 class LoginVM: Login {
     
-    init(_ vc: UIViewController) {
-        enrollObserver(vc: vc)
+    let network: Network = Network()
+    
+    init(_ object: Login) {
+        enrollObserver(object: object)
     }
     
     
@@ -18,7 +20,7 @@ class LoginVM: Login {
         
         let loginInfo = LoginModel(username: id, password: pwd)
         
-        Network.shared.loginRequest(loginInfo: loginInfo) { result in
+        network.loginRequest(loginInfo: loginInfo) { result in
             switch result {
             case .success(let token):
                 NotificationCenter.default.post(name: Notification.Name("LoginSuccess"), object: token)
@@ -31,15 +33,15 @@ class LoginVM: Login {
     }
     
     
-    func enrollObserver(vc: UIViewController) {
-        NotificationCenter.default.addObserver(vc, selector: #selector(didSuccessLogin(_:)), name: NSNotification.Name("LoginSuccess"), object: nil)
-        NotificationCenter.default.addObserver(vc, selector: #selector(didFailLogin), name: NSNotification.Name("LoginFailure"), object: nil)
+    func enrollObserver(object: Login) {
+        NotificationCenter.default.addObserver(object, selector: #selector(didSuccessLogin(_:)), name: NSNotification.Name("LoginSuccess"), object: nil)
+        NotificationCenter.default.addObserver(object, selector: #selector(didFailLogin), name: NSNotification.Name("LoginFailure"), object: nil)
     }
     
     
-    @objc func didSuccessLogin(_ notification: NSNotification) {}
+    @objc func didSuccessLogin(_ notification: Notification) {}
     
-    @objc func didFailLogin(_ notification: NSNotification) {}
+    @objc func didFailLogin(_ notification: Notification) {}
     
     
 }
