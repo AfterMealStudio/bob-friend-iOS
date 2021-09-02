@@ -124,7 +124,6 @@
 		0B2978EF26D617B4002AD75A /* bob-friend-iOS */ = {
 			isa = PBXGroup;
 			children = (
-				0BB9877F26DA574800E0CC12 /* Protocols */,
 				0B29798626DA1890002AD75A /* Model */,
 				0B29798526DA1886002AD75A /* ViewModel */,
 				0B29798426D92160002AD75A /* ViewController */,
@@ -204,13 +203,6 @@
 				0BB9877D26DA573B00E0CC12 /* TokenModel.swift */,
 			);
 			path = DataModel;
-			sourceTree = "<group>";
-		};
-		0BB9877F26DA574800E0CC12 /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Protocols;
 			sourceTree = "<group>";
 		};
 		A75D96A0F16F508EF72D2C5C /* Pods */ = {
