@@ -13,7 +13,6 @@
 		0B29790826D617B7002AD75A /* bob_friend_iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B29790726D617B7002AD75A /* bob_friend_iOSTests.swift */; };
 		0B29791326D617B7002AD75A /* bob_friend_iOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B29791226D617B7002AD75A /* bob_friend_iOSUITests.swift */; };
 		0B29793526D62F04002AD75A /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B29793326D62F04002AD75A /* LoginVC.swift */; };
-		0B29793626D62F04002AD75A /* LoginVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B29793426D62F04002AD75A /* LoginVC.xib */; };
 		0B29797426D8D13C002AD75A /* CALayer+Border.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B29797326D8D13C002AD75A /* CALayer+Border.swift */; };
 		0B29798826DA18A9002AD75A /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B29798726DA18A9002AD75A /* Network.swift */; };
 		0BB9877726DA30C200E0CC12 /* LoginVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB9877626DA30C200E0CC12 /* LoginVM.swift */; };
@@ -21,6 +20,7 @@
 		0BB9877E26DA573B00E0CC12 /* TokenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB9877D26DA573B00E0CC12 /* TokenModel.swift */; };
 		29A77F66B06D132C4F517847 /* Pods_bob_friend_iOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F71173E71FC11E1417A6BB4B /* Pods_bob_friend_iOSTests.framework */; };
 		766FE51726E11EB100F1C227 /* ViewContoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766FE51626E11EB100F1C227 /* ViewContoller.swift */; };
+		766FE51926E124AD00F1C227 /* LoginVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 766FE51826E124AD00F1C227 /* LoginVC.storyboard */; };
 		7743AF2E3DE45DCC31775245 /* Pods_bob_friend_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C45F4DD2A79A0558D2902BC /* Pods_bob_friend_iOS.framework */; };
 		CE24FA122D98204D49D88218 /* Pods_bob_friend_iOS_bob_friend_iOSUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A9DB9DB30C1E8F70A065E96 /* Pods_bob_friend_iOS_bob_friend_iOSUITests.framework */; };
 /* End PBXBuildFile section */
@@ -55,7 +55,6 @@
 		0B29791226D617B7002AD75A /* bob_friend_iOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bob_friend_iOSUITests.swift; sourceTree = "<group>"; };
 		0B29791426D617B7002AD75A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0B29793326D62F04002AD75A /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
-		0B29793426D62F04002AD75A /* LoginVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LoginVC.xib; sourceTree = "<group>"; };
 		0B29797326D8D13C002AD75A /* CALayer+Border.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Border.swift"; sourceTree = "<group>"; };
 		0B29798726DA18A9002AD75A /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		0BB9877626DA30C200E0CC12 /* LoginVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVM.swift; sourceTree = "<group>"; };
@@ -63,6 +62,7 @@
 		0BB9877D26DA573B00E0CC12 /* TokenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenModel.swift; sourceTree = "<group>"; };
 		4C45F4DD2A79A0558D2902BC /* Pods_bob_friend_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bob_friend_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		766FE51626E11EB100F1C227 /* ViewContoller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewContoller.swift; sourceTree = "<group>"; };
+		766FE51826E124AD00F1C227 /* LoginVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LoginVC.storyboard; sourceTree = "<group>"; };
 		8DC00887C36D6D8012C4743A /* Pods-bob-friend-iOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bob-friend-iOSTests.release.xcconfig"; path = "Target Support Files/Pods-bob-friend-iOSTests/Pods-bob-friend-iOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		90EA6DC28E0DEF9487B3FA18 /* Pods-bob-friend-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bob-friend-iOS.release.xcconfig"; path = "Target Support Files/Pods-bob-friend-iOS/Pods-bob-friend-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		9A9DB9DB30C1E8F70A065E96 /* Pods_bob_friend_iOS_bob_friend_iOSUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bob_friend_iOS_bob_friend_iOSUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -176,7 +176,7 @@
 			isa = PBXGroup;
 			children = (
 				0B29793326D62F04002AD75A /* LoginVC.swift */,
-				0B29793426D62F04002AD75A /* LoginVC.xib */,
+				766FE51826E124AD00F1C227 /* LoginVC.storyboard */,
 				766FE51626E11EB100F1C227 /* ViewContoller.swift */,
 			);
 			path = ViewController;
@@ -339,9 +339,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0B29793626D62F04002AD75A /* LoginVC.xib in Resources */,
 				0B2978FD26D617B6002AD75A /* LaunchScreen.storyboard in Resources */,
 				0B2978FA26D617B6002AD75A /* Assets.xcassets in Resources */,
+				766FE51926E124AD00F1C227 /* LoginVC.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

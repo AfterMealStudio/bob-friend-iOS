@@ -32,6 +32,9 @@ final class ViewContoller: UIViewController {
 
     @objc
     private func tapButton(_ button: UIButton) {
-        present(LoginVC(), animated: true)
+        let loginVCStoryboard = UIStoryboard(name: "LoginVC", bundle: nil)
+        let loginVC = loginVCStoryboard.instantiateViewController(withIdentifier: "LoginVC")
+        loginVC.modalPresentationStyle = .fullScreen
+        present(loginVC, animated: true)
     }
 }
