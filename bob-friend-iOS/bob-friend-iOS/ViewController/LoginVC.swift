@@ -44,7 +44,10 @@ class LoginVC: UIViewController {
         enrollKeyboardNotification()
         enrollRemoveKeyboard()
     }
-    
+
+    deinit {
+        print("LoginVC \(#function)")
+    }
     
     @IBAction func loginBtnClicked(_ sender: Any) {
         removeKeyboard()
