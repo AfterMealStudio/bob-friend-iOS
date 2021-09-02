@@ -89,13 +89,14 @@ extension LoginVC: LoginDelegate {
 
 extension LoginVC { //keyboard Management
     
-    func enrollKeyboardNotification() {
+    private func enrollKeyboardNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     
-    @objc func keyboardWillShow(_ sender: Notification) {
+    @objc
+    private func keyboardWillShow(_ sender: Notification) {
         if let _ = keyHeight {
             return
         }
@@ -109,7 +110,8 @@ extension LoginVC { //keyboard Management
     }
     
     
-    @objc func keyboardWillHide(_ sender: Notification) {
+    @objc
+    private func keyboardWillHide(_ sender: Notification) {
         if let keyHeight = keyHeight {
             view.frame.size.height += keyHeight
         }
@@ -117,22 +119,20 @@ extension LoginVC { //keyboard Management
     }
     
     
-    func removeKeyboard() {
+    private func removeKeyboard() {
         view.endEditing(true)
         keyHeight = nil
     }
     
     
-    func enrollRemoveKeyboard() {
-        if let scrollView = scrollView {
-            let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(TapOtherMethod))
-            scrollView.addGestureRecognizer(singleTapGestureRecognizer)
-        }
-        
+    private func enrollRemoveKeyboard() {
+        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapScrollView))
+        scrollView.addGestureRecognizer(singleTapGestureRecognizer)
     }
     
     
-    @objc func TapOtherMethod(sender: UITapGestureRecognizer) {
+    @objc
+    private func tapScrollView(sender: UITapGestureRecognizer) {
         removeKeyboard()
     }
     
