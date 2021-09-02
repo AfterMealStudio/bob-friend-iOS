@@ -18,12 +18,11 @@ class LoginVC: UIViewController {
         }
     }
     @IBOutlet weak var idTxtField: UITextField! {
-        didSet {
-            idTxtField.layer.addUnderBar()
-            pwdTxtField.layer.addUnderBar()
-        }
+        didSet { idTxtField.layer.addBorder() }
     }
-    @IBOutlet weak var pwdTxtField: UITextField!
+    @IBOutlet weak var pwdTxtField: UITextField! {
+        didSet { pwdTxtField.layer.addBorder() }
+    }
     @IBOutlet weak var loginBtn: UIButton! {
         didSet {
             loginBtn.layer.cornerRadius = 5
