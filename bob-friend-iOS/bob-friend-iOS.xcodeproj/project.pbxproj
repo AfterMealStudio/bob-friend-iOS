@@ -17,7 +17,6 @@
 		0B29797426D8D13C002AD75A /* CALayer+Border.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B29797326D8D13C002AD75A /* CALayer+Border.swift */; };
 		0B29798826DA18A9002AD75A /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B29798726DA18A9002AD75A /* Network.swift */; };
 		0BB9877726DA30C200E0CC12 /* LoginVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB9877626DA30C200E0CC12 /* LoginVM.swift */; };
-		0BB9877926DA523100E0CC12 /* LoginProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB9877826DA523100E0CC12 /* LoginProtocol.swift */; };
 		0BB9877C26DA571D00E0CC12 /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB9877B26DA571D00E0CC12 /* LoginModel.swift */; };
 		0BB9877E26DA573B00E0CC12 /* TokenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB9877D26DA573B00E0CC12 /* TokenModel.swift */; };
 		29A77F66B06D132C4F517847 /* Pods_bob_friend_iOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F71173E71FC11E1417A6BB4B /* Pods_bob_friend_iOSTests.framework */; };
@@ -59,7 +58,6 @@
 		0B29797326D8D13C002AD75A /* CALayer+Border.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Border.swift"; sourceTree = "<group>"; };
 		0B29798726DA18A9002AD75A /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		0BB9877626DA30C200E0CC12 /* LoginVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVM.swift; sourceTree = "<group>"; };
-		0BB9877826DA523100E0CC12 /* LoginProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginProtocol.swift; sourceTree = "<group>"; };
 		0BB9877B26DA571D00E0CC12 /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
 		0BB9877D26DA573B00E0CC12 /* TokenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenModel.swift; sourceTree = "<group>"; };
 		4C45F4DD2A79A0558D2902BC /* Pods_bob_friend_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bob_friend_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -211,7 +209,6 @@
 		0BB9877F26DA574800E0CC12 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				0BB9877826DA523100E0CC12 /* LoginProtocol.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -481,7 +478,6 @@
 				0BB9877E26DA573B00E0CC12 /* TokenModel.swift in Sources */,
 				0B29797426D8D13C002AD75A /* CALayer+Border.swift in Sources */,
 				0BB9877726DA30C200E0CC12 /* LoginVM.swift in Sources */,
-				0BB9877926DA523100E0CC12 /* LoginProtocol.swift in Sources */,
 				0BB9877C26DA571D00E0CC12 /* LoginModel.swift in Sources */,
 				0B29793526D62F04002AD75A /* LoginVC.swift in Sources */,
 				0B2978F126D617B4002AD75A /* AppDelegate.swift in Sources */,

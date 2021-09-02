@@ -7,23 +7,20 @@
 
 import UIKit
 
-class LoginVM: Login {
+class LoginVM {
     
-    init(_ vc: UIViewController) {
-        enrollObserver(vc: vc)
-    }
-    
+    let network: Network = Network()
+    var delegate: LoginDelegate?
     
     func login(id: String, pwd: String) {
-        
         let loginInfo = LoginModel(username: id, password: pwd)
         
-        Network.shared.loginRequest(loginInfo: loginInfo) { result in
+        network.loginRequest(loginInfo: loginInfo) { result in
             switch result {
             case .success(let token):
-                NotificationCenter.default.post(name: Notification.Name("LoginSuccess"), object: token)
+                self.delegate?.didSuccessLogin(token)
             case .failure(let err):
-                NotificationCenter.default.post(name: Notification.Name("LoginFailure"), object: err)
+                self.delegate?.didFailLogin(err)
             }
             
         }
@@ -31,15 +28,13 @@ class LoginVM: Login {
     }
     
     
-    func enrollObserver(vc: UIViewController) {
-        NotificationCenter.default.addObserver(vc, selector: #selector(didSuccessLogin(_:)), name: NSNotification.Name("LoginSuccess"), object: nil)
-        NotificationCenter.default.addObserver(vc, selector: #selector(didFailLogin), name: NSNotification.Name("LoginFailure"), object: nil)
-    }
+}
+
+
+protocol LoginDelegate {
     
+    func didSuccessLogin(_ token: TokenModel)
     
-    @objc func didSuccessLogin(_ notification: NSNotification) {}
-    
-    @objc func didFailLogin(_ notification: NSNotification) {}
-    
+    func didFailLogin(_ err: Error)
     
 }

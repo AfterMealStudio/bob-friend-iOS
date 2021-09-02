@@ -9,20 +9,18 @@ import UIKit
 
 class LoginVC: UIViewController {
     
-    var loginVM: LoginVM?
+    var loginVM: LoginVM = LoginVM()
     
-    // keyboard
-    var keyBoardFlag = false
-    var keyHeight: CGFloat?
+    private var keyHeight: CGFloat?
+    private var uiFlag = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loginVM = LoginVM(self)
-        scrollView.delegate = self
+        loginVM.delegate = self
         
         // keyboard
-        enrollNotification()
+        enrollKeyboardNotification()
         enrollRemoveKeyboard()
         
     }
@@ -31,7 +29,10 @@ class LoginVC: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         
-        setUI()
+        if uiFlag == false {
+            setUI()
+        }
+        
     }
     
     
@@ -72,7 +73,7 @@ class LoginVC: UIViewController {
     @IBAction func loginBtnClicked(_ sender: Any) {
         removeKeyboard()
         if let id = idTxtField.text, let pwd = pwdTxtField.text {
-            loginVM?.login(id: id, pwd: pwd)
+            loginVM.login(id: id, pwd: pwd)
         }
     }
     
@@ -84,27 +85,26 @@ class LoginVC: UIViewController {
 extension LoginVC: UIScrollViewDelegate {
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        self.view.endEditing(true)
+        removeKeyboard()
     }
     
 }
 
 
 
-extension LoginVC: Login {
-
-    func didSuccessLogin(_ notification: NSNotification) {
-        print(notification.object ?? "")
+extension LoginVC: LoginDelegate {
+    func didSuccessLogin(_ token: TokenModel) {
+        print(token)
     }
     
-    func didFailLogin(_ notification: NSNotification) {
+    func didFailLogin(_ err: Error) {
         let alertController = UIAlertController(title: "로그인 실패 하였습니다", message: nil, preferredStyle: .alert)
-        let okBtn = UIAlertAction(title: "확인", style: .default) { _ in
-            self.dismiss(animated: true, completion: nil)
+        let okBtn = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
+            self?.dismiss(animated: true, completion: nil)
         }
-        alertController.addAction(okBtn)
-        self.present(alertController, animated: true, completion: nil)
         
+        alertController.addAction(okBtn)
+        present(alertController, animated: true, completion: nil)
     }
     
 }
@@ -113,16 +113,15 @@ extension LoginVC: Login {
 
 extension LoginVC { //keyboard Management
     
-    func enrollNotification() {
+    func enrollKeyboardNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     
     @objc func keyboardWillShow(_ sender: Notification) {
-        if let keyHeight = keyHeight, keyBoardFlag {
-            self.view.frame.size.height += keyHeight
-            keyBoardFlag = false
+        if let _ = keyHeight {
+            return
         }
         let userInfo: NSDictionary = sender.userInfo! as NSDictionary
         let keyboardFrame: NSValue = userInfo.value(forKey: UIResponder.keyboardFrameEndUserInfoKey) as! NSValue
@@ -130,20 +129,21 @@ extension LoginVC { //keyboard Management
         let keyboardHeight = keyboardRectangle.height
         keyHeight = keyboardHeight
         
-        self.view.frame.size.height -= keyboardHeight
-        keyBoardFlag = true
+        view.frame.size.height -= keyboardHeight
     }
     
     
     @objc func keyboardWillHide(_ sender: Notification) {
-        if let keyHeight = keyHeight, keyBoardFlag {
-            self.view.frame.size.height += keyHeight
+        if let keyHeight = keyHeight {
+            view.frame.size.height += keyHeight
         }
-        keyBoardFlag = false
+        keyHeight = nil
     }
     
+    
     func removeKeyboard() {
-        self.view.endEditing(true)
+        view.endEditing(true)
+        keyHeight = nil
     }
     
     
@@ -157,7 +157,7 @@ extension LoginVC { //keyboard Management
     
     
     @objc func TapOtherMethod(sender: UITapGestureRecognizer) {
-        self.view.endEditing(true)
+        removeKeyboard()
     }
     
 }
