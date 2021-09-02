@@ -11,10 +11,7 @@ class LoginVC: UIViewController {
     
     var loginVM: LoginVM = LoginVM()
     
-    // keyboard
-    var keyBoardFlag = false
-    var keyHeight: CGFloat?
-    
+    private var keyHeight: CGFloat?
     private var uiFlag = false
     
     override func viewDidLoad() {
@@ -23,7 +20,7 @@ class LoginVC: UIViewController {
         loginVM.delegate = self
         
         // keyboard
-        enrollNotification()
+        enrollKeyboardNotification()
         enrollRemoveKeyboard()
         
     }
@@ -116,16 +113,15 @@ extension LoginVC: LoginDelegate {
 
 extension LoginVC { //keyboard Management
     
-    func enrollNotification() {
+    func enrollKeyboardNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     
     @objc func keyboardWillShow(_ sender: Notification) {
-        if let keyHeight = keyHeight, keyBoardFlag {
-            view.frame.size.height += keyHeight
-            keyBoardFlag = false
+        if let _ = keyHeight {
+            return
         }
         let userInfo: NSDictionary = sender.userInfo! as NSDictionary
         let keyboardFrame: NSValue = userInfo.value(forKey: UIResponder.keyboardFrameEndUserInfoKey) as! NSValue
@@ -134,19 +130,20 @@ extension LoginVC { //keyboard Management
         keyHeight = keyboardHeight
         
         view.frame.size.height -= keyboardHeight
-        keyBoardFlag = true
     }
     
     
     @objc func keyboardWillHide(_ sender: Notification) {
-        if let keyHeight = keyHeight, keyBoardFlag {
+        if let keyHeight = keyHeight {
             view.frame.size.height += keyHeight
         }
-        keyBoardFlag = false
+        keyHeight = nil
     }
+    
     
     func removeKeyboard() {
         view.endEditing(true)
+        keyHeight = nil
     }
     
     
