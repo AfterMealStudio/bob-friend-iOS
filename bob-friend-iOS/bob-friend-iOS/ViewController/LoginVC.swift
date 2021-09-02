@@ -9,7 +9,7 @@ import UIKit
 
 class LoginVC: UIViewController {
     
-    var loginVM: LoginVM?
+    var loginVM: LoginVM = LoginVM()
     
     // keyboard
     var keyBoardFlag = false
@@ -20,8 +20,7 @@ class LoginVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loginVM = LoginVM(self)
-        scrollView.delegate = self
+        loginVM.delegate = self
         
         // keyboard
         enrollNotification()
@@ -77,7 +76,7 @@ class LoginVC: UIViewController {
     @IBAction func loginBtnClicked(_ sender: Any) {
         removeKeyboard()
         if let id = idTxtField.text, let pwd = pwdTxtField.text {
-            loginVM?.login(id: id, pwd: pwd)
+            loginVM.login(id: id, pwd: pwd)
         }
     }
     
@@ -96,13 +95,12 @@ extension LoginVC: UIScrollViewDelegate {
 
 
 
-extension LoginVC: Login {
-
-    func didSuccessLogin(_ notification: Notification) {
-        print(notification.object ?? "")
+extension LoginVC: LoginDelegate {
+    func didSuccessLogin(_ token: TokenModel) {
+        print(token)
     }
     
-    func didFailLogin(_ notification: Notification) {
+    func didFailLogin(_ err: Error) {
         let alertController = UIAlertController(title: "로그인 실패 하였습니다", message: nil, preferredStyle: .alert)
         let okBtn = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
             self?.dismiss(animated: true, completion: nil)
@@ -110,7 +108,6 @@ extension LoginVC: Login {
         
         alertController.addAction(okBtn)
         present(alertController, animated: true, completion: nil)
-        
     }
     
 }
