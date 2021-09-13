@@ -19,6 +19,8 @@
 		0BB9877C26DA571D00E0CC12 /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB9877B26DA571D00E0CC12 /* LoginModel.swift */; };
 		0BB9877E26DA573B00E0CC12 /* TokenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB9877D26DA573B00E0CC12 /* TokenModel.swift */; };
 		0BBADAA226E1AE7D00EAA23D /* LoginVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0BBADAA126E1AE7D00EAA23D /* LoginVC.storyboard */; };
+		0BDDC25D26EF36C7008C9363 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 0BDDC25C26EF36C7008C9363 /* .swiftlint.yml */; };
+		0BDDC26326EF46A0008C9363 /* SignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDDC26226EF46A0008C9363 /* SignUpVC.swift */; };
 		29A77F66B06D132C4F517847 /* Pods_bob_friend_iOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F71173E71FC11E1417A6BB4B /* Pods_bob_friend_iOSTests.framework */; };
 		7743AF2E3DE45DCC31775245 /* Pods_bob_friend_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C45F4DD2A79A0558D2902BC /* Pods_bob_friend_iOS.framework */; };
 		CE24FA122D98204D49D88218 /* Pods_bob_friend_iOS_bob_friend_iOSUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A9DB9DB30C1E8F70A065E96 /* Pods_bob_friend_iOS_bob_friend_iOSUITests.framework */; };
@@ -60,6 +62,8 @@
 		0BB9877B26DA571D00E0CC12 /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
 		0BB9877D26DA573B00E0CC12 /* TokenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenModel.swift; sourceTree = "<group>"; };
 		0BBADAA126E1AE7D00EAA23D /* LoginVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LoginVC.storyboard; sourceTree = "<group>"; };
+		0BDDC25C26EF36C7008C9363 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
+		0BDDC26226EF46A0008C9363 /* SignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVC.swift; sourceTree = "<group>"; };
 		4C45F4DD2A79A0558D2902BC /* Pods_bob_friend_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bob_friend_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DC00887C36D6D8012C4743A /* Pods-bob-friend-iOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bob-friend-iOSTests.release.xcconfig"; path = "Target Support Files/Pods-bob-friend-iOSTests/Pods-bob-friend-iOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		90EA6DC28E0DEF9487B3FA18 /* Pods-bob-friend-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bob-friend-iOS.release.xcconfig"; path = "Target Support Files/Pods-bob-friend-iOS/Pods-bob-friend-iOS.release.xcconfig"; sourceTree = "<group>"; };
@@ -102,6 +106,7 @@
 		0B2978E426D617B4002AD75A = {
 			isa = PBXGroup;
 			children = (
+				0BDDC25C26EF36C7008C9363 /* .swiftlint.yml */,
 				0B2978EF26D617B4002AD75A /* bob-friend-iOS */,
 				0B29790626D617B7002AD75A /* bob-friend-iOSTests */,
 				0B29791126D617B7002AD75A /* bob-friend-iOSUITests */,
@@ -175,6 +180,7 @@
 			children = (
 				0B29793326D62F04002AD75A /* LoginVC.swift */,
 				0BBADAA126E1AE7D00EAA23D /* LoginVC.storyboard */,
+				0BDDC26226EF46A0008C9363 /* SignUpVC.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -239,8 +245,8 @@
 				0B2978E926D617B4002AD75A /* Sources */,
 				0B2978EA26D617B4002AD75A /* Frameworks */,
 				0B2978EB26D617B4002AD75A /* Resources */,
-				A7D590E0EA739BF0E02E5E8D /* [CP] Embed Pods Frameworks */,
 				0BDDC24F26EF163E008C9363 /* ShellScript */,
+				D069EB2BCF761790EE416B63 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -278,7 +284,7 @@
 				0B29790A26D617B7002AD75A /* Sources */,
 				0B29790B26D617B7002AD75A /* Frameworks */,
 				0B29790C26D617B7002AD75A /* Resources */,
-				EB1DA0A0EFEF77CE864A76C7 /* [CP] Embed Pods Frameworks */,
+				FD0477ECAF25FDFDE5E49D88 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -337,6 +343,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0BDDC25D26EF36C7008C9363 /* .swiftlint.yml in Resources */,
 				0B2978FD26D617B6002AD75A /* LaunchScreen.storyboard in Resources */,
 				0B2978FA26D617B6002AD75A /* Assets.xcassets in Resources */,
 				0BBADAA226E1AE7D00EAA23D /* LoginVC.storyboard in Resources */,
@@ -400,7 +407,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A7D590E0EA739BF0E02E5E8D /* [CP] Embed Pods Frameworks */ = {
+		D069EB2BCF761790EE416B63 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -439,7 +446,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		EB1DA0A0EFEF77CE864A76C7 /* [CP] Embed Pods Frameworks */ = {
+		FD0477ECAF25FDFDE5E49D88 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -485,6 +492,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0BDDC26326EF46A0008C9363 /* SignUpVC.swift in Sources */,
 				0B29798826DA18A9002AD75A /* Network.swift in Sources */,
 				0BB9877E26DA573B00E0CC12 /* TokenModel.swift in Sources */,
 				0B29797426D8D13C002AD75A /* UIView+Border.swift in Sources */,
@@ -656,7 +664,7 @@
 		};
 		0B29791826D617B7002AD75A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0BB9878226DA5A1E00E0CC12 /* Debug.xcconfig */;
+			baseConfigurationReference = BCA3538B8821CDA56B4234C3 /* Pods-bob-friend-iOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -676,7 +684,7 @@
 		};
 		0B29791926D617B7002AD75A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0BB9878126DA598B00E0CC12 /* Production.xcconfig */;
+			baseConfigurationReference = 90EA6DC28E0DEF9487B3FA18 /* Pods-bob-friend-iOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

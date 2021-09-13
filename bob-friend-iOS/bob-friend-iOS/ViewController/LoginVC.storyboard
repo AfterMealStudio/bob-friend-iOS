@@ -100,6 +100,9 @@
                                                                         <rect key="frame" x="0.0" y="0.0" width="116" height="15"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                                         <state key="normal" title="회원가입"/>
+                                                                        <connections>
+                                                                            <action selector="signUpBtnClicked:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="z62-rg-glP"/>
+                                                                        </connections>
                                                                     </button>
                                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0gU-oX-zq0">
                                                                         <rect key="frame" x="124" y="0.0" width="116" height="15"/>

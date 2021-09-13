@@ -1,0 +1,6 @@
+disabled_rules:
+
+included:
+
+excluded:
+- Pods

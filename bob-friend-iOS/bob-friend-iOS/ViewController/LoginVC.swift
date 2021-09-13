@@ -54,6 +54,11 @@ class LoginVC: UIViewController {
         }
     }
 
+    @IBAction func signUpBtnClicked(_ sender: Any) {
+        let signUpVC = SignUpVC()
+        present(signUpVC, animated: true, completion: nil)
+    }
+
 }
 
 extension LoginVC: UIScrollViewDelegate {

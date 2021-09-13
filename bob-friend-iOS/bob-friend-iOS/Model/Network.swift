@@ -10,7 +10,7 @@ import Alamofire
 
 class Network {
 
-    private let baseUrl: String = Bundle.main.infoDictionary!["API_BASE_URL"] as! String
+    private let baseUrl: String = "http://117.17.102.143:8080/"
 
     private enum API: String {
         case login = "api/signin"
