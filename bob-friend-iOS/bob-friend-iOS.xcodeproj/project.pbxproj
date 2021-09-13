@@ -13,7 +13,7 @@
 		0B29790826D617B7002AD75A /* bob_friend_iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B29790726D617B7002AD75A /* bob_friend_iOSTests.swift */; };
 		0B29791326D617B7002AD75A /* bob_friend_iOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B29791226D617B7002AD75A /* bob_friend_iOSUITests.swift */; };
 		0B29793526D62F04002AD75A /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B29793326D62F04002AD75A /* LoginVC.swift */; };
-		0B29797426D8D13C002AD75A /* CALayer+Border.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B29797326D8D13C002AD75A /* CALayer+Border.swift */; };
+		0B29797426D8D13C002AD75A /* UIView+Border.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B29797326D8D13C002AD75A /* UIView+Border.swift */; };
 		0B29798826DA18A9002AD75A /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B29798726DA18A9002AD75A /* Network.swift */; };
 		0BB9877726DA30C200E0CC12 /* LoginVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB9877626DA30C200E0CC12 /* LoginVM.swift */; };
 		0BB9877C26DA571D00E0CC12 /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB9877B26DA571D00E0CC12 /* LoginModel.swift */; };
@@ -54,7 +54,7 @@
 		0B29791226D617B7002AD75A /* bob_friend_iOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bob_friend_iOSUITests.swift; sourceTree = "<group>"; };
 		0B29791426D617B7002AD75A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0B29793326D62F04002AD75A /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
-		0B29797326D8D13C002AD75A /* CALayer+Border.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Border.swift"; sourceTree = "<group>"; };
+		0B29797326D8D13C002AD75A /* UIView+Border.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Border.swift"; sourceTree = "<group>"; };
 		0B29798726DA18A9002AD75A /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		0BB9877626DA30C200E0CC12 /* LoginVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVM.swift; sourceTree = "<group>"; };
 		0BB9877B26DA571D00E0CC12 /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
@@ -127,7 +127,6 @@
 			isa = PBXGroup;
 			children = (
 				0BB9878026DA595700E0CC12 /* Config */,
-				0BB9877F26DA574800E0CC12 /* Protocols */,
 				0B29798626DA1890002AD75A /* Model */,
 				0B29798526DA1886002AD75A /* ViewModel */,
 				0B29798426D92160002AD75A /* ViewController */,
@@ -159,7 +158,7 @@
 		0B29798026D92047002AD75A /* Extension */ = {
 			isa = PBXGroup;
 			children = (
-				0B29797326D8D13C002AD75A /* CALayer+Border.swift */,
+				0B29797326D8D13C002AD75A /* UIView+Border.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -207,13 +206,6 @@
 				0BB9877D26DA573B00E0CC12 /* TokenModel.swift */,
 			);
 			path = DataModel;
-			sourceTree = "<group>";
-		};
-		0BB9877F26DA574800E0CC12 /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Protocols;
 			sourceTree = "<group>";
 		};
 		0BB9878026DA595700E0CC12 /* Config */ = {
@@ -396,6 +388,7 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "${PODS_ROOT}/SwiftLint/swiftlint autocorrect\n";
+			showEnvVarsInLog = 0;
 		};
 		3A14CFF38CE9C50223F30648 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -506,7 +499,7 @@
 			files = (
 				0B29798826DA18A9002AD75A /* Network.swift in Sources */,
 				0BB9877E26DA573B00E0CC12 /* TokenModel.swift in Sources */,
-				0B29797426D8D13C002AD75A /* CALayer+Border.swift in Sources */,
+				0B29797426D8D13C002AD75A /* UIView+Border.swift in Sources */,
 				0BB9877726DA30C200E0CC12 /* LoginVM.swift in Sources */,
 				0BB9877C26DA571D00E0CC12 /* LoginModel.swift in Sources */,
 				0B29793526D62F04002AD75A /* LoginVC.swift in Sources */,
