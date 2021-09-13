@@ -132,7 +132,6 @@
 				0B29798526DA1886002AD75A /* ViewModel */,
 				0B29798426D92160002AD75A /* ViewController */,
 				0B29798326D9208A002AD75A /* SupportingFiles */,
-				0B29798226D9206E002AD75A /* Utils */,
 				0B29798026D92047002AD75A /* Extension */,
 				0B2978FE26D617B6002AD75A /* Info.plist */,
 			);
@@ -163,13 +162,6 @@
 				0B29797326D8D13C002AD75A /* CALayer+Border.swift */,
 			);
 			path = Extension;
-			sourceTree = "<group>";
-		};
-		0B29798226D9206E002AD75A /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Utils;
 			sourceTree = "<group>";
 		};
 		0B29798326D9208A002AD75A /* SupportingFiles */ = {
@@ -268,6 +260,7 @@
 				0B2978EA26D617B4002AD75A /* Frameworks */,
 				0B2978EB26D617B4002AD75A /* Resources */,
 				A7D590E0EA739BF0E02E5E8D /* [CP] Embed Pods Frameworks */,
+				0BDDC24F26EF163E008C9363 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -387,6 +380,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0BDDC24F26EF163E008C9363 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "${PODS_ROOT}/SwiftLint/swiftlint autocorrect\n";
+		};
 		3A14CFF38CE9C50223F30648 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

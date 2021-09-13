@@ -38,9 +38,9 @@ class LoginVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         loginVM.delegate = self
-        
+
         // keyboard
         enrollKeyboardNotification()
         enrollRemoveKeyboard()
@@ -53,32 +53,28 @@ class LoginVC: UIViewController {
             loginVM.login(id: id, pwd: pwd)
         }
     }
-    
-    
+
 }
 
-
 extension LoginVC: UIScrollViewDelegate {
-    
+
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         removeKeyboard()
     }
-    
+
 }
-
-
 
 extension LoginVC: LoginDelegate {
     func didSuccessLogin(_ token: TokenModel) {
         print(token)
     }
-    
+
     func didFailLogin(_ err: Error) {
         let alertController = UIAlertController(title: "로그인 실패 하였습니다", message: nil, preferredStyle: .alert)
         let okBtn = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
             self?.dismiss(animated: true, completion: nil)
         }
-        
+
         alertController.addAction(okBtn)
 
         DispatchQueue.main.async {
@@ -86,21 +82,17 @@ extension LoginVC: LoginDelegate {
             self?.present(alertController, animated: true, completion: nil)
         }
 
-
     }
-    
+
 }
 
+extension LoginVC { // keyboard Management
 
-
-extension LoginVC { //keyboard Management
-    
     private func enrollKeyboardNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
-    
-    
+
     @objc
     private func keyboardWillShow(_ sender: Notification) {
 
@@ -116,8 +108,7 @@ extension LoginVC { //keyboard Management
         }
 
     }
-    
-    
+
     @objc
     private func keyboardWillHide(_ sender: Notification) {
 
@@ -133,25 +124,22 @@ extension LoginVC { //keyboard Management
         }
 
     }
-    
-    
+
     private func removeKeyboard() {
         view.endEditing(true)
     }
-    
-    
+
     private func enrollRemoveKeyboard() {
         if let scrollView = scrollView {
             let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapOtherMethod))
             scrollView.addGestureRecognizer(singleTapGestureRecognizer)
         }
-        
+
     }
-    
-    
+
     @objc
     private func tapOtherMethod(sender: UITapGestureRecognizer) {
         removeKeyboard()
     }
-    
+
 }

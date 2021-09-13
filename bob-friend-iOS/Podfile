@@ -8,6 +8,7 @@ target 'bob-friend-iOS' do
   # Pods for bob-friend-iOS
   
   pod 'Alamofire', '~> 5.1'
+  pod 'SwiftLint'
 
   target 'bob-friend-iOSTests' do
     inherit! :search_paths
