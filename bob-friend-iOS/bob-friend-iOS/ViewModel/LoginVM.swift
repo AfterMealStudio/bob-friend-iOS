@@ -10,17 +10,17 @@ import UIKit
 class LoginVM {
     
     let network: Network = Network()
-    var delegate: LoginDelegate?
+    weak var delegate: LoginDelegate?
     
     func login(id: String, pwd: String) {
         let loginInfo = LoginModel(username: id, password: pwd)
         
-        network.loginRequest(loginInfo: loginInfo) { result in
+        network.loginRequest(loginInfo: loginInfo) { [weak self] result in
             switch result {
             case .success(let token):
-                self.delegate?.didSuccessLogin(token)
+                self?.delegate?.didSuccessLogin(token)
             case .failure(let err):
-                self.delegate?.didFailLogin(err)
+                self?.delegate?.didFailLogin(err)
             }
             
         }
@@ -31,7 +31,7 @@ class LoginVM {
 }
 
 
-protocol LoginDelegate {
+protocol LoginDelegate: AnyObject {
     
     func didSuccessLogin(_ token: TokenModel)
     

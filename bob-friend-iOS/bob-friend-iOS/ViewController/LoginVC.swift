@@ -8,12 +8,34 @@
 import UIKit
 
 class LoginVC: UIViewController {
-    
+
+    @IBOutlet weak var scrollView: UIScrollView!
+
+    @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var scrollViewContentLayoutBottomConstraint: NSLayoutConstraint!
+
+    @IBOutlet weak var logoImgView: UIImageView! {
+        didSet {
+            logoImgView.image = logoImgView.image?.withRenderingMode(.alwaysTemplate)
+            logoImgView.tintColor = UIColor(named: "MainColor1")
+        }
+    }
+    @IBOutlet weak var idTxtField: UITextField! {
+        didSet { idTxtField.addBorder() }
+    }
+    @IBOutlet weak var pwdTxtField: UITextField! {
+        didSet { pwdTxtField.addBorder() }
+    }
+    @IBOutlet weak var loginBtn: UIButton! {
+        didSet {
+            loginBtn.layer.cornerRadius = 5
+            loginBtn.setTitleColor(UIColor(named: "White"), for: .normal)
+            loginBtn.backgroundColor = UIColor(named: "MainColor1")
+        }
+    }
+
     var loginVM: LoginVM = LoginVM()
-    
-    private var keyHeight: CGFloat?
-    private var uiFlag = false
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -22,54 +44,9 @@ class LoginVC: UIViewController {
         // keyboard
         enrollKeyboardNotification()
         enrollRemoveKeyboard()
-        
+
     }
-    
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(true)
-        
-        if uiFlag == false {
-            setUI()
-        }
-        
-    }
-    
-    
-    @IBOutlet weak var scrollView: UIScrollView!
-    
-    @IBOutlet weak var logoImgView: UIImageView!
-    @IBOutlet weak var idTxtField: UITextField!
-    @IBOutlet weak var pwdTxtField: UITextField!
-    @IBOutlet weak var loginBtn: UIButton!
-    
-    
-    func setUI() {
-        setLogoImageView()
-        setTxtFields()
-        setLoginBtn()
-    }
-    
-    
-    func setLogoImageView() {
-        logoImgView.image = logoImgView.image?.withRenderingMode(.alwaysTemplate)
-        logoImgView.tintColor = UIColor(named: "MainColor1")
-    }
-    
-    
-    func setTxtFields() {
-        idTxtField.layer.addUnderBar()
-        pwdTxtField.layer.addUnderBar()
-    }
-    
-    
-    func setLoginBtn() {
-        loginBtn.layer.cornerRadius = 5
-        loginBtn.setTitleColor(UIColor(named: "White"), for: .normal)
-        loginBtn.backgroundColor = UIColor(named: "MainColor1")
-    }
-    
-    
+
     @IBAction func loginBtnClicked(_ sender: Any) {
         removeKeyboard()
         if let id = idTxtField.text, let pwd = pwdTxtField.text {
@@ -79,7 +56,6 @@ class LoginVC: UIViewController {
     
     
 }
-
 
 
 extension LoginVC: UIScrollViewDelegate {
@@ -104,7 +80,13 @@ extension LoginVC: LoginDelegate {
         }
         
         alertController.addAction(okBtn)
-        present(alertController, animated: true, completion: nil)
+
+        DispatchQueue.main.async {
+            [weak self] in
+            self?.present(alertController, animated: true, completion: nil)
+        }
+
+
     }
     
 }
@@ -113,50 +95,62 @@ extension LoginVC: LoginDelegate {
 
 extension LoginVC { //keyboard Management
     
-    func enrollKeyboardNotification() {
+    private func enrollKeyboardNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     
-    @objc func keyboardWillShow(_ sender: Notification) {
-        if let _ = keyHeight {
-            return
+    @objc
+    private func keyboardWillShow(_ sender: Notification) {
+
+        if scrollViewContentLayoutBottomConstraint.constant == 0 {
+            guard let userInfo = sender.userInfo,
+                  let keyboardFrame: NSValue = userInfo[ UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            let keyboardHeight = keyboardRectangle.height
+
+            scrollViewContentLayoutBottomConstraint.constant += keyboardHeight
+
         }
-        let userInfo: NSDictionary = sender.userInfo! as NSDictionary
-        let keyboardFrame: NSValue = userInfo.value(forKey: UIResponder.keyboardFrameEndUserInfoKey) as! NSValue
-        let keyboardRectangle = keyboardFrame.cgRectValue
-        let keyboardHeight = keyboardRectangle.height
-        keyHeight = keyboardHeight
-        
-        view.frame.size.height -= keyboardHeight
+
     }
     
     
-    @objc func keyboardWillHide(_ sender: Notification) {
-        if let keyHeight = keyHeight {
-            view.frame.size.height += keyHeight
+    @objc
+    private func keyboardWillHide(_ sender: Notification) {
+
+        if scrollViewContentLayoutBottomConstraint.constant != 0 {
+            guard let userInfo = sender.userInfo,
+                  let keyboardFrame: NSValue = userInfo[ UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            let keyboardHeight = keyboardRectangle.height
+
+            scrollViewContentLayoutBottomConstraint.constant -= keyboardHeight
+
         }
-        keyHeight = nil
+
     }
     
     
-    func removeKeyboard() {
+    private func removeKeyboard() {
         view.endEditing(true)
-        keyHeight = nil
     }
     
     
-    func enrollRemoveKeyboard() {
+    private func enrollRemoveKeyboard() {
         if let scrollView = scrollView {
-            let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(TapOtherMethod))
+            let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapOtherMethod))
             scrollView.addGestureRecognizer(singleTapGestureRecognizer)
         }
         
     }
     
     
-    @objc func TapOtherMethod(sender: UITapGestureRecognizer) {
+    @objc
+    private func tapOtherMethod(sender: UITapGestureRecognizer) {
         removeKeyboard()
     }
     

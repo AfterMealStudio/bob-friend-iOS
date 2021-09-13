@@ -7,32 +7,67 @@
 
 import UIKit
 
-extension CALayer {
-    
-    func addUnderBar() {
-        self.addBorder([.bottom], color: .lightGray, width: 1.2)
-    }
-    
-    
-    func addBorder(_ arr_edge: [UIRectEdge], color: UIColor, width: CGFloat) {
-        for edge in arr_edge {
-            let border = CALayer()
-            switch edge {
-            case UIRectEdge.top:
-                border.frame = CGRect.init(x: 0, y: 0, width: frame.width, height: width)
-            case UIRectEdge.bottom:
-                border.frame = CGRect.init(x: 0, y: frame.height - width, width: frame.width, height: width)
-            case UIRectEdge.left:
-                border.frame = CGRect.init(x: 0, y: 0, width: width, height: frame.height)
-            case UIRectEdge.right:
-                border.frame = CGRect.init(x: frame.width - width, y: 0, width: width, height: frame.height)
-            default:
-                break
-            }
-            border.backgroundColor = color.cgColor;
-            self.addSublayer(border)
+extension UIView {
+
+    func addBorder(_ arrEdge: UIRectEdge = .bottom, color: UIColor = .lightGray, width: CGFloat = 1.2) {
+
+        if arrEdge.contains(.bottom) {
+            let borderView = generateView(color: color)
+            addSubview(borderView)
+
+            NSLayoutConstraint.activate([
+                borderView.bottomAnchor.constraint(equalTo: bottomAnchor),
+                borderView.leftAnchor.constraint(equalTo: leftAnchor),
+                borderView.rightAnchor.constraint(equalTo: rightAnchor),
+                borderView.heightAnchor.constraint(equalToConstant: width)
+            ])
         }
+
+        if arrEdge.contains(.left) {
+            let borderView = generateView(color: color)
+            addSubview(borderView)
+
+            NSLayoutConstraint.activate([
+                borderView.bottomAnchor.constraint(equalTo: bottomAnchor),
+                borderView.leftAnchor.constraint(equalTo: leftAnchor),//
+                borderView.topAnchor.constraint(equalTo: topAnchor),
+                borderView.widthAnchor.constraint(equalToConstant: width)
+            ])
+        }
+
+        if arrEdge.contains(.right) {
+            let borderView = generateView(color: color)
+            addSubview(borderView)
+
+            NSLayoutConstraint.activate([
+                borderView.bottomAnchor.constraint(equalTo: bottomAnchor),
+                borderView.topAnchor.constraint(equalTo: topAnchor),
+                borderView.rightAnchor.constraint(equalTo: rightAnchor),
+                borderView.widthAnchor.constraint(equalToConstant: width)
+            ])
+        }
+
+        if arrEdge.contains(.top) {
+            let borderView = generateView(color: color)
+            addSubview(borderView)
+
+            NSLayoutConstraint.activate([
+                borderView.topAnchor.constraint(equalTo: topAnchor),
+                borderView.leftAnchor.constraint(equalTo: leftAnchor),
+                borderView.rightAnchor.constraint(equalTo: rightAnchor),
+                borderView.heightAnchor.constraint(equalToConstant: width)
+            ])
+        }
+
     }
-    
+
+    private func generateView(color: UIColor = .lightGray) -> UIView {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = color
+
+        return view
+    }
+
     
 }
