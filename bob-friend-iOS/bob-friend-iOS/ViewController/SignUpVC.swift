@@ -189,8 +189,6 @@ extension SignUpVC {
 
 }
 
-// TODO: - 스크롤뷰
-
 // MARK: - layout
 
 extension SignUpVC {
