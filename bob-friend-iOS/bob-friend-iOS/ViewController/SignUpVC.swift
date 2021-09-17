@@ -36,26 +36,6 @@ class SignUpVC: UIViewController {
         return $0
     }(UIButton())
 
-    private let usernameTextField: UITextField = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.placeholder = "username"
-        $0.font = UIFont.systemFont(ofSize: 20)
-        $0.addBorder()
-        return $0
-    }(UITextField())
-
-    private let usernameCheckButton: UIButton = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.setTitle("중복확인", for: .normal)
-        $0.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
-        $0.setTitleColor(.white, for: .normal)
-        $0.backgroundColor = UIColor(named: "MainColor1")
-        $0.layer.cornerRadius = 5
-
-        $0.addTarget(self, action: #selector(usernameCheckButtonClicked), for: .touchUpInside)
-        return $0
-    }(UIButton())
-
     private let nicknameTextField: UITextField = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.placeholder = "닉네임"
@@ -106,6 +86,7 @@ class SignUpVC: UIViewController {
         $0.setImage(UIImage(systemName: "circle.circle"), for: .selected)
         $0.tintColor = UIColor(named: "MainColor1")
         $0.isEnabled = true
+        $0.isSelected = true
 
         $0.addTarget(self, action: #selector(maleButtonClicked), for: .touchUpInside)
         return $0
@@ -135,8 +116,12 @@ class SignUpVC: UIViewController {
         return $0
     }(UIButton())
 
+    var signUpVM: SignUpVM = SignUpVM()
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        signUpVM.delegate = self
 
         // layout
         configureLayout()
@@ -148,35 +133,135 @@ class SignUpVC: UIViewController {
 
 }
 
+// MARK: - VM delegate
+
+extension SignUpVC: SignUpDelegate {
+
+    // 이메일 형식에 맞지 않음
+    func emailRequireValidForm() {
+        print("이메일 형식에 맞게 써 주세요.")
+    }
+
+    // 이메일 중복인가
+    func emailDidDuplicate(_ didDuplicate: Bool) {
+        switch didDuplicate {
+        case true:
+            print("중복된 이메일 입니다.")
+        case false:
+            print("사용가능한 이메일 입니다.")
+        }
+    }
+
+    // 닉네임 중복인가
+    func nicknameDidDuplicate(_ didDuplicate: Bool) {
+        switch didDuplicate {
+        case true:
+            print("중복된 닉네임 입니다.")
+        case false:
+            print("사용가능한 닉네임 입니다.")
+        }
+    }
+
+    // 중복검사를 받은 이메일인가
+    func emailDidCheckForSignUp(_ didChecked: Bool) {
+        switch didChecked {
+        case true:
+            break
+        case false:
+            print("이메일 중복검사를 받으세요.")
+        }
+    }
+
+    // 중복검사를 받은 닉네임인가
+    func nicknameDidCheckForSignUp(_ didChecked: Bool) {
+        switch didChecked {
+        case true:
+            break
+        case false:
+            print("닉네임 중복검사를 받으세요.")
+        }
+    }
+
+    // 비밀번호가 적합한가
+    func passwordValidataionDidCheckForSignUp(_ isValid: Bool) {
+        switch isValid {
+        case true:
+            break
+        case false:
+            print("영어, 숫자, 특수문자(!@#$%)를 포함하여 8자 이상이어야 합니다.")
+        }
+    }
+
+    // 비밀번호 확인이 비밀번호와 같은가
+    func passwordDidCheckSameForSignUp(_ isSamePasswordAndPasswordCheck: Bool) {
+        switch isSamePasswordAndPasswordCheck {
+        case true:
+            break
+        case false:
+            print("비밀번호와 다릅니다.")
+        }
+    }
+
+    // 생일이 지정된 형식으로 작성되었는가
+    func birthValidationDidCheckForSignUp(_ isValid: Bool) {
+        switch isValid {
+        case true:
+            break
+        case false:
+            print("yyyyMMdd의 형식으로 올바른 날짜를 입력해주세요. ex) 19900101")
+        }
+    }
+
+    // 동의했는가
+    func agreementDidCheck(_ didAgree: Bool) {
+
+    }
+
+    // 회원가입에 성공했는가
+    func didSuccessSignUp(_ didSuccess: Bool) {
+        switch didSuccess {
+        case true:
+            print("회원가입에 성공하였습니다.")
+        case false:
+            print("회원가입에 실패하였습니다.")
+        }
+    }
+
+    // 오류 발생
+    func errorOccured() {
+        print("오류가 발생하였습니다.")
+    }
+
+}
+
 // MARK: - button event
 
 extension SignUpVC {
 
     @objc
     func emailCheckButtonClicked() {
-        print("email check click")
-    }
-
-    @objc
-    func usernameCheckButtonClicked() {
-        print("username check click")
+        if let email = emailTextField.text {
+            if email == "" { return }
+            signUpVM.checkEmail(email: email)
+        }
     }
 
     @objc
     func nicknameCheckButtonClicked() {
-        print("nickname check click")
+        if let nickname = nicknameTextField.text {
+            if nickname == "" { return }
+            signUpVM.checkNickname(nickname: nickname)
+        }
     }
 
     @objc
     func maleButtonClicked() {
-        print("male click")
         maleButton.isSelected = true
         femaleButton.isSelected = false
     }
 
     @objc
     func femaleButtonClicked() {
-        print("female click")
         femaleButton.isSelected = true
         maleButton.isSelected = false
 
@@ -184,7 +269,14 @@ extension SignUpVC {
 
     @objc
     func finishButtonClicked() {
-        print("finish click")
+        let gender: Gender = maleButton.isSelected == true ? .male : .female
+        signUpVM.signUp(email: emailTextField.text ?? "",
+                        nickname: nicknameTextField.text ?? "",
+                        password: passwordTextField.text ?? "",
+                        passwordCheck: passwordCheckTextField.text ?? "",
+                        birth: birthTextField.text ?? "",
+                        gender: gender,
+                        agree: true)
     }
 
 }
@@ -252,11 +344,10 @@ extension SignUpVC {
             titleLabel.rightAnchor.constraint(equalTo: stackView.rightAnchor)
         ])
 
-        // MARK: - 이메일 / username / 닉네임 / 비밀번호 / 비밀번호 확인 / 생년월일
+        // MARK: - 이메일 / 닉네임 / 비밀번호 / 비밀번호 확인 / 생년월일
 
         let stackFactorList: [(String, UITextField, UIButton?)] = [
             ("이메일 주소", emailTextField, emailCheckButton),
-            ("username", usernameTextField, usernameCheckButton),
             ("닉네임", nicknameTextField, nicknameCheckButton),
             ("비밀번호", passwordTextField, nil),
             ("비밀번호 확인", passwordCheckTextField, nil),
