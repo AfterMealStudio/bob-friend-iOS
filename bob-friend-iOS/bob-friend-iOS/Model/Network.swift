@@ -15,8 +15,7 @@ class Network {
     private enum API: String {
         case login = "api/signin"
         case checkEmailDuplication = "api/email"
-        // TODO: - 서버의 api가 수정되면 username -> nickname 수정 필요. 실제로 지금은 nickname이 아닌 username을 비교하고 있음
-        case checkNicknameDuplication = "api/username"
+        case checkNicknameDuplication = "api/nickname"
         case signup = "api/signup"
     }
 

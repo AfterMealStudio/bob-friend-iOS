@@ -173,6 +173,7 @@ class SignUpVM {
     }
 
     private func isValidDate(_ inputDateString: String) -> Bool {
+        if inputDateString == "" { return false }
         // yyyyMMdd
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMMdd"

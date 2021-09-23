@@ -7,10 +7,8 @@
 
 import Foundation
 
-// TODO: - 서버의 api가 수정되면 username을 삭제해야함
 struct SignUpModel: Codable {
     var email: String = ""
-    let username: String = "temp_username"
     var nickname: String = ""
     var password: String = ""
     var sex: Gender.RawValue = ""
@@ -23,14 +21,14 @@ enum Gender: String {
     case female = "FEMALE"
 }
 
-// TODO: - 서버의 api가 수정되면 username을 삭제해야함
 struct SignUpResponseModel: Codable {
     let id: Int
     let email: String
-    let username: String
     let nickname: String
     let birth: String
     let sex: String
     let reportCount: Int
+    let accumulatedReports: Int
+    let agree: Bool
     let active: Bool
 }
