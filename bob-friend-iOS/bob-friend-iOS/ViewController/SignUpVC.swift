@@ -199,7 +199,6 @@ extension SignUpVC: SignUpDelegate {
 
     // 이메일 형식에 맞지 않음
     func emailRequireValidForm() {
-        print("이메일 형식에 맞게 써 주세요.")
         emailNoticeLabel.isHidden = false
         emailNoticeLabel.textColor = .red
         emailNoticeLabel.text = "이메일 형식에 맞게 써 주세요."
@@ -209,12 +208,10 @@ extension SignUpVC: SignUpDelegate {
     func emailDidDuplicate(_ didDuplicate: Bool) {
         switch didDuplicate {
         case true:
-            print("중복된 이메일 입니다.")
             emailNoticeLabel.isHidden = false
             emailNoticeLabel.textColor = .red
             emailNoticeLabel.text = "중복된 이메일입니다."
         case false:
-            print("사용가능한 이메일 입니다.")
             emailNoticeLabel.isHidden = false
             emailNoticeLabel.textColor = .blue
             emailNoticeLabel.text = "사용 가능한 이메일입니다."
@@ -225,12 +222,10 @@ extension SignUpVC: SignUpDelegate {
     func nicknameDidDuplicate(_ didDuplicate: Bool) {
         switch didDuplicate {
         case true:
-            print("중복된 닉네임 입니다.")
             nicknameNoticeLabel.isHidden = false
             nicknameNoticeLabel.textColor = .red
             nicknameNoticeLabel.text = "중복된 닉네임입니다."
         case false:
-            print("사용가능한 닉네임 입니다.")
             nicknameNoticeLabel.isHidden = false
             nicknameNoticeLabel.textColor = .blue
             nicknameNoticeLabel.text = "사용 가능한 닉네임입니다."
@@ -244,7 +239,6 @@ extension SignUpVC: SignUpDelegate {
             emailNoticeLabel.isHidden = true
             break
         case false:
-            print("이메일 중복검사를 받으세요.")
             emailNoticeLabel.isHidden = false
             emailNoticeLabel.textColor = .red
             emailNoticeLabel.text = "이메일 중복검사를 받으세요."
@@ -258,7 +252,6 @@ extension SignUpVC: SignUpDelegate {
             nicknameNoticeLabel.isHidden = false
             break
         case false:
-            print("닉네임 중복검사를 받으세요.")
             nicknameNoticeLabel.isHidden = false
             nicknameNoticeLabel.textColor = .red
             nicknameNoticeLabel.text = "닉네임 중복검사를 받으세요."
@@ -272,7 +265,6 @@ extension SignUpVC: SignUpDelegate {
             passwordNoticeLabel.isHidden = true
             break
         case false:
-            print("영어, 숫자, 특수문자(!@#$%)를 포함하여 8자 이상이어야 합니다.")
             passwordNoticeLabel.isHidden = false
             passwordNoticeLabel.textColor = .red
             passwordNoticeLabel.text = "영어, 숫자, 특수문자(!@#$%)를 포함하여 8자 이상이어야 합니다."
@@ -286,7 +278,6 @@ extension SignUpVC: SignUpDelegate {
             passwordCheckNoticeLabel.isHidden = false
             break
         case false:
-            print("비밀번호와 다릅니다.")
             passwordCheckNoticeLabel.isHidden = false
             passwordCheckNoticeLabel.textColor = .red
             passwordCheckNoticeLabel.text = "비밀번호와 다릅니다."
@@ -301,7 +292,6 @@ extension SignUpVC: SignUpDelegate {
             birthNoticeLabel.isHidden = true
             break
         case false:
-            print("yyyyMMdd의 형식으로 올바른 날짜를 입력해주세요. ex) 19900101")
             birthNoticeLabel.isHidden = false
             birthNoticeLabel.textColor = .red
             birthNoticeLabel.text = "yyyyMMdd의 형식으로 올바른 날짜를 입력해주세요. ex) 19900101"
@@ -317,7 +307,6 @@ extension SignUpVC: SignUpDelegate {
     func didSuccessSignUp(_ didSuccess: Bool) {
         switch didSuccess {
         case true:
-            print("회원가입에 성공하였습니다.")
             let alertController = UIAlertController(title: "회원가입에 성공하였습니다", message: nil, preferredStyle: .alert)
             let okBtn = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
                 self?.dismiss(animated: true) { [weak self] in
@@ -333,7 +322,6 @@ extension SignUpVC: SignUpDelegate {
             }
 
         case false:
-            print("회원가입에 실패하였습니다.")
             let alertController = UIAlertController(title: "회원가입에 실패하였습니다", message: nil, preferredStyle: .alert)
             let okBtn = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
                 self?.dismiss(animated: true, completion: nil)
@@ -351,7 +339,6 @@ extension SignUpVC: SignUpDelegate {
 
     // 오류 발생
     func errorOccured() {
-        print("오류가 발생하였습니다.")
     }
 
 }

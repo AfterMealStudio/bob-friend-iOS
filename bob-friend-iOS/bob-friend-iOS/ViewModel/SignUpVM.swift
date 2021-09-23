@@ -83,8 +83,7 @@ class SignUpVM {
 
         network.signUpRequest(signUpInfo: signUpModel) { result in
             switch result {
-            case .success(let signupInfo):
-                print(signupInfo)
+            case .success(_):
                 self.delegate?.didSuccessSignUp(true)
             case .failure:
                 self.delegate?.didSuccessSignUp(false)
