@@ -8,15 +8,15 @@
 import Foundation
 
 struct SignUpModel: Codable {
-    var email: String = ""
-    var nickname: String = ""
-    var password: String = ""
-    var sex: Gender.RawValue = ""
-    var birth: String = ""
-    var agree: Bool = true
+    let email: String
+    let nickname: String
+    let password: String
+    let sex: Gender
+    let birth: String
+    let agree: Bool
 }
 
-enum Gender: String {
+enum Gender: String, Codable {
     case male = "MALE"
     case female = "FEMALE"
 }
