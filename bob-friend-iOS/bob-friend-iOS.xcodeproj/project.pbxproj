@@ -24,6 +24,7 @@
 		0BDDC25D26EF36C7008C9363 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 0BDDC25C26EF36C7008C9363 /* .swiftlint.yml */; };
 		0BDDC26326EF46A0008C9363 /* SignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDDC26226EF46A0008C9363 /* SignUpVC.swift */; };
 		29A77F66B06D132C4F517847 /* Pods_bob_friend_iOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F71173E71FC11E1417A6BB4B /* Pods_bob_friend_iOSTests.framework */; };
+		761799F126FF13F800770199 /* SignUpTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761799F026FF13F800770199 /* SignUpTextField.swift */; };
 		7743AF2E3DE45DCC31775245 /* Pods_bob_friend_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C45F4DD2A79A0558D2902BC /* Pods_bob_friend_iOS.framework */; };
 		CE24FA122D98204D49D88218 /* Pods_bob_friend_iOS_bob_friend_iOSUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A9DB9DB30C1E8F70A065E96 /* Pods_bob_friend_iOS_bob_friend_iOSUITests.framework */; };
 /* End PBXBuildFile section */
@@ -69,6 +70,7 @@
 		0BDDC25C26EF36C7008C9363 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		0BDDC26226EF46A0008C9363 /* SignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVC.swift; sourceTree = "<group>"; };
 		4C45F4DD2A79A0558D2902BC /* Pods_bob_friend_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bob_friend_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		761799F026FF13F800770199 /* SignUpTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpTextField.swift; sourceTree = "<group>"; };
 		8DC00887C36D6D8012C4743A /* Pods-bob-friend-iOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bob-friend-iOSTests.release.xcconfig"; path = "Target Support Files/Pods-bob-friend-iOSTests/Pods-bob-friend-iOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		90EA6DC28E0DEF9487B3FA18 /* Pods-bob-friend-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bob-friend-iOS.release.xcconfig"; path = "Target Support Files/Pods-bob-friend-iOS/Pods-bob-friend-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		9A9DB9DB30C1E8F70A065E96 /* Pods_bob_friend_iOS_bob_friend_iOSUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bob_friend_iOS_bob_friend_iOSUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -185,6 +187,7 @@
 				0B29793326D62F04002AD75A /* LoginVC.swift */,
 				0BBADAA126E1AE7D00EAA23D /* LoginVC.storyboard */,
 				0BDDC26226EF46A0008C9363 /* SignUpVC.swift */,
+				761799EF26FF13C600770199 /* SignUpViews */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -215,6 +218,14 @@
 				0B170B9826F3068500C25EA1 /* SignUpModel.swift */,
 			);
 			path = DataModel;
+			sourceTree = "<group>";
+		};
+		761799EF26FF13C600770199 /* SignUpViews */ = {
+			isa = PBXGroup;
+			children = (
+				761799F026FF13F800770199 /* SignUpTextField.swift */,
+			);
+			path = SignUpViews;
 			sourceTree = "<group>";
 		};
 		A75D96A0F16F508EF72D2C5C /* Pods */ = {
@@ -508,6 +519,7 @@
 				0B170B9926F3068500C25EA1 /* SignUpModel.swift in Sources */,
 				0B29793526D62F04002AD75A /* LoginVC.swift in Sources */,
 				0B2978F126D617B4002AD75A /* AppDelegate.swift in Sources */,
+				761799F126FF13F800770199 /* SignUpTextField.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -677,7 +689,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 6XPJ277622;
+				DEVELOPMENT_TEAM = 76TH537T76;
 				INFOPLIST_FILE = "bob-friend-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -697,7 +709,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 6XPJ277622;
+				DEVELOPMENT_TEAM = 76TH537T76;
 				INFOPLIST_FILE = "bob-friend-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

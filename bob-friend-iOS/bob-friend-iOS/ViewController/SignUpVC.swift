@@ -16,35 +16,12 @@ class SignUpVC: UIViewController {
 
     private var scrollViewContentLayoutBottomConstraint: NSLayoutConstraint?
 
-    private let emailTextField: UITextField = {
+    private let emailCheckTextField: SignUpTextField = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.placeholder = "이메일 주소"
-        $0.font = UIFont.systemFont(ofSize: 20)
-        $0.addBorder()
+        $0.title = "이메일 주소"
         return $0
-    }(UITextField())
-
-    private let emailCheckButton: UIButton = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.setTitle("중복확인", for: .normal)
-        $0.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
-        $0.setTitleColor(.white, for: .normal)
-        $0.backgroundColor = UIColor(named: "MainColor1")
-        $0.layer.cornerRadius = 5
-
-        $0.addTarget(self, action: #selector(emailCheckButtonClicked), for: .touchUpInside)
-        return $0
-    }(UIButton())
-
-    private let emailNoticeLabel: UILabel = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.font = UIFont.systemFont(ofSize: 10)
-
-        $0.textColor = .red
-        $0.isHidden = true
-
-        return $0
-    }(UILabel())
+    }(SignUpTextField())
 
     private let nicknameTextField: UITextField = {
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -76,59 +53,26 @@ class SignUpVC: UIViewController {
         return $0
     }(UILabel())
 
-    private let passwordTextField: UITextField = {
+    private let passwordTextField: SignUpTextField = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.placeholder = "비밀번호"
-        $0.font = UIFont.systemFont(ofSize: 20)
-        $0.addBorder()
+        $0.title = "비밀번호"
         return $0
-    }(UITextField())
+    }(SignUpTextField())
 
-    private let passwordNoticeLabel: UILabel = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.font = UIFont.systemFont(ofSize: 10)
-
-        $0.textColor = .red
-        $0.isHidden = true
-
-        return $0
-    }(UILabel())
-
-    private let passwordCheckTextField: UITextField = {
+    private let passwordCheckTextField: SignUpTextField = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.placeholder = "비밀번호 확인"
-        $0.font = UIFont.systemFont(ofSize: 20)
-        $0.addBorder()
+        $0.title = "비밀번호 확인"
         return $0
-    }(UITextField())
+    }(SignUpTextField())
 
-    private let passwordCheckNoticeLabel: UILabel = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.font = UIFont.systemFont(ofSize: 10)
-
-        $0.textColor = .red
-        $0.isHidden = true
-
-        return $0
-    }(UILabel())
-
-    private let birthTextField: UITextField = {
+    private let birthTextField: SignUpTextField = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.placeholder = "ex)1990-01-01"
-        $0.font = UIFont.systemFont(ofSize: 20)
-        $0.addBorder()
+        $0.title = "생년월일"
         return $0
-    }(UITextField())
-
-    private let birthNoticeLabel: UILabel = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.font = UIFont.systemFont(ofSize: 10)
-
-        $0.textColor = .red
-        $0.isHidden = true
-
-        return $0
-    }(UILabel())
+    }(SignUpTextField())
 
     private let genderNoticeLabel: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -199,23 +143,22 @@ extension SignUpVC: SignUpDelegate {
 
     // 이메일 형식에 맞지 않음
     func emailRequireValidForm() {
-        emailNoticeLabel.isHidden = false
-        emailNoticeLabel.textColor = .red
-        emailNoticeLabel.text = "이메일 형식에 맞게 써 주세요."
+        emailCheckTextField.isHidden = false
+        emailCheckTextField.noticeMessage("이메일 형식에 맞게 써 주세요.")
     }
 
     // 이메일 중복인가
     func emailDidDuplicate(_ didDuplicate: Bool) {
-        switch didDuplicate {
-        case true:
-            emailNoticeLabel.isHidden = false
-            emailNoticeLabel.textColor = .red
-            emailNoticeLabel.text = "중복된 이메일입니다."
-        case false:
-            emailNoticeLabel.isHidden = false
-            emailNoticeLabel.textColor = .blue
-            emailNoticeLabel.text = "사용 가능한 이메일입니다."
-        }
+//        switch didDuplicate {
+//        case true:
+//            emailNoticeLabel.isHidden = false
+//            emailNoticeLabel.textColor = .red
+//            emailNoticeLabel.text = "중복된 이메일입니다."
+//        case false:
+//            emailNoticeLabel.isHidden = false
+//            emailNoticeLabel.textColor = .blue
+//            emailNoticeLabel.text = "사용 가능한 이메일입니다."
+//        }
     }
 
     // 닉네임 중복인가
@@ -234,15 +177,15 @@ extension SignUpVC: SignUpDelegate {
 
     // 중복검사를 받은 이메일인가
     func emailDidCheckForSignUp(_ didChecked: Bool) {
-        switch didChecked {
-        case true:
-            emailNoticeLabel.isHidden = true
-            break
-        case false:
-            emailNoticeLabel.isHidden = false
-            emailNoticeLabel.textColor = .red
-            emailNoticeLabel.text = "이메일 중복검사를 받으세요."
-        }
+//        switch didChecked {
+//        case true:
+//            emailNoticeLabel.isHidden = true
+//            break
+//        case false:
+//            emailNoticeLabel.isHidden = false
+//            emailNoticeLabel.textColor = .red
+//            emailNoticeLabel.text = "이메일 중복검사를 받으세요."
+//        }
     }
 
     // 중복검사를 받은 닉네임인가
@@ -260,42 +203,42 @@ extension SignUpVC: SignUpDelegate {
 
     // 비밀번호가 적합한가
     func passwordValidataionDidCheckForSignUp(_ isValid: Bool) {
-        switch isValid {
-        case true:
-            passwordNoticeLabel.isHidden = true
-            break
-        case false:
-            passwordNoticeLabel.isHidden = false
-            passwordNoticeLabel.textColor = .red
-            passwordNoticeLabel.text = "영어, 숫자, 특수문자(!@#$%)를 포함하여 8자 이상이어야 합니다."
-        }
+//        switch isValid {
+//        case true:
+//            passwordNoticeLabel.isHidden = true
+//            break
+//        case false:
+//            passwordNoticeLabel.isHidden = false
+//            passwordNoticeLabel.textColor = .red
+//            passwordNoticeLabel.text = "영어, 숫자, 특수문자(!@#$%)를 포함하여 8자 이상이어야 합니다."
+//        }
     }
 
     // 비밀번호 확인이 비밀번호와 같은가
     func passwordDidCheckSameForSignUp(_ isSamePasswordAndPasswordCheck: Bool) {
-        switch isSamePasswordAndPasswordCheck {
-        case true:
-            passwordCheckNoticeLabel.isHidden = false
-            break
-        case false:
-            passwordCheckNoticeLabel.isHidden = false
-            passwordCheckNoticeLabel.textColor = .red
-            passwordCheckNoticeLabel.text = "비밀번호와 다릅니다."
-
-        }
+//        switch isSamePasswordAndPasswordCheck {
+//        case true:
+//            passwordCheckNoticeLabel.isHidden = false
+//            break
+//        case false:
+//            passwordCheckNoticeLabel.isHidden = false
+//            passwordCheckNoticeLabel.textColor = .red
+//            passwordCheckNoticeLabel.text = "비밀번호와 다릅니다."
+//
+//        }
     }
 
     // 생일이 지정된 형식으로 작성되었는가
     func birthValidationDidCheckForSignUp(_ isValid: Bool) {
-        switch isValid {
-        case true:
-            birthNoticeLabel.isHidden = true
-            break
-        case false:
-            birthNoticeLabel.isHidden = false
-            birthNoticeLabel.textColor = .red
-            birthNoticeLabel.text = "yyyyMMdd의 형식으로 올바른 날짜를 입력해주세요. ex) 19900101"
-        }
+//        switch isValid {
+//        case true:
+//            birthNoticeLabel.isHidden = true
+//            break
+//        case false:
+//            birthNoticeLabel.isHidden = false
+//            birthNoticeLabel.textColor = .red
+//            birthNoticeLabel.text = "yyyyMMdd의 형식으로 올바른 날짜를 입력해주세요. ex) 19900101"
+//        }
     }
 
     // 동의했는가
@@ -347,9 +290,9 @@ extension SignUpVC: SignUpDelegate {
 
 extension SignUpVC {
     func emailNotFillIn() {
-        emailNoticeLabel.isHidden = false
-        emailNoticeLabel.textColor = .red
-        emailNoticeLabel.text = "이메일을 입력해주세요."
+//        emailNoticeLabel.isHidden = false
+//        emailNoticeLabel.textColor = .red
+//        emailNoticeLabel.text = "이메일을 입력해주세요."
     }
 
     func nicknameNotFillIn() {
@@ -359,9 +302,9 @@ extension SignUpVC {
     }
 
     func passwordNotFillIn() {
-        passwordNoticeLabel.isHidden = false
-        passwordNoticeLabel.textColor = .red
-        passwordNoticeLabel.text = "비밀번호를 입력해주세요."
+//        passwordNoticeLabel.isHidden = false
+//        passwordNoticeLabel.textColor = .red
+//        passwordNoticeLabel.text = "비밀번호를 입력해주세요."
     }
 }
 
@@ -371,7 +314,7 @@ extension SignUpVC {
 
     @objc
     func emailCheckButtonClicked() {
-        if let email = emailTextField.text {
+        if let email = emailCheckTextField.text {
             if email == "" { emailNotFillIn(); return }
             signUpVM.checkEmail(email: email)
         }
@@ -401,7 +344,7 @@ extension SignUpVC {
     @objc
     func finishButtonClicked() {
         let gender: Gender = maleButton.isSelected == true ? .male : .female
-        signUpVM.signUp(email: emailTextField.text ?? "",
+        signUpVM.signUp(email: emailCheckTextField.text ?? "",
                         nickname: nicknameTextField.text ?? "",
                         password: passwordTextField.text ?? "",
                         passwordCheck: passwordCheckTextField.text ?? "",
@@ -477,12 +420,10 @@ extension SignUpVC {
 
         // MARK: - 이메일 / 닉네임 / 비밀번호 / 비밀번호 확인 / 생년월일
 
+        stackView.addArrangedSubview(emailCheckTextField)
+
         let stackFactorList: [(String, UITextField, UIButton?, UILabel)] = [
-            ("이메일 주소", emailTextField, emailCheckButton, emailNoticeLabel),
-            ("닉네임", nicknameTextField, nicknameCheckButton, nicknameNoticeLabel),
-            ("비밀번호", passwordTextField, nil, passwordNoticeLabel),
-            ("비밀번호 확인", passwordCheckTextField, nil, passwordCheckNoticeLabel),
-            ("생년월일", birthTextField, nil, birthNoticeLabel)
+            ("닉네임", nicknameTextField, nicknameCheckButton, nicknameNoticeLabel)
         ]
 
         for i in 0..<stackFactorList.count {
@@ -542,6 +483,10 @@ extension SignUpVC {
             }
 
         }
+
+        stackView.addArrangedSubview(passwordTextField)
+        stackView.addArrangedSubview(passwordCheckTextField)
+        stackView.addArrangedSubview(birthTextField)
 
         // MARK: - 성별
 

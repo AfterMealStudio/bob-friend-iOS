@@ -79,11 +79,11 @@ class SignUpVM {
 
         let birth = generateBirth(birth)
 
-        let signUpModel: SignUpModel = SignUpModel(email: email, nickname: nickname, password: password, sex: gender.rawValue, birth: birth, agree: agree)
+        let signUpModel: SignUpModel = SignUpModel(email: email, nickname: nickname, password: password, sex: .male, birth: birth, agree: agree)
 
         network.signUpRequest(signUpInfo: signUpModel) { result in
             switch result {
-            case .success(_):
+            case .success:
                 self.delegate?.didSuccessSignUp(true)
             case .failure:
                 self.delegate?.didSuccessSignUp(false)
