@@ -29,7 +29,7 @@ extension UIView {
 
             NSLayoutConstraint.activate([
                 borderView.bottomAnchor.constraint(equalTo: bottomAnchor),
-                borderView.leftAnchor.constraint(equalTo: leftAnchor), //
+                borderView.leftAnchor.constraint(equalTo: leftAnchor),
                 borderView.topAnchor.constraint(equalTo: topAnchor),
                 borderView.widthAnchor.constraint(equalToConstant: width)
             ])
