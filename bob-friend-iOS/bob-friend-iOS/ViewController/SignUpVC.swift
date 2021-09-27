@@ -16,152 +16,48 @@ class SignUpVC: UIViewController {
 
     private var scrollViewContentLayoutBottomConstraint: NSLayoutConstraint?
 
-    private let emailTextField: UITextField = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
+    private let emailTextField: SignUpTextField = {
+        $0.configure(hasDuplicationCheckButton: true)
+        $0.title = "이메일 주소"
         $0.placeholder = "이메일 주소"
-        $0.font = UIFont.systemFont(ofSize: 20)
-        $0.addBorder()
+        $0.addTargetToDuplicationCheckButton(action: #selector(emailCheckButtonClicked))
         return $0
-    }(UITextField())
+    }(SignUpTextField())
 
-    private let emailCheckButton: UIButton = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.setTitle("중복확인", for: .normal)
-        $0.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
-        $0.setTitleColor(.white, for: .normal)
-        $0.backgroundColor = UIColor(named: "MainColor1")
-        $0.layer.cornerRadius = 5
-
-        $0.addTarget(self, action: #selector(emailCheckButtonClicked), for: .touchUpInside)
-        return $0
-    }(UIButton())
-
-    private let emailNoticeLabel: UILabel = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.font = UIFont.systemFont(ofSize: 10)
-
-        $0.textColor = .red
-        $0.isHidden = true
-
-        return $0
-    }(UILabel())
-
-    private let nicknameTextField: UITextField = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
+    private let nicknameTextField: SignUpTextField = {
+        $0.configure(hasDuplicationCheckButton: true)
+        $0.title = "닉네임"
         $0.placeholder = "닉네임"
-        $0.font = UIFont.systemFont(ofSize: 20)
-        $0.addBorder()
+        $0.addTargetToDuplicationCheckButton(action: #selector(nicknameCheckButtonClicked))
         return $0
-    }(UITextField())
+    }(SignUpTextField())
 
-    private let nicknameCheckButton: UIButton = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.setTitle("중복확인", for: .normal)
-        $0.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
-        $0.setTitleColor(.white, for: .normal)
-        $0.backgroundColor = UIColor(named: "MainColor1")
-        $0.layer.cornerRadius = 5
-
-        $0.addTarget(self, action: #selector(nicknameCheckButtonClicked), for: .touchUpInside)
-        return $0
-    }(UIButton())
-
-    private let nicknameNoticeLabel: UILabel = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.font = UIFont.systemFont(ofSize: 10)
-
-        $0.textColor = .red
-        $0.isHidden = true
-
-        return $0
-    }(UILabel())
-
-    private let passwordTextField: UITextField = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
+    private let passwordTextField: SignUpTextField = {
+        $0.configure(hasDuplicationCheckButton: false)
+        $0.title = "비밀번호"
         $0.placeholder = "비밀번호"
-        $0.font = UIFont.systemFont(ofSize: 20)
-        $0.addBorder()
         return $0
-    }(UITextField())
+    }(SignUpTextField())
 
-    private let passwordNoticeLabel: UILabel = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.font = UIFont.systemFont(ofSize: 10)
-
-        $0.textColor = .red
-        $0.isHidden = true
-
-        return $0
-    }(UILabel())
-
-    private let passwordCheckTextField: UITextField = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
+    private let passwordCheckTextField: SignUpTextField = {
+        $0.configure(hasDuplicationCheckButton: false)
+        $0.title = "비밀번호 확인"
         $0.placeholder = "비밀번호 확인"
-        $0.font = UIFont.systemFont(ofSize: 20)
-        $0.addBorder()
         return $0
-    }(UITextField())
+    }(SignUpTextField())
 
-    private let passwordCheckNoticeLabel: UILabel = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.font = UIFont.systemFont(ofSize: 10)
-
-        $0.textColor = .red
-        $0.isHidden = true
-
-        return $0
-    }(UILabel())
-
-    private let birthTextField: UITextField = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
+    private let birthTextField: SignUpTextField = {
+        $0.configure(hasDuplicationCheckButton: false)
+        $0.title = "생년월일"
         $0.placeholder = "ex)1990-01-01"
-        $0.font = UIFont.systemFont(ofSize: 20)
-        $0.addBorder()
         return $0
-    }(UITextField())
+    }(SignUpTextField())
 
-    private let birthNoticeLabel: UILabel = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.font = UIFont.systemFont(ofSize: 10)
-
-        $0.textColor = .red
-        $0.isHidden = true
-
+    private let genderView: SignUpGenderSelectView = {
+        $0.title = "성별"
+        $0.gender = .male
         return $0
-    }(UILabel())
-
-    private let genderNoticeLabel: UILabel = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.font = UIFont.systemFont(ofSize: 10)
-
-        $0.textColor = .red
-        $0.isHidden = true
-
-        return $0
-    }(UILabel())
-
-    private let maleButton: UIButton = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.setImage(UIImage(systemName: "circle"), for: .normal)
-        $0.setImage(UIImage(systemName: "circle.circle"), for: .selected)
-        $0.tintColor = UIColor(named: "MainColor1")
-        $0.isEnabled = true
-        $0.isSelected = true
-
-        $0.addTarget(self, action: #selector(maleButtonClicked), for: .touchUpInside)
-        return $0
-    }(UIButton())
-
-    private let femaleButton: UIButton = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.setImage(UIImage(systemName: "circle"), for: .normal)
-        $0.setImage(UIImage(systemName: "circle.circle"), for: .selected)
-        $0.tintColor = UIColor(named: "MainColor1")
-        $0.isEnabled = true
-
-        $0.addTarget(self, action: #selector(femaleButtonClicked), for: .touchUpInside)
-        return $0
-    }(UIButton())
+    }(SignUpGenderSelectView())
 
     private let finishButton: UIButton = {
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -171,7 +67,6 @@ class SignUpVC: UIViewController {
         $0.setTitleColor(.red, for: .highlighted)
         $0.backgroundColor = UIColor(named: "MainColor1")
         $0.layer.cornerRadius = 5
-
         $0.addTarget(self, action: #selector(finishButtonClicked), for: .touchUpInside)
         return $0
     }(UIButton())
@@ -199,22 +94,19 @@ extension SignUpVC: SignUpDelegate {
 
     // 이메일 형식에 맞지 않음
     func emailRequireValidForm() {
-        emailNoticeLabel.isHidden = false
-        emailNoticeLabel.textColor = .red
-        emailNoticeLabel.text = "이메일 형식에 맞게 써 주세요."
+        emailTextField.notice(msg: "이메일 형식에 맞게 써 주세요.", false)
+        emailTextField.showNoticeLabel()
     }
 
     // 이메일 중복인가
     func emailDidDuplicate(_ didDuplicate: Bool) {
         switch didDuplicate {
         case true:
-            emailNoticeLabel.isHidden = false
-            emailNoticeLabel.textColor = .red
-            emailNoticeLabel.text = "중복된 이메일입니다."
+            emailTextField.notice(msg: "중복된 이메일입니다.", false)
+            emailTextField.showNoticeLabel()
         case false:
-            emailNoticeLabel.isHidden = false
-            emailNoticeLabel.textColor = .blue
-            emailNoticeLabel.text = "사용 가능한 이메일입니다."
+            emailTextField.notice(msg: "사용 가능한 이메일입니다.", true)
+            emailTextField.showNoticeLabel()
         }
     }
 
@@ -222,13 +114,11 @@ extension SignUpVC: SignUpDelegate {
     func nicknameDidDuplicate(_ didDuplicate: Bool) {
         switch didDuplicate {
         case true:
-            nicknameNoticeLabel.isHidden = false
-            nicknameNoticeLabel.textColor = .red
-            nicknameNoticeLabel.text = "중복된 닉네임입니다."
+            nicknameTextField.notice(msg: "중복된 닉네임이니다.", false)
+            nicknameTextField.showNoticeLabel()
         case false:
-            nicknameNoticeLabel.isHidden = false
-            nicknameNoticeLabel.textColor = .blue
-            nicknameNoticeLabel.text = "사용 가능한 닉네임입니다."
+            nicknameTextField.notice(msg: "사용 가능한 닉네임입니다.", true)
+            nicknameTextField.showNoticeLabel()
         }
     }
 
@@ -236,12 +126,10 @@ extension SignUpVC: SignUpDelegate {
     func emailDidCheckForSignUp(_ didChecked: Bool) {
         switch didChecked {
         case true:
-            emailNoticeLabel.isHidden = true
-            break
+            emailTextField.hideNoticeLabel()
         case false:
-            emailNoticeLabel.isHidden = false
-            emailNoticeLabel.textColor = .red
-            emailNoticeLabel.text = "이메일 중복검사를 받으세요."
+            emailTextField.notice(msg: "이메일 중복검사를 받으세요.", false)
+            emailTextField.showNoticeLabel()
         }
     }
 
@@ -249,12 +137,10 @@ extension SignUpVC: SignUpDelegate {
     func nicknameDidCheckForSignUp(_ didChecked: Bool) {
         switch didChecked {
         case true:
-            nicknameNoticeLabel.isHidden = false
-            break
+            nicknameTextField.hideNoticeLabel()
         case false:
-            nicknameNoticeLabel.isHidden = false
-            nicknameNoticeLabel.textColor = .red
-            nicknameNoticeLabel.text = "닉네임 중복검사를 받으세요."
+            nicknameTextField.notice(msg: "닉네임 중복검사를 받으세요.", false)
+            nicknameTextField.showNoticeLabel()
         }
     }
 
@@ -262,12 +148,10 @@ extension SignUpVC: SignUpDelegate {
     func passwordValidataionDidCheckForSignUp(_ isValid: Bool) {
         switch isValid {
         case true:
-            passwordNoticeLabel.isHidden = true
-            break
+            passwordTextField.hideNoticeLabel()
         case false:
-            passwordNoticeLabel.isHidden = false
-            passwordNoticeLabel.textColor = .red
-            passwordNoticeLabel.text = "영어, 숫자, 특수문자(!@#$%)를 포함하여 8자 이상이어야 합니다."
+            passwordTextField.notice(msg: "영어, 숫자, 특수문자(!@#$%)를 포함하여 8자 이상이어야 합니다.", false)
+            passwordTextField.showNoticeLabel()
         }
     }
 
@@ -275,13 +159,10 @@ extension SignUpVC: SignUpDelegate {
     func passwordDidCheckSameForSignUp(_ isSamePasswordAndPasswordCheck: Bool) {
         switch isSamePasswordAndPasswordCheck {
         case true:
-            passwordCheckNoticeLabel.isHidden = false
-            break
+            passwordCheckTextField.hideNoticeLabel()
         case false:
-            passwordCheckNoticeLabel.isHidden = false
-            passwordCheckNoticeLabel.textColor = .red
-            passwordCheckNoticeLabel.text = "비밀번호와 다릅니다."
-
+            passwordCheckTextField.notice(msg: "비밀번호와 다릅니다.", false)
+            passwordCheckTextField.showNoticeLabel()
         }
     }
 
@@ -289,12 +170,10 @@ extension SignUpVC: SignUpDelegate {
     func birthValidationDidCheckForSignUp(_ isValid: Bool) {
         switch isValid {
         case true:
-            birthNoticeLabel.isHidden = true
-            break
+            birthTextField.hideNoticeLabel()
         case false:
-            birthNoticeLabel.isHidden = false
-            birthNoticeLabel.textColor = .red
-            birthNoticeLabel.text = "yyyyMMdd의 형식으로 올바른 날짜를 입력해주세요. ex) 19900101"
+            birthTextField.notice(msg: "yyyyMMdd의 형식으로 올바른 날짜를 입력해주세요. ex) 19900101", false)
+            birthTextField.showNoticeLabel()
         }
     }
 
@@ -347,21 +226,18 @@ extension SignUpVC: SignUpDelegate {
 
 extension SignUpVC {
     func emailNotFillIn() {
-        emailNoticeLabel.isHidden = false
-        emailNoticeLabel.textColor = .red
-        emailNoticeLabel.text = "이메일을 입력해주세요."
+        emailTextField.notice(msg: "이메일을 입력해주세요.", false)
+        emailTextField.showNoticeLabel()
     }
 
     func nicknameNotFillIn() {
-        nicknameNoticeLabel.isHidden = false
-        nicknameNoticeLabel.textColor = .red
-        nicknameNoticeLabel.text = "닉네임을 입력해주세요."
+        nicknameTextField.notice(msg: "닉네임을 입력해주세요.", false)
+        nicknameTextField.showNoticeLabel()
     }
 
     func passwordNotFillIn() {
-        passwordNoticeLabel.isHidden = false
-        passwordNoticeLabel.textColor = .red
-        passwordNoticeLabel.text = "비밀번호를 입력해주세요."
+        passwordTextField.notice(msg: "비밀번호를 입력해주세요.", false)
+        passwordTextField.showNoticeLabel()
     }
 }
 
@@ -386,21 +262,8 @@ extension SignUpVC {
     }
 
     @objc
-    func maleButtonClicked() {
-        maleButton.isSelected = true
-        femaleButton.isSelected = false
-    }
-
-    @objc
-    func femaleButtonClicked() {
-        femaleButton.isSelected = true
-        maleButton.isSelected = false
-
-    }
-
-    @objc
     func finishButtonClicked() {
-        let gender: Gender = maleButton.isSelected == true ? .male : .female
+        let gender = genderView.gender
         signUpVM.signUp(email: emailTextField.text ?? "",
                         nickname: nicknameTextField.text ?? "",
                         password: passwordTextField.text ?? "",
@@ -477,146 +340,15 @@ extension SignUpVC {
 
         // MARK: - 이메일 / 닉네임 / 비밀번호 / 비밀번호 확인 / 생년월일
 
-        let stackFactorList: [(String, UITextField, UIButton?, UILabel)] = [
-            ("이메일 주소", emailTextField, emailCheckButton, emailNoticeLabel),
-            ("닉네임", nicknameTextField, nicknameCheckButton, nicknameNoticeLabel),
-            ("비밀번호", passwordTextField, nil, passwordNoticeLabel),
-            ("비밀번호 확인", passwordCheckTextField, nil, passwordCheckNoticeLabel),
-            ("생년월일", birthTextField, nil, birthNoticeLabel)
-        ]
-
-        for i in 0..<stackFactorList.count {
-            let str = stackFactorList[i].0
-            let textField = stackFactorList[i].1
-            let checkButton = stackFactorList[i].2
-            let noticeLabel = stackFactorList[i].3
-
-            let sectionView: UIView = {
-                $0.translatesAutoresizingMaskIntoConstraints = false
-                return $0
-            }(UIView())
-
-            stackView.addArrangedSubview(sectionView)
-
-            let sectionLabel: UILabel = {
-                $0.translatesAutoresizingMaskIntoConstraints = false
-                $0.font = UIFont.systemFont(ofSize: 15)
-                $0.text = str
-                return $0
-            }(UILabel())
-
-            sectionView.addSubview(sectionLabel)
-            NSLayoutConstraint.activate([
-                sectionLabel.topAnchor.constraint(equalTo: sectionView.topAnchor),
-                sectionLabel.leftAnchor.constraint(equalTo: sectionView.leftAnchor, constant: 30),
-                sectionLabel.rightAnchor.constraint(equalTo: sectionView.rightAnchor, constant: -30)
-            ])
-
-            sectionView.addSubview(textField)
-            NSLayoutConstraint.activate([
-                textField.topAnchor.constraint(equalTo: sectionLabel.bottomAnchor, constant: 5),
-                textField.bottomAnchor.constraint(equalTo: sectionView.bottomAnchor),
-                textField.leftAnchor.constraint(equalTo: sectionView.leftAnchor, constant: 30),
-                textField.heightAnchor.constraint(equalToConstant: 30)
-            ])
-
-            sectionView.addSubview(noticeLabel)
-            noticeLabel.isHidden = true
-            NSLayoutConstraint.activate([
-                noticeLabel.topAnchor.constraint(equalTo: textField.bottomAnchor),
-                noticeLabel.leftAnchor.constraint(equalTo: sectionView.leftAnchor, constant: 30),
-                noticeLabel.rightAnchor.constraint(equalTo: sectionView.rightAnchor, constant: 30)
-            ])
-
-            if let checkButton = checkButton {
-                sectionView.addSubview(checkButton)
-                NSLayoutConstraint.activate([
-                    checkButton.widthAnchor.constraint(equalToConstant: 80),
-                    checkButton.topAnchor.constraint(equalTo: textField.topAnchor),
-                    checkButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor),
-                    checkButton.leftAnchor.constraint(equalTo: textField.rightAnchor, constant: 10),
-                    checkButton.rightAnchor.constraint(equalTo: sectionView.rightAnchor, constant: -30)
-                ])
-            } else {
-                textField.rightAnchor.constraint(equalTo: sectionView.rightAnchor, constant: -30).isActive = true
-            }
-
-        }
+        stackView.addArrangedSubview(emailTextField)
+        stackView.addArrangedSubview(nicknameTextField)
+        stackView.addArrangedSubview(passwordTextField)
+        stackView.addArrangedSubview(passwordCheckTextField)
+        stackView.addArrangedSubview(birthTextField)
 
         // MARK: - 성별
 
-        let genderView: UIView = {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            return $0
-        }(UIView())
-
         stackView.addArrangedSubview(genderView)
-        NSLayoutConstraint.activate([
-            genderView.heightAnchor.constraint(equalToConstant: 50)
-        ])
-
-        let genderLabel: UILabel = {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.font = UIFont.systemFont(ofSize: 15)
-            $0.text = "성별"
-            return $0
-        }(UILabel())
-
-        genderView.addSubview(genderLabel)
-        NSLayoutConstraint.activate([
-            genderLabel.topAnchor.constraint(equalTo: genderView.topAnchor),
-            genderLabel.leftAnchor.constraint(equalTo: genderView.leftAnchor, constant: 30),
-            genderLabel.rightAnchor.constraint(equalTo: genderView.rightAnchor, constant: -30)
-        ])
-
-        let genderSubView: UIStackView = {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.axis = .horizontal
-            $0.distribution = .fillProportionally
-            return $0
-        }(UIStackView())
-
-        genderView.addSubview(genderSubView)
-        NSLayoutConstraint.activate([
-            genderSubView.topAnchor.constraint(equalTo: genderLabel.bottomAnchor, constant: 5),
-            genderSubView.leftAnchor.constraint(equalTo: genderView.leftAnchor, constant: 30),
-            genderSubView.rightAnchor.constraint(equalTo: genderView.rightAnchor, constant: -30)
-        ])
-
-        for i in 0..<2 {
-            let genderInfo = [(maleButton, "남자"), (femaleButton, "여자")]
-            let btn = genderInfo[i].0
-            let str = genderInfo[i].1
-
-            let contentView: UIView = {
-                $0.translatesAutoresizingMaskIntoConstraints = false
-                return $0
-            }(UIView())
-
-            genderSubView.addArrangedSubview(contentView)
-
-            contentView.heightAnchor.constraint(equalToConstant: 30).isActive = true
-
-            contentView.addSubview(btn)
-            view.bringSubviewToFront(btn)
-            NSLayoutConstraint.activate([
-                btn.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 5),
-                btn.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
-                btn.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
-            ])
-
-            let contentLabel: UILabel = {
-                $0.translatesAutoresizingMaskIntoConstraints = false
-                $0.text = str
-                return $0
-            }(UILabel())
-            contentView.addSubview(contentLabel)
-            NSLayoutConstraint.activate([
-                contentLabel.leftAnchor.constraint(equalTo: btn.rightAnchor, constant: 10),
-                contentLabel.centerYAnchor.constraint(equalTo: btn.centerYAnchor)
-            ])
-
-        }
 
         // MARK: - 가입하기 버튼
 
