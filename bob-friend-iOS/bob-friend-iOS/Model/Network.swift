@@ -8,7 +8,13 @@
 import Foundation
 import Alamofire
 
-class Network {
+final class Network {
+
+    private let session: Session?
+
+    init(_ session: Session = AF) {
+        self.session = session
+    }
 
     private enum API {
         case login
@@ -38,16 +44,12 @@ class Network {
         }
     }
 
-    func checkEmailDuplicationRequest(email: String, completion: @escaping (Result<Data?, AFError>) -> Void) {
-        AF.request(API.checkEmailDuplication(email: email).path, method: .get).validate(statusCode: 200..<300).response { res in
-            completion(res.result)
-        }
+    func checkEmailDuplicationRequest(email: String, completion: @escaping (Result<Bool, Error>) -> Void) {
+        request(api: .checkEmailDuplication(email: email), completion: completion)
     }
 
-    func checkNicknameDuplicationRequest(nickname: String, completion: @escaping (Result<Data?, AFError>) -> Void) {
-        AF.request(API.checkNicknameDuplication(nickname: nickname).path, method: .get).validate(statusCode: 200..<300).response { res in
-            completion(res.result)
-        }
+    func checkNicknameDuplicationRequest(nickname: String, completion: @escaping (Result<Bool, Error>) -> Void) {
+        request(api: .checkNicknameDuplication(nickname: nickname), completion: completion)
     }
 
     func signUpRequest(signUpInfo: SignUpModel, completion: @escaping (Result<SignUpResponseModel, AFError>) -> Void) {
@@ -56,4 +58,41 @@ class Network {
         }
     }
 
+}
+
+extension Network {
+
+    private func request<D: Decodable>(api: API, type: D.Type, completion: @escaping (Result<D, Error>) -> Void) {
+        session?.request(api.path).response { _ in
+            // TODO: JSON Decoder를 가지고 파싱하는 함수 구현
+        }
+
+    }
+
+    private func request(api: API, completion: @escaping (Result<Bool, Error>) -> Void) {
+        session?.request(api.path).response { response in
+            switch response.result {
+            case .success(let data):
+                if let data = data, let isValid = String(decoding: data, as: UTF8.self).bool {
+                    completion(.success(isValid))
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+
+}
+
+extension String {
+    fileprivate var bool: Bool? {
+        switch self.lowercased() {
+        case "true":
+            return true
+        case "false" :
+            return false
+        default:
+            return nil
+        }
+    }
 }

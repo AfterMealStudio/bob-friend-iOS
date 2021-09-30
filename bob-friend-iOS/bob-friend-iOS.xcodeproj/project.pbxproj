@@ -25,6 +25,7 @@
 		0BD421282700601C003E8734 /* SignUpGenderSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD421272700601C003E8734 /* SignUpGenderSelectView.swift */; };
 		0BDDC25D26EF36C7008C9363 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 0BDDC25C26EF36C7008C9363 /* .swiftlint.yml */; };
 		0BDDC26326EF46A0008C9363 /* SignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDDC26226EF46A0008C9363 /* SignUpVC.swift */; };
+		0BE3EB122701AAE5008265B2 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE3EB112701AAE5008265B2 /* String+.swift */; };
 		29A77F66B06D132C4F517847 /* Pods_bob_friend_iOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F71173E71FC11E1417A6BB4B /* Pods_bob_friend_iOSTests.framework */; };
 		7743AF2E3DE45DCC31775245 /* Pods_bob_friend_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C45F4DD2A79A0558D2902BC /* Pods_bob_friend_iOS.framework */; };
 		CE24FA122D98204D49D88218 /* Pods_bob_friend_iOS_bob_friend_iOSUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A9DB9DB30C1E8F70A065E96 /* Pods_bob_friend_iOS_bob_friend_iOSUITests.framework */; };
@@ -72,6 +73,7 @@
 		0BD421272700601C003E8734 /* SignUpGenderSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpGenderSelectView.swift; sourceTree = "<group>"; };
 		0BDDC25C26EF36C7008C9363 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		0BDDC26226EF46A0008C9363 /* SignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVC.swift; sourceTree = "<group>"; };
+		0BE3EB112701AAE5008265B2 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		4C45F4DD2A79A0558D2902BC /* Pods_bob_friend_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bob_friend_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DC00887C36D6D8012C4743A /* Pods-bob-friend-iOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bob-friend-iOSTests.release.xcconfig"; path = "Target Support Files/Pods-bob-friend-iOSTests/Pods-bob-friend-iOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		90EA6DC28E0DEF9487B3FA18 /* Pods-bob-friend-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bob-friend-iOS.release.xcconfig"; path = "Target Support Files/Pods-bob-friend-iOS/Pods-bob-friend-iOS.release.xcconfig"; sourceTree = "<group>"; };
@@ -169,6 +171,7 @@
 			isa = PBXGroup;
 			children = (
 				0B29797326D8D13C002AD75A /* UIView+Border.swift */,
+				0BE3EB112701AAE5008265B2 /* String+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -522,6 +525,7 @@
 				0BB9877C26DA571D00E0CC12 /* LoginModel.swift in Sources */,
 				0B170B9926F3068500C25EA1 /* SignUpModel.swift in Sources */,
 				0B29793526D62F04002AD75A /* LoginVC.swift in Sources */,
+				0BE3EB122701AAE5008265B2 /* String+.swift in Sources */,
 				0B2978F126D617B4002AD75A /* AppDelegate.swift in Sources */,
 				0BA2016F26FF93EE0072A2B6 /* SignUpTextField.swift in Sources */,
 			);

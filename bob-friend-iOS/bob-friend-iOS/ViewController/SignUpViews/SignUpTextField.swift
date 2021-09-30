@@ -18,8 +18,8 @@ final class SignUpTextField: UIView {
     }
 
     var text: String? { textField.text }
-
-    private var hasDuplicationCheckButton: Bool = false
+    var checkAction: (() -> Void)?
+    var textChanged: (() -> Void)?
 
     private let titleLabel: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -42,55 +42,67 @@ final class SignUpTextField: UIView {
         return $0
     }(UILabel())
 
-    private let duplicationCheckButton: UIButton = {
+    private let checkButton: UIButton = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.setTitle("중복확인", for: .normal)
         $0.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
         $0.setTitleColor(.white, for: .normal)
         $0.backgroundColor = UIColor(named: "MainColor1")
         $0.layer.cornerRadius = 5
+        $0.isHidden = true
         return $0
     }(UIButton())
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(hasCheckButton: Bool = false) {
+        super.init(frame: .zero)
+        checkButton.isHidden = !hasCheckButton
+        layout()
+
+        checkButton.addTarget(self, action: #selector(tappedCheckButton), for: .touchUpInside)
+        textField.addTarget(self, action: #selector(changedTextFieldValue), for: .editingChanged)
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(hasDuplicationCheckButton: Bool) {
-        self.hasDuplicationCheckButton = hasDuplicationCheckButton
-//        if let buttonAction = buttonAction {
-//            duplicationCheckButton.addTarget(self, action: buttonAction, for: .touchUpInside)
-//        }
-        layout()
+    @objc
+    private func tappedCheckButton() {
+        checkAction?()
     }
 
-    func addTargetToDuplicationCheckButton(action: Selector) {
-        duplicationCheckButton.addTarget(self, action: action, for: .touchUpInside)
+    @objc
+    private func changedTextFieldValue() {
+        resetNotice()
+        textChanged?()
     }
 
+    func showNoticeMessage(_ message: String, isValidate: Bool) {
+        noticeLabel.isHidden = false
+        noticeLabel.text = message
+        noticeLabel.textColor = isValidate ? .blue : .red
+    }
+
+    func resetNotice() {
+        noticeLabel.isHidden = false
+        noticeLabel.text = nil
+    }
 }
 
 // MARK: - noticeLabel control
-
-extension SignUpTextField {
-    func hideNoticeLabel() {
-        noticeLabel.isHidden = true
-    }
-
-    func showNoticeLabel() {
-        noticeLabel.isHidden = false
-    }
-
-    func notice(msg: String, _ isPositive: Bool) {
-        noticeLabel.text = msg
-        if isPositive { noticeLabel.textColor = .blue } else { noticeLabel.textColor = .red }
-    }
-
-}
+//
+// extension SignUpTextField {
+//    func hideNoticeLabel() {
+//        noticeLabel.isHidden = true
+//    }
+//
+//    func showNoticeLabel() {
+//        noticeLabel.isHidden = false
+//    }
+//
+//
+//
+// }
 
 // MARK: - layout
 
@@ -123,17 +135,16 @@ extension SignUpTextField {
             noticeLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: 30)
         ])
 
-        if hasDuplicationCheckButton {
+        if checkButton.isHidden == false {
             // MARK: duplicationCheckButton
-            addSubview(duplicationCheckButton)
+            addSubview(checkButton)
             NSLayoutConstraint.activate([
-                duplicationCheckButton.widthAnchor.constraint(equalToConstant: 80),
-                duplicationCheckButton.topAnchor.constraint(equalTo: textField.topAnchor),
-                duplicationCheckButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor),
-                duplicationCheckButton.leftAnchor.constraint(equalTo: textField.rightAnchor, constant: 10),
-                duplicationCheckButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -30)
+                checkButton.widthAnchor.constraint(equalToConstant: 80),
+                checkButton.topAnchor.constraint(equalTo: textField.topAnchor),
+                checkButton.bottomAnchor.constraint(equalTo: textField.bottomAnchor),
+                checkButton.leftAnchor.constraint(equalTo: textField.rightAnchor, constant: 10),
+                checkButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -30)
             ])
-
         } else {
             textField.rightAnchor.constraint(equalTo: rightAnchor, constant: -30).isActive = true
         }
@@ -150,7 +161,11 @@ extension SignUpTextField {
     typealias UIViewType = SignUpTextField
 
     func makeUIView(context: Context) -> SignUpTextField {
-        SignUpTextField()
+        let textField: SignUpTextField = {
+            $0.title = "이메일 주소"
+            return $0
+        }(SignUpTextField(hasCheckButton: true))
+        return textField
     }
 
     func updateUIView(_ uiView: SignUpTextField, context: Context) {
@@ -162,7 +177,7 @@ extension SignUpTextField {
  struct SignUpTextFieldRepresentable_Previews: PreviewProvider {
     static var previews: some View {
         SignUpTextFieldRepresentable()
-            .frame(width: 375, height: 200)
+            .frame(width: 375, height: 50)
             .previewLayout(.sizeThatFits)
     }
  }

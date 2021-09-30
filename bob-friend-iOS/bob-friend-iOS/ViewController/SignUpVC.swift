@@ -17,37 +17,30 @@ class SignUpVC: UIViewController {
     private var scrollViewContentLayoutBottomConstraint: NSLayoutConstraint?
 
     private let emailTextField: SignUpTextField = {
-        $0.configure(hasDuplicationCheckButton: true)
         $0.title = "이메일 주소"
         $0.placeholder = "이메일 주소"
-        $0.addTargetToDuplicationCheckButton(action: #selector(emailCheckButtonClicked))
         return $0
-    }(SignUpTextField())
+    }(SignUpTextField(hasCheckButton: true))
 
     private let nicknameTextField: SignUpTextField = {
-        $0.configure(hasDuplicationCheckButton: true)
         $0.title = "닉네임"
         $0.placeholder = "닉네임"
-        $0.addTargetToDuplicationCheckButton(action: #selector(nicknameCheckButtonClicked))
         return $0
-    }(SignUpTextField())
+    }(SignUpTextField(hasCheckButton: true))
 
     private let passwordTextField: SignUpTextField = {
-        $0.configure(hasDuplicationCheckButton: false)
         $0.title = "비밀번호"
         $0.placeholder = "비밀번호"
         return $0
     }(SignUpTextField())
 
     private let passwordCheckTextField: SignUpTextField = {
-        $0.configure(hasDuplicationCheckButton: false)
         $0.title = "비밀번호 확인"
         $0.placeholder = "비밀번호 확인"
         return $0
     }(SignUpTextField())
 
     private let birthTextField: SignUpTextField = {
-        $0.configure(hasDuplicationCheckButton: false)
         $0.title = "생년월일"
         $0.placeholder = "ex)1990-01-01"
         return $0
@@ -84,6 +77,26 @@ class SignUpVC: UIViewController {
         // keyboard
         enrollKeyboardNotification()
         enrollRemoveKeyboard()
+
+        // configure action
+        emailTextField.checkAction = { [weak self] in
+            guard let email = self?.emailTextField.text, email.isEmpty == false else {
+                self?.signUpNoticeHandeler(.blankEmail)
+                return
+            }
+            self?.signUpVM.checkEmail(email: email)
+        }
+
+        nicknameTextField.checkAction = { [weak self] in
+            guard let nickname = self?.nicknameTextField.text, nickname.isEmpty == false else {
+                self?.signUpNoticeHandeler(.blankNickname)
+                return
+            }
+            self?.signUpVM.checkNickname(nickname: nickname)
+        }
+
+        emailTextField.textChanged = { [weak self] in self?.signUpVM.resetEmail() }
+
     }
 
 }
@@ -92,94 +105,8 @@ class SignUpVC: UIViewController {
 
 extension SignUpVC: SignUpDelegate {
 
-    // 이메일 형식에 맞지 않음
-    func emailRequireValidForm() {
-        emailTextField.notice(msg: "이메일 형식에 맞게 써 주세요.", false)
-        emailTextField.showNoticeLabel()
-    }
-
-    // 이메일 중복인가
-    func emailDidDuplicate(_ didDuplicate: Bool) {
-        switch didDuplicate {
-        case true:
-            emailTextField.notice(msg: "중복된 이메일입니다.", false)
-            emailTextField.showNoticeLabel()
-        case false:
-            emailTextField.notice(msg: "사용 가능한 이메일입니다.", true)
-            emailTextField.showNoticeLabel()
-        }
-    }
-
-    // 닉네임 중복인가
-    func nicknameDidDuplicate(_ didDuplicate: Bool) {
-        switch didDuplicate {
-        case true:
-            nicknameTextField.notice(msg: "중복된 닉네임이니다.", false)
-            nicknameTextField.showNoticeLabel()
-        case false:
-            nicknameTextField.notice(msg: "사용 가능한 닉네임입니다.", true)
-            nicknameTextField.showNoticeLabel()
-        }
-    }
-
-    // 중복검사를 받은 이메일인가
-    func emailDidCheckForSignUp(_ didChecked: Bool) {
-        switch didChecked {
-        case true:
-            emailTextField.hideNoticeLabel()
-        case false:
-            emailTextField.notice(msg: "이메일 중복검사를 받으세요.", false)
-            emailTextField.showNoticeLabel()
-        }
-    }
-
-    // 중복검사를 받은 닉네임인가
-    func nicknameDidCheckForSignUp(_ didChecked: Bool) {
-        switch didChecked {
-        case true:
-            nicknameTextField.hideNoticeLabel()
-        case false:
-            nicknameTextField.notice(msg: "닉네임 중복검사를 받으세요.", false)
-            nicknameTextField.showNoticeLabel()
-        }
-    }
-
-    // 비밀번호가 적합한가
-    func passwordValidataionDidCheckForSignUp(_ isValid: Bool) {
-        switch isValid {
-        case true:
-            passwordTextField.hideNoticeLabel()
-        case false:
-            passwordTextField.notice(msg: "영어, 숫자, 특수문자(!@#$%)를 포함하여 8자 이상이어야 합니다.", false)
-            passwordTextField.showNoticeLabel()
-        }
-    }
-
-    // 비밀번호 확인이 비밀번호와 같은가
-    func passwordDidCheckSameForSignUp(_ isSamePasswordAndPasswordCheck: Bool) {
-        switch isSamePasswordAndPasswordCheck {
-        case true:
-            passwordCheckTextField.hideNoticeLabel()
-        case false:
-            passwordCheckTextField.notice(msg: "비밀번호와 다릅니다.", false)
-            passwordCheckTextField.showNoticeLabel()
-        }
-    }
-
-    // 생일이 지정된 형식으로 작성되었는가
-    func birthValidationDidCheckForSignUp(_ isValid: Bool) {
-        switch isValid {
-        case true:
-            birthTextField.hideNoticeLabel()
-        case false:
-            birthTextField.notice(msg: "yyyyMMdd의 형식으로 올바른 날짜를 입력해주세요. ex) 19900101", false)
-            birthTextField.showNoticeLabel()
-        }
-    }
-
-    // 동의했는가
-    func agreementDidCheck(_ didAgree: Bool) {
-
+    func showNotice(_ notice: SignUpNotice) {
+        signUpNoticeHandeler(notice)
     }
 
     // 회원가입에 성공했는가
@@ -217,7 +144,7 @@ extension SignUpVC: SignUpDelegate {
     }
 
     // 오류 발생
-    func errorOccured() {
+    func occuredNetworkError() {
     }
 
 }
@@ -225,41 +152,31 @@ extension SignUpVC: SignUpDelegate {
 // MARK: 추가 NoticeLabel 조작사항
 
 extension SignUpVC {
-    func emailNotFillIn() {
-        emailTextField.notice(msg: "이메일을 입력해주세요.", false)
-        emailTextField.showNoticeLabel()
-    }
 
-    func nicknameNotFillIn() {
-        nicknameTextField.notice(msg: "닉네임을 입력해주세요.", false)
-        nicknameTextField.showNoticeLabel()
-    }
-
-    func passwordNotFillIn() {
-        passwordTextField.notice(msg: "비밀번호를 입력해주세요.", false)
-        passwordTextField.showNoticeLabel()
+    func signUpNoticeHandeler(_ signUpNotice: SignUpNotice) {
+        switch signUpNotice {
+        // emailNotice
+        case .blankEmail, .notEmailForm, .duplicateEmail, .validEmail, .notCheckedEmail, .checkedEmail:
+            emailTextField.showNoticeMessage(signUpNotice.message, isValidate: signUpNotice.isValidate)
+        // nicknameNotice
+        case .blankNickname, .duplicateNickname, .validNickname, .notCheckedNickname, .checkedNickname:
+            nicknameTextField.showNoticeMessage(signUpNotice.message, isValidate: signUpNotice.isValidate)
+        // passwordNotice
+        case .invalidPassword, .validPassword:
+            passwordTextField.showNoticeMessage(signUpNotice.message, isValidate: signUpNotice.isValidate)
+        // passwordCheckNotice
+        case .notSamePasswordAndPasswordCheck, .samePasswordAndPasswordCheck:
+            passwordCheckTextField.showNoticeMessage(signUpNotice.message, isValidate: signUpNotice.isValidate)
+        // birthNotice
+        case .notBirthdayForm, .validBrith:
+            birthTextField.showNoticeMessage(signUpNotice.message, isValidate: signUpNotice.isValidate)
+        }
     }
 }
 
 // MARK: - button event
 
 extension SignUpVC {
-
-    @objc
-    func emailCheckButtonClicked() {
-        if let email = emailTextField.text {
-            if email == "" { emailNotFillIn(); return }
-            signUpVM.checkEmail(email: email)
-        }
-    }
-
-    @objc
-    func nicknameCheckButtonClicked() {
-        if let nickname = nicknameTextField.text {
-            if nickname == "" { nicknameNotFillIn(); return }
-            signUpVM.checkNickname(nickname: nickname)
-        }
-    }
 
     @objc
     func finishButtonClicked() {

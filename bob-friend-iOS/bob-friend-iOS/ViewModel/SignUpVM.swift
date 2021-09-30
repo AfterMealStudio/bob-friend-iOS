@@ -16,56 +16,48 @@ class SignUpVM {
     var checkedNickname: String?
 
     func checkEmail(email: String) {
-        if !isEmailForm(email) {
-            delegate?.emailRequireValidForm()
+        guard email.isEmailForm else {
+            delegate?.showNotice(.notEmailForm)
             return
         }
 
         network.checkEmailDuplicationRequest(email: email) { [weak self] result in
             switch result {
-            case .success(let data):
-                if let data = data {
-                    let resultStr = String(decoding: data, as: UTF8.self)
-                    switch resultStr {
-                    case "true":
-                        self?.checkedEmail = nil
-                        self?.delegate?.emailDidDuplicate(true)
-                    case "false":
-                        self?.checkedEmail = email
-                        self?.delegate?.emailDidDuplicate(false)
-                    default:
-                        break
-                    }
+            case .success(let isDuplicate):
+                if isDuplicate == false {
+                    self?.checkedEmail = email
+                    self?.delegate?.showNotice(.validEmail)
+                } else {
+                    self?.checkedEmail = nil
+                    self?.delegate?.showNotice(.duplicateEmail)
                 }
             case .failure:
                 self?.checkedEmail = nil
-                self?.delegate?.errorOccured()
+                self?.delegate?.occuredNetworkError()
             }
         }
 
+    }
+
+    func resetEmail() {
+        checkedEmail = nil
     }
 
     func checkNickname(nickname: String) {
 
         network.checkNicknameDuplicationRequest(nickname: nickname) { [weak self] result in
             switch result {
-            case .success(let data):
-                if let data = data {
-                    let resultStr = String(decoding: data, as: UTF8.self)
-                    switch resultStr {
-                    case "true":
-                        self?.checkedNickname = nil
-                        self?.delegate?.nicknameDidDuplicate(true)
-                    case "false":
-                        self?.checkedNickname = nickname
-                        self?.delegate?.nicknameDidDuplicate(false)
-                    default:
-                        break
-                    }
+            case .success(let isDuplicate):
+                if isDuplicate == false {
+                    self?.checkedNickname = nickname
+                    self?.delegate?.showNotice(.validNickname)
+                } else {
+                    self?.checkedNickname = nil
+                    self?.delegate?.showNotice(.duplicateNickname)
                 }
             case .failure:
-                self?.checkedNickname = nil
-                self?.delegate?.errorOccured()
+                self?.checkedEmail = nil
+                self?.delegate?.occuredNetworkError()
             }
         }
 
@@ -92,13 +84,6 @@ class SignUpVM {
 
     }
 
-    private func isEmailForm(_ email: String) -> Bool {
-        let emailPattern = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]$"
-        let regex = try? NSRegularExpression(pattern: emailPattern)
-        if let _ = regex?.firstMatch(in: email, options: [], range: NSRange(location: 0, length: email.count)) { return true }
-        return false
-    }
-
     private func generateBirth(_ birthStr: String) -> String {
         let birth = String(birthStr.prefix(4)) + "-" + String(birthStr.prefix(6).suffix(2)) + "-" + String(birthStr.suffix(2))
         return birth
@@ -107,99 +92,108 @@ class SignUpVM {
     private func checkValidationForSignUp(email: String, nickname: String, password: String, passwordCheck: String, birth: String, gender: Gender, agree: Bool) -> Bool {
         var isValid: Bool = true
 
-        if !isSameParmaAndCheckedParam(param: email, checkedParam: checkedEmail) { // 실패 -> 중복검사 받은 이메일이 아니다
+        if email != checkedEmail { // 실패 -> 중복검사 받은 이메일이 아니다
             isValid = false
-            delegate?.emailDidCheckForSignUp(false)
-        } else { delegate?.emailDidCheckForSignUp(true) }
+            delegate?.showNotice(.notCheckedEmail)
+        } else { delegate?.showNotice(.checkedEmail) }
 
-        if !isSameParmaAndCheckedParam(param: nickname, checkedParam: checkedNickname) { // 실패 -> 중복검사 받은 유저네임이 아니다
+        if nickname != checkedNickname { // 실패 -> 중복검사 받은 유저네임이 아니다
             isValid = false
-            delegate?.nicknameDidCheckForSignUp(false)
-        } else { delegate?.nicknameDidCheckForSignUp(true) }
+            delegate?.showNotice(.notCheckedNickname)
+        } else { delegate?.showNotice(.checkedNickname) }
 
-        if !isValidPassword(password) { // 실패 -> 비밀번호가 부적합하다.
+        if !password.isPasswordForm { // 실패 -> 비밀번호가 부적합하다.
             isValid = false
-            delegate?.passwordValidataionDidCheckForSignUp(false)
-        } else { delegate?.passwordValidataionDidCheckForSignUp(true) }
+            delegate?.showNotice(.invalidPassword)
+        } else { delegate?.showNotice(.validPassword) }
 
-        if !isSamePasswordAndPasswordCheck(password, passwordCheck) { // 실패 -> 비밀번호 확인이 비밀번호와 다르다
+        if password != passwordCheck { // 실패 -> 비밀번호 확인이 비밀번호와 다르다
             isValid = false
-            delegate?.passwordDidCheckSameForSignUp(false)
-        } else { delegate?.passwordDidCheckSameForSignUp(true) }
+            delegate?.showNotice(.notSamePasswordAndPasswordCheck)
+        } else { delegate?.showNotice(.samePasswordAndPasswordCheck) }
 
-        if !isValidDate(birth) { // 실패 -> 생년월일이 정해진 포맷의 날짜로 주어지지 않았다.
+        if !birth.isDateForm { // 실패 -> 생년월일이 정해진 포맷의 날짜로 주어지지 않았다.
             isValid = false
-            delegate?.birthValidationDidCheckForSignUp(false)
-        } else { delegate?.birthValidationDidCheckForSignUp(true) }
+            delegate?.showNotice(.notBirthdayForm)
+        } else { delegate?.showNotice(.validBrith) }
 
         if !agree { // 실패 -> 동의를 안 했다.
             isValid = false
-            delegate?.agreementDidCheck(false)
-        } else { delegate?.agreementDidCheck(true) }
+        } else {
+            // TODO: 동의 했을 때 이벤트
+        }
 
         return isValid
-    }
-
-    private func isSameParmaAndCheckedParam(param: String, checkedParam: String?) -> Bool {
-        guard let checkedParam = checkedParam else { return false }
-        if checkedParam != param { return false }
-        return true
-    }
-
-    private func isValidPassword(_ password: String) -> Bool {
-
-        if password.count < 8 { return false }
-
-        let passwordPattern = "^[0-9a-zA-Z!@#$%]*$"
-        let regex = try? NSRegularExpression(pattern: passwordPattern)
-        guard let _ = regex?.firstMatch(in: password, options: [], range: NSRange(location: 0, length: password.count)) else { return false }
-
-        let regexNumber = try? NSRegularExpression(pattern: "[0-9]")
-        guard let _ = regexNumber?.firstMatch(in: password, options: [], range: NSRange(location: 0, length: password.count)) else { return false }
-
-        let regexAlphabet = try? NSRegularExpression(pattern: "[a-zA-Z]")
-        guard let _ = regexAlphabet?.firstMatch(in: password, options: [], range: NSRange(location: 0, length: password.count)) else { return false }
-
-        let regexSpecialChar = try? NSRegularExpression(pattern: "[!@#$%]")
-        guard let _ = regexSpecialChar?.firstMatch(in: password, options: [], range: NSRange(location: 0, length: password.count)) else { return false }
-
-        return true
-    }
-
-    private func isSamePasswordAndPasswordCheck(_ password: String, _ passwordCheck: String) -> Bool {
-        if password == passwordCheck { return true }
-        return false
-    }
-
-    private func isValidDate(_ inputDateString: String) -> Bool {
-        if inputDateString == "" { return false }
-        // yyyyMMdd
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyyMMdd"
-        dateFormatter.timeZone = TimeZone(identifier: "UTC")
-        if let _ = dateFormatter.date(from: inputDateString) {
-            return true
-        } else { return false }
     }
 
 }
 
 protocol SignUpDelegate: AnyObject {
-
-    func emailRequireValidForm()
-    func emailDidDuplicate(_ didDuplicate: Bool)
-
-    func nicknameDidDuplicate(_ didDuplicate: Bool)
-
-    func emailDidCheckForSignUp(_ didChecked: Bool)
-    func nicknameDidCheckForSignUp(_ didChecked: Bool)
-    func passwordValidataionDidCheckForSignUp(_ isValid: Bool)
-    func passwordDidCheckSameForSignUp(_ isSamePasswordAndPasswordCheck: Bool)
-    func birthValidationDidCheckForSignUp(_ isValid: Bool)
-    func agreementDidCheck(_ didAgree: Bool)
-
+    func showNotice(_ notice: SignUpNotice)
     func didSuccessSignUp(_ didSuccess: Bool)
+    func occuredNetworkError()
+}
 
-    func errorOccured()
+enum SignUpNotice {
+    case blankEmail
+    case notEmailForm
+    case validEmail
+    case duplicateEmail
+    case blankNickname
+    case validNickname
+    case duplicateNickname
+    case notCheckedEmail
+    case checkedEmail
+    case notCheckedNickname
+    case checkedNickname
+    case invalidPassword
+    case validPassword
+    case notSamePasswordAndPasswordCheck
+    case samePasswordAndPasswordCheck
+    case notBirthdayForm
+    case validBrith
 
+    var message: String {
+        switch self {
+        case .blankEmail: return "이메일 주소를 입력해주세요."
+        case .notEmailForm: return "이메일 형식에 맞게 써 주세요."
+        case .validEmail: return "사용 가능한 이메일입니다."
+        case .duplicateEmail: return "중복된 이메일입니다."
+        case .blankNickname: return "사용할 닉네임을 입력해주세요."
+        case .validNickname: return "사용 가능한 닉네임입니다."
+        case .duplicateNickname: return "중복된 닉네임이니다."
+        case .notCheckedEmail: return "이메일 중복검사를 받으세요."
+        case .checkedEmail: return ""
+        case .notCheckedNickname: return "닉네임 중복검사를 받으세요."
+        case .checkedNickname: return ""
+        case .invalidPassword: return "영어, 숫자, 특수문자(!@#$%)를 포함하여 8자 이상이어야 합니다."
+        case .validPassword: return ""
+        case .notSamePasswordAndPasswordCheck: return "비밀번호와 다릅니다."
+        case .samePasswordAndPasswordCheck: return ""
+        case .notBirthdayForm: return "yyyyMMdd의 형식으로 올바른 날짜를 입력해주세요. ex) 19900101"
+        case .validBrith: return ""
+        }
+    }
+
+    var isValidate: Bool {
+        switch  self {
+        case .blankEmail: return false
+        case .notEmailForm: return false
+        case .validEmail: return true
+        case .duplicateEmail: return false
+        case .blankNickname: return false
+        case .validNickname: return true
+        case .duplicateNickname: return false
+        case .notCheckedEmail: return false
+        case .checkedEmail: return true
+        case .notCheckedNickname: return false
+        case .checkedNickname: return true
+        case .invalidPassword: return false
+        case .validPassword: return true
+        case .notSamePasswordAndPasswordCheck: return false
+        case .samePasswordAndPasswordCheck: return true
+        case .notBirthdayForm: return false
+        case .validBrith: return true
+        }
+    }
 }
