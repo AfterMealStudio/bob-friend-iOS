@@ -144,8 +144,7 @@ extension SignUpVC: SignUpDelegate {
     }
 
     // 오류 발생
-    func occuredNetworkError() {
-    }
+    func occuredNetworkError() {}
 
 }
 

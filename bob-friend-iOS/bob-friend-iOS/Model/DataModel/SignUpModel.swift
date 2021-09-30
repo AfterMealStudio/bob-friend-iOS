@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SignUpModel: Codable {
+struct SignUpModel: Encodable {
     let email: String
     let nickname: String
     let password: String
@@ -21,7 +21,7 @@ enum Gender: String, Codable {
     case female = "FEMALE"
 }
 
-struct SignUpResponseModel: Codable {
+struct SignUpResponseModel: Decodable {
     let id: Int
     let email: String
     let nickname: String
