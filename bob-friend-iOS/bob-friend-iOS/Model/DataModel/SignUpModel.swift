@@ -32,3 +32,7 @@ struct SignUpResponseModel: Decodable {
     let agree: Bool
     let active: Bool
 }
+
+struct DuplicationCheckResultModel: Decodable {
+    let duplicated: Bool
+}

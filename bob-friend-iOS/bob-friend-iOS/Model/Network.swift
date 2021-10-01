@@ -36,37 +36,69 @@ final class Network {
                 return baseUrl + "api/signup"
             }
         }
-    }
 
-    func loginRequest(loginInfo: LoginModel, completion: @escaping (Result<TokenModel, AFError>) -> Void) {
-        AF.request(API.login.path, method: .post, parameters: loginInfo, encoder: JSONParameterEncoder.default).validate(statusCode: 200..<300).responseDecodable(of: TokenModel.self) { res in
-            completion(res.result)
+        var method: HTTPMethod {
+            switch self {
+            case .login: return .post
+            case .checkEmailDuplication(email: _): return .get
+            case .checkNicknameDuplication(nickname: _): return .get
+            case .signup: return .post
+            }
         }
     }
 
-    func checkEmailDuplicationRequest(email: String, completion: @escaping (Result<Bool, Error>) -> Void) {
-        request(api: .checkEmailDuplication(email: email), completion: completion)
+    func loginRequest(loginInfo: LoginModel, completion: @escaping (Result<TokenModel?, Error>) -> Void) {
+        request(api: API.login, type: TokenModel.self, parameter: loginInfo, completion: completion)
     }
 
-    func checkNicknameDuplicationRequest(nickname: String, completion: @escaping (Result<Bool, Error>) -> Void) {
-        request(api: .checkNicknameDuplication(nickname: nickname), completion: completion)
+    func checkEmailDuplicationRequest(email: String, completion: @escaping (Result<DuplicationCheckResultModel?, Error>) -> Void) {
+        request(api: .checkEmailDuplication(email: email), type: DuplicationCheckResultModel.self, completion: completion)
     }
 
-    func signUpRequest(signUpInfo: SignUpModel, completion: @escaping (Result<SignUpResponseModel, AFError>) -> Void) {
-        AF.request(API.signup.path, method: .post, parameters: signUpInfo, encoder: JSONParameterEncoder.default).validate(statusCode: 200..<300).responseDecodable(of: SignUpResponseModel.self) { res in
-            completion(res.result)
-        }
+    func checkNicknameDuplicationRequest(nickname: String, completion: @escaping (Result<DuplicationCheckResultModel?, Error>) -> Void) {
+        request(api: .checkNicknameDuplication(nickname: nickname), type: DuplicationCheckResultModel.self, completion: completion)
+    }
+
+    func signUpRequest(signUpInfo: SignUpModel, completion: @escaping (Result<SignUpResponseModel?, Error>) -> Void) {
+        request(api: .signup, type: SignUpResponseModel.self, parameter: signUpInfo, completion: completion)
     }
 
 }
 
 extension Network {
 
-    private func request<D: Decodable>(api: API, type: D.Type, completion: @escaping (Result<D, Error>) -> Void) {
-        session?.request(api.path).response { _ in
-            // TODO: JSON Decoder를 가지고 파싱하는 함수 구현
+    private func request<E: Encodable, D: Decodable>(api: API, type: D.Type, parameter: E, encoder: ParameterEncoder = JSONParameterEncoder(), completion: @escaping (Result<D?, Error>) -> Void) {
+
+        session?.request(api.path, method: api.method, parameters: parameter, encoder: encoder).response { [weak self] response in
+            switch response.result {
+            case .success(let data):
+                let jsonData = self?.decodeJSONData(data: data, type: type)
+                completion(.success(jsonData))
+            case .failure(let error):
+                completion(.failure(error))
+            }
         }
 
+    }
+
+    private func request<D: Decodable>(api: API, type: D.Type, completion: @escaping (Result<D?, Error>) -> Void) {
+
+        session?.request(api.path, method: api.method).response { [weak self] response in
+            switch response.result {
+            case .success(let data):
+                let jsonData = self?.decodeJSONData(data: data, type: type)
+                completion(.success(jsonData))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+
+    }
+
+    private func decodeJSONData<D: Decodable>(data: Data?, type: D.Type) -> D? {
+        let decoder = JSONDecoder()
+        guard let data = data, let jsonData = try? decoder.decode(type, from: data) else { return nil }
+        return jsonData
     }
 
     private func request(api: API, completion: @escaping (Result<Bool, Error>) -> Void) {

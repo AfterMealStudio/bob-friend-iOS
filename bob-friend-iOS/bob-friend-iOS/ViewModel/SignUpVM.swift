@@ -23,8 +23,8 @@ class SignUpVM {
 
         network.checkEmailDuplicationRequest(email: email) { [weak self] result in
             switch result {
-            case .success(let isDuplicate):
-                if isDuplicate == false {
+            case .success(let duplicationData):
+                if duplicationData?.duplicated == false {
                     self?.checkedEmail = email
                     self?.delegate?.showNotice(.validEmail)
                 } else {
@@ -47,8 +47,8 @@ class SignUpVM {
 
         network.checkNicknameDuplicationRequest(nickname: nickname) { [weak self] result in
             switch result {
-            case .success(let isDuplicate):
-                if isDuplicate == false {
+            case .success(let duplicationData):
+                if duplicationData?.duplicated == false {
                     self?.checkedNickname = nickname
                     self?.delegate?.showNotice(.validNickname)
                 } else {
@@ -161,7 +161,7 @@ enum SignUpNotice {
         case .duplicateEmail: return "중복된 이메일입니다."
         case .blankNickname: return "사용할 닉네임을 입력해주세요."
         case .validNickname: return "사용 가능한 닉네임입니다."
-        case .duplicateNickname: return "중복된 닉네임이니다."
+        case .duplicateNickname: return "중복된 닉네임입니다."
         case .notCheckedEmail: return "이메일 중복검사를 받으세요."
         case .checkedEmail: return ""
         case .notCheckedNickname: return "닉네임 중복검사를 받으세요."

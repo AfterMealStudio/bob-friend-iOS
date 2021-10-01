@@ -42,7 +42,7 @@ class SignUpVC: UIViewController {
 
     private let birthTextField: SignUpTextField = {
         $0.title = "생년월일"
-        $0.placeholder = "ex)1990-01-01"
+        $0.placeholder = "ex)19900101"
         return $0
     }(SignUpTextField())
 
