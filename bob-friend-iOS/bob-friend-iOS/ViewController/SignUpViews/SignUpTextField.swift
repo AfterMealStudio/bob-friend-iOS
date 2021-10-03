@@ -89,21 +89,6 @@ final class SignUpTextField: UIView {
     }
 }
 
-// MARK: - noticeLabel control
-//
-// extension SignUpTextField {
-//    func hideNoticeLabel() {
-//        noticeLabel.isHidden = true
-//    }
-//
-//    func showNoticeLabel() {
-//        noticeLabel.isHidden = false
-//    }
-//
-//
-//
-// }
-
 // MARK: - layout
 
 extension SignUpTextField {
