@@ -17,6 +17,8 @@
 		0B29793526D62F04002AD75A /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B29793326D62F04002AD75A /* LoginVC.swift */; };
 		0B29797426D8D13C002AD75A /* UIView+Border.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B29797326D8D13C002AD75A /* UIView+Border.swift */; };
 		0B29798826DA18A9002AD75A /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B29798726DA18A9002AD75A /* Network.swift */; };
+		0B52D2572709A2FB00133F5B /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B52D2562709A2FB00133F5B /* MainTabBarController.swift */; };
+		0B876D712709B5D100925881 /* MainMapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B876D702709B5D100925881 /* MainMapVC.swift */; };
 		0BA2016F26FF93EE0072A2B6 /* SignUpTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA2016E26FF93EE0072A2B6 /* SignUpTextField.swift */; };
 		0BB9877726DA30C200E0CC12 /* LoginVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB9877626DA30C200E0CC12 /* LoginVM.swift */; };
 		0BB9877C26DA571D00E0CC12 /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB9877B26DA571D00E0CC12 /* LoginModel.swift */; };
@@ -345,6 +347,8 @@
 		0B29793326D62F04002AD75A /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		0B29797326D8D13C002AD75A /* UIView+Border.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Border.swift"; sourceTree = "<group>"; };
 		0B29798726DA18A9002AD75A /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
+		0B52D2562709A2FB00133F5B /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		0B876D702709B5D100925881 /* MainMapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMapVC.swift; sourceTree = "<group>"; };
 		0BA2016E26FF93EE0072A2B6 /* SignUpTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpTextField.swift; sourceTree = "<group>"; };
 		0BB9877626DA30C200E0CC12 /* LoginVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVM.swift; sourceTree = "<group>"; };
 		0BB9877B26DA571D00E0CC12 /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
@@ -771,6 +775,8 @@
 				0B29793326D62F04002AD75A /* LoginVC.swift */,
 				0BBADAA126E1AE7D00EAA23D /* LoginVC.storyboard */,
 				0BDDC26226EF46A0008C9363 /* SignUpVC.swift */,
+				0B52D2562709A2FB00133F5B /* MainTabBarController.swift */,
+				0B876D702709B5D100925881 /* MainMapVC.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -1735,6 +1741,8 @@
 				0BB9877C26DA571D00E0CC12 /* LoginModel.swift in Sources */,
 				0B170B9926F3068500C25EA1 /* SignUpModel.swift in Sources */,
 				0B29793526D62F04002AD75A /* LoginVC.swift in Sources */,
+				0B876D712709B5D100925881 /* MainMapVC.swift in Sources */,
+				0B52D2572709A2FB00133F5B /* MainTabBarController.swift in Sources */,
 				0BE3EB122701AAE5008265B2 /* String+.swift in Sources */,
 				0B2978F126D617B4002AD75A /* AppDelegate.swift in Sources */,
 				0BA2016F26FF93EE0072A2B6 /* SignUpTextField.swift in Sources */,

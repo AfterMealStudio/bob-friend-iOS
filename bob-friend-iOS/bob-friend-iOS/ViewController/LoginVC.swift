@@ -72,6 +72,12 @@ extension LoginVC: UIScrollViewDelegate {
 extension LoginVC: LoginDelegate {
     func didSuccessLogin(_ token: TokenModel) {
         print(token)
+        let mainTapBarController = MainTabBarController()
+        mainTapBarController.modalPresentationStyle = .fullScreen
+
+        DispatchQueue.main.async { [weak self] in
+            self?.present(mainTapBarController, animated: true, completion: nil)
+        }
     }
 
     func didFailLogin(_ err: Error?) {
