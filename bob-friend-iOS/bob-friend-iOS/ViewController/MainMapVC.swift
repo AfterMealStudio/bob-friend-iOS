@@ -11,6 +11,11 @@ class MainMapVC: UIViewController {
 
     let mapView = MTMapView()
 
+    let searchBar: SearchBarView = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        return $0
+    }(SearchBarView())
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -21,20 +26,23 @@ class MainMapVC: UIViewController {
 
 }
 
+// MARK: - layout
 extension MainMapVC {
     func layout() {
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "MainColor1")
         let safeArea = view.safeAreaLayoutGuide
 
         // map
         mapView.frame = safeArea.layoutFrame
         view.addSubview(mapView)
-//        NSLayoutConstraint.activate([
-//            mapView.topAnchor.constraint(equalTo: safeArea.topAnchor),
-//            mapView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
-//            mapView.leftAnchor.constraint(equalTo: safeArea.leftAnchor),
-//            mapView.rightAnchor.constraint(equalTo: safeArea.rightAnchor)
-//        ])
+
+        // searchBar
+        view.addSubview(searchBar)
+        NSLayoutConstraint.activate([
+            searchBar.topAnchor.constraint(equalTo: safeArea.topAnchor),
+            searchBar.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
+            searchBar.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor)
+        ])
 
     }
 }
