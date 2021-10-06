@@ -6,10 +6,16 @@
 //
 
 import UIKit
+import CoreLocation
 
 class MainMapVC: UIViewController {
 
-    let mapView = MTMapView()
+    var locationManager: CLLocationManager!
+
+    let mapView: MTMapView = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        return $0
+    }(MTMapView())
 
     let searchBar: SearchBarView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -20,10 +26,27 @@ class MainMapVC: UIViewController {
         super.viewDidLoad()
 
         mapView.delegate = self
+        setMap()
         layout()
 
     }
 
+}
+
+// MARK: - Map Setting
+extension MainMapVC: CLLocationManagerDelegate {
+    func setMap() {
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+
+        mapView.showCurrentLocationMarker = true
+        mapView.currentLocationTrackingMode = .onWithoutHeading
+
+        locationManager.startUpdatingLocation()
+    }
 }
 
 // MARK: - layout
@@ -33,8 +56,13 @@ extension MainMapVC {
         let safeArea = view.safeAreaLayoutGuide
 
         // map
-        mapView.frame = safeArea.layoutFrame
         view.addSubview(mapView)
+        NSLayoutConstraint.activate([
+            mapView.topAnchor.constraint(equalTo: safeArea.topAnchor),
+            mapView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
+            mapView.leftAnchor.constraint(equalTo: safeArea.leftAnchor),
+            mapView.rightAnchor.constraint(equalTo: safeArea.rightAnchor)
+        ])
 
         // searchBar
         view.addSubview(searchBar)
