@@ -10,25 +10,60 @@ import CoreLocation
 
 class MainMapVC: UIViewController {
 
-    var locationManager: CLLocationManager!
+    let searchBar: SearchBarView = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        return $0
+    }(SearchBarView())
+
+    var searchListView: SearchListView = SearchListView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+
+    let searchResultList: [PlaceSearchResultModel] = []
 
     let mapView: MTMapView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
     }(MTMapView())
 
-    let searchBar: SearchBarView = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        return $0
-    }(SearchBarView())
+    var locationManager: CLLocationManager!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setSearchListView()
+        searchListView.delegate = self
+        searchListView.dataSource = self
+
         mapView.delegate = self
         setMap()
         layout()
+    }
 
+}
+
+// MARK: - SearchListView
+extension MainMapVC {
+    private func setSearchListView() {
+        let listlayout = UICollectionViewFlowLayout()
+        listlayout.itemSize = CGSize(width: view.frame.width - 10, height: 80)
+        listlayout.minimumLineSpacing = 5
+        listlayout.scrollDirection = .vertical
+        listlayout.sectionInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+
+        searchListView = SearchListView(frame: .zero, collectionViewLayout: listlayout)
+        searchListView.register(SearchListCell.self, forCellWithReuseIdentifier: "SearchListCell")
+
+        searchListView.isHidden = true
+    }
+}
+
+extension MainMapVC: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return searchResultList.count
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchListCell", for: indexPath) as? SearchListCell else { return SearchListCell() }
+        return cell
     }
 
 }
@@ -70,6 +105,15 @@ extension MainMapVC {
             searchBar.topAnchor.constraint(equalTo: safeArea.topAnchor),
             searchBar.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
             searchBar.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor)
+        ])
+
+        // searchListView
+        view.addSubview(searchListView)
+        NSLayoutConstraint.activate([
+            searchListView.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
+            searchListView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
+            searchListView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
+            searchListView.heightAnchor.constraint(equalToConstant: 200)
         ])
 
     }

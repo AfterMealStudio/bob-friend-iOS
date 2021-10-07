@@ -20,7 +20,9 @@
 		0B52D2572709A2FB00133F5B /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B52D2562709A2FB00133F5B /* MainTabBarController.swift */; };
 		0B876D712709B5D100925881 /* MainMapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B876D702709B5D100925881 /* MainMapVC.swift */; };
 		0B876D73270A0F4A00925881 /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B876D72270A0F4A00925881 /* SearchBarView.swift */; };
+		0B876D75270AFA0A00925881 /* SearchListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B876D74270AFA0A00925881 /* SearchListView.swift */; };
 		0BA2016F26FF93EE0072A2B6 /* SignUpTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA2016E26FF93EE0072A2B6 /* SignUpTextField.swift */; };
+		0BB077B0270DC6F000805138 /* PlaceSearchResultModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB077AF270DC6F000805138 /* PlaceSearchResultModel.swift */; };
 		0BB9877726DA30C200E0CC12 /* LoginVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB9877626DA30C200E0CC12 /* LoginVM.swift */; };
 		0BB9877C26DA571D00E0CC12 /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB9877B26DA571D00E0CC12 /* LoginModel.swift */; };
 		0BB9877E26DA573B00E0CC12 /* TokenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB9877D26DA573B00E0CC12 /* TokenModel.swift */; };
@@ -351,7 +353,9 @@
 		0B52D2562709A2FB00133F5B /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		0B876D702709B5D100925881 /* MainMapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMapVC.swift; sourceTree = "<group>"; };
 		0B876D72270A0F4A00925881 /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
+		0B876D74270AFA0A00925881 /* SearchListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchListView.swift; sourceTree = "<group>"; };
 		0BA2016E26FF93EE0072A2B6 /* SignUpTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpTextField.swift; sourceTree = "<group>"; };
+		0BB077AF270DC6F000805138 /* PlaceSearchResultModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceSearchResultModel.swift; sourceTree = "<group>"; };
 		0BB9877626DA30C200E0CC12 /* LoginVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVM.swift; sourceTree = "<group>"; };
 		0BB9877B26DA571D00E0CC12 /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
 		0BB9877D26DA573B00E0CC12 /* TokenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenModel.swift; sourceTree = "<group>"; };
@@ -780,6 +784,7 @@
 				0B52D2562709A2FB00133F5B /* MainTabBarController.swift */,
 				0B876D702709B5D100925881 /* MainMapVC.swift */,
 				0B876D72270A0F4A00925881 /* SearchBarView.swift */,
+				0B876D74270AFA0A00925881 /* SearchListView.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -817,6 +822,7 @@
 				0BB9877B26DA571D00E0CC12 /* LoginModel.swift */,
 				0BB9877D26DA573B00E0CC12 /* TokenModel.swift */,
 				0B170B9826F3068500C25EA1 /* SignUpModel.swift */,
+				0BB077AF270DC6F000805138 /* PlaceSearchResultModel.swift */,
 			);
 			path = DataModel;
 			sourceTree = "<group>";
@@ -1737,6 +1743,8 @@
 				0BDDC26326EF46A0008C9363 /* SignUpVC.swift in Sources */,
 				0BD421282700601C003E8734 /* SignUpGenderSelectView.swift in Sources */,
 				0B170B9726F2D63B00C25EA1 /* SignUpVM.swift in Sources */,
+				0B876D75270AFA0A00925881 /* SearchListView.swift in Sources */,
+				0BB077B0270DC6F000805138 /* PlaceSearchResultModel.swift in Sources */,
 				0B29798826DA18A9002AD75A /* Network.swift in Sources */,
 				0B876D73270A0F4A00925881 /* SearchBarView.swift in Sources */,
 				0BB9877E26DA573B00E0CC12 /* TokenModel.swift in Sources */,
