@@ -47,7 +47,7 @@ class MainMapVC: UIViewController {
 
         mapView.delegate = self
         setMap()
-        setCurrentLocationButton()
+        setCurrentLocationButtonAction()
         layout()
     }
 
@@ -99,7 +99,7 @@ extension MainMapVC: CLLocationManagerDelegate {
 
 // MARK: - ButtonSetting
 extension MainMapVC {
-    func setCurrentLocationButton() {
+    func setCurrentLocationButtonAction() {
         currentLocationButton.addTarget(self, action: #selector(currentButtonClicked), for: .touchUpInside)
     }
 
