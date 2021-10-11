@@ -24,6 +24,16 @@ class MainMapVC: UIViewController {
         return $0
     }(MTMapView())
 
+    let currentLocationButton: UIButton = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.backgroundColor = .white
+        $0.setImage(UIImage(systemName: "scope"), for: .normal)
+        $0.layer.borderColor = UIColor.lightGray.cgColor
+        $0.layer.borderWidth = 0.5
+        $0.layer.cornerRadius = 10
+        return $0
+    }(UIButton())
+
     var locationManager: CLLocationManager!
 
     override func viewDidLoad() {
@@ -114,6 +124,15 @@ extension MainMapVC {
             searchListView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
             searchListView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
             searchListView.heightAnchor.constraint(equalToConstant: 200)
+        ])
+
+        // currentLocationButton
+        view.addSubview(currentLocationButton)
+        NSLayoutConstraint.activate([
+            currentLocationButton.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -10),
+            currentLocationButton.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor, constant: -10),
+            currentLocationButton.widthAnchor.constraint(equalToConstant: 40),
+            currentLocationButton.heightAnchor.constraint(equalToConstant: 40)
         ])
 
     }
