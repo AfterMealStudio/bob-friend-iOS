@@ -31,10 +31,12 @@ class MainMapVC: UIViewController {
         $0.layer.borderColor = UIColor.lightGray.cgColor
         $0.layer.borderWidth = 0.5
         $0.layer.cornerRadius = 10
+        $0.tintColor = .darkGray
         return $0
     }(UIButton())
 
     var locationManager: CLLocationManager!
+    var updateCurrentLocation: MTMapPoint?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,6 +47,7 @@ class MainMapVC: UIViewController {
 
         mapView.delegate = self
         setMap()
+        setCurrentLocationButton()
         layout()
     }
 
@@ -94,6 +97,18 @@ extension MainMapVC: CLLocationManagerDelegate {
     }
 }
 
+// MARK: - ButtonSetting
+extension MainMapVC {
+    func setCurrentLocationButton() {
+        currentLocationButton.addTarget(self, action: #selector(currentButtonClicked), for: .touchUpInside)
+    }
+
+    @objc
+    func currentButtonClicked() {
+        mapView.setMapCenter(updateCurrentLocation, animated: true)
+    }
+}
+
 // MARK: - layout
 extension MainMapVC {
     func layout() {
@@ -140,6 +155,10 @@ extension MainMapVC {
 
 // MARK: - MTMapViewDelegate
 extension MainMapVC: MTMapViewDelegate {
+
+    func mapView(_ mapView: MTMapView!, updateCurrentLocation location: MTMapPoint!, withAccuracy accuracy: MTMapLocationAccuracy) {
+        updateCurrentLocation = location
+    }
 
 }
 
