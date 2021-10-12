@@ -22,11 +22,12 @@
 		0B876D73270A0F4A00925881 /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B876D72270A0F4A00925881 /* SearchBarView.swift */; };
 		0B876D75270AFA0A00925881 /* SearchListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B876D74270AFA0A00925881 /* SearchListView.swift */; };
 		0BA2016F26FF93EE0072A2B6 /* SignUpTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA2016E26FF93EE0072A2B6 /* SignUpTextField.swift */; };
-		0BB077B0270DC6F000805138 /* PlaceSearchResultModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB077AF270DC6F000805138 /* PlaceSearchResultModel.swift */; };
 		0BB9877726DA30C200E0CC12 /* LoginVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB9877626DA30C200E0CC12 /* LoginVM.swift */; };
 		0BB9877C26DA571D00E0CC12 /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB9877B26DA571D00E0CC12 /* LoginModel.swift */; };
 		0BB9877E26DA573B00E0CC12 /* TokenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB9877D26DA573B00E0CC12 /* TokenModel.swift */; };
 		0BBADAA226E1AE7D00EAA23D /* LoginVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0BBADAA126E1AE7D00EAA23D /* LoginVC.storyboard */; };
+		0BCFD0D1271477BB0008C79F /* KakaoKeywordSearchResultModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BCFD0D0271477BB0008C79F /* KakaoKeywordSearchResultModel.swift */; };
+		0BCFD0D32715A1660008C79F /* MainMapVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BCFD0D22715A1660008C79F /* MainMapVM.swift */; };
 		0BD421282700601C003E8734 /* SignUpGenderSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD421272700601C003E8734 /* SignUpGenderSelectView.swift */; };
 		0BDDC25D26EF36C7008C9363 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 0BDDC25C26EF36C7008C9363 /* .swiftlint.yml */; };
 		0BDDC26326EF46A0008C9363 /* SignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDDC26226EF46A0008C9363 /* SignUpVC.swift */; };
@@ -355,11 +356,12 @@
 		0B876D72270A0F4A00925881 /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 		0B876D74270AFA0A00925881 /* SearchListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchListView.swift; sourceTree = "<group>"; };
 		0BA2016E26FF93EE0072A2B6 /* SignUpTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpTextField.swift; sourceTree = "<group>"; };
-		0BB077AF270DC6F000805138 /* PlaceSearchResultModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceSearchResultModel.swift; sourceTree = "<group>"; };
 		0BB9877626DA30C200E0CC12 /* LoginVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVM.swift; sourceTree = "<group>"; };
 		0BB9877B26DA571D00E0CC12 /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
 		0BB9877D26DA573B00E0CC12 /* TokenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenModel.swift; sourceTree = "<group>"; };
 		0BBADAA126E1AE7D00EAA23D /* LoginVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LoginVC.storyboard; sourceTree = "<group>"; };
+		0BCFD0D0271477BB0008C79F /* KakaoKeywordSearchResultModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoKeywordSearchResultModel.swift; sourceTree = "<group>"; };
+		0BCFD0D22715A1660008C79F /* MainMapVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMapVM.swift; sourceTree = "<group>"; };
 		0BD421272700601C003E8734 /* SignUpGenderSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpGenderSelectView.swift; sourceTree = "<group>"; };
 		0BDDC25C26EF36C7008C9363 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		0BDDC26226EF46A0008C9363 /* SignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVC.swift; sourceTree = "<group>"; };
@@ -794,6 +796,7 @@
 			children = (
 				0BB9877626DA30C200E0CC12 /* LoginVM.swift */,
 				0B170B9626F2D63B00C25EA1 /* SignUpVM.swift */,
+				0BCFD0D22715A1660008C79F /* MainMapVM.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -822,7 +825,7 @@
 				0BB9877B26DA571D00E0CC12 /* LoginModel.swift */,
 				0BB9877D26DA573B00E0CC12 /* TokenModel.swift */,
 				0B170B9826F3068500C25EA1 /* SignUpModel.swift */,
-				0BB077AF270DC6F000805138 /* PlaceSearchResultModel.swift */,
+				0BCFD0D0271477BB0008C79F /* KakaoKeywordSearchResultModel.swift */,
 			);
 			path = DataModel;
 			sourceTree = "<group>";
@@ -1740,11 +1743,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0BCFD0D32715A1660008C79F /* MainMapVM.swift in Sources */,
 				0BDDC26326EF46A0008C9363 /* SignUpVC.swift in Sources */,
 				0BD421282700601C003E8734 /* SignUpGenderSelectView.swift in Sources */,
 				0B170B9726F2D63B00C25EA1 /* SignUpVM.swift in Sources */,
 				0B876D75270AFA0A00925881 /* SearchListView.swift in Sources */,
-				0BB077B0270DC6F000805138 /* PlaceSearchResultModel.swift in Sources */,
 				0B29798826DA18A9002AD75A /* Network.swift in Sources */,
 				0B876D73270A0F4A00925881 /* SearchBarView.swift in Sources */,
 				0BB9877E26DA573B00E0CC12 /* TokenModel.swift in Sources */,
@@ -1757,6 +1760,7 @@
 				0B52D2572709A2FB00133F5B /* MainTabBarController.swift in Sources */,
 				0BE3EB122701AAE5008265B2 /* String+.swift in Sources */,
 				0B2978F126D617B4002AD75A /* AppDelegate.swift in Sources */,
+				0BCFD0D1271477BB0008C79F /* KakaoKeywordSearchResultModel.swift in Sources */,
 				0BA2016F26FF93EE0072A2B6 /* SignUpTextField.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

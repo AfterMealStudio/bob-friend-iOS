@@ -9,6 +9,8 @@ import UIKit
 
 class SearchBarView: UIView {
 
+    var text: String = ""
+
     private let textFieldContainer: UIView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.layer.cornerRadius = 10
@@ -30,13 +32,28 @@ class SearchBarView: UIView {
         return $0
     }(UIButton())
 
-    public override init(frame: CGRect) {
-        super.init(frame: frame)
+    weak var delegate: SearchBarViewDelegate?
+
+    init() {
+        super.init(frame: .zero)
         layout()
+
+        button.addTarget(self, action: #selector(didButtonClicked), for: .touchUpInside)
+        textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    @objc
+    private func didButtonClicked() {
+        delegate?.didSearchButtonClicked()
+    }
+
+    @objc
+    private func textFieldDidChange() {
+        text = textField.text ?? ""
     }
 
 }
@@ -77,6 +94,12 @@ extension SearchBarView {
         ])
     }
 
+}
+
+// MARK: - Delegate
+
+protocol SearchBarViewDelegate: AnyObject {
+    func didSearchButtonClicked()
 }
 
 // MARK: - use Canvas

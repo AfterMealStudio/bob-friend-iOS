@@ -17,8 +17,6 @@ class MainMapVC: UIViewController {
 
     var searchListView: SearchListView = SearchListView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
 
-    let searchResultList: [PlaceSearchResultModel] = []
-
     let mapView: MTMapView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
@@ -37,18 +35,56 @@ class MainMapVC: UIViewController {
 
     var locationManager: CLLocationManager!
     var updateCurrentLocation: MTMapPoint?
+    let mainMapVM: MainMapVM = MainMapVM()
+
+    var searchResults: KakaoKeywordSearchResultModel? {
+        didSet {
+            searchListView.reloadData()
+            searchListView.isHidden = false
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // mainMapVM
+        mainMapVM.delegate = self
+
+        // searchBar
+        searchBar.delegate = self
+
+        // searchListView
         setSearchListView()
         searchListView.delegate = self
         searchListView.dataSource = self
 
+        // mapView
         mapView.delegate = self
         setMap()
+
+        // currentLocationButton
         setCurrentLocationButtonAction()
+
+        // layout
         layout()
+    }
+
+}
+
+// MARK: - MainMapVM Delegate
+extension MainMapVC: MainMapDelegate {
+    func mainMap(searchResults: KakaoKeywordSearchResultModel) {
+        self.searchResults = searchResults
+    }
+
+    func occuredError() {
+        let alertController = UIAlertController(title: "검색 실패하였습니다.", message: nil, preferredStyle: .alert)
+        let okBtn = UIAlertAction(title: "확인", style: .default)
+        alertController.addAction(okBtn)
+        DispatchQueue.main.async {
+            [weak self] in
+            self?.present(alertController, animated: true, completion: nil)
+        }
     }
 
 }
@@ -57,7 +93,7 @@ class MainMapVC: UIViewController {
 extension MainMapVC {
     private func setSearchListView() {
         let listlayout = UICollectionViewFlowLayout()
-        listlayout.itemSize = CGSize(width: view.frame.width - 10, height: 80)
+        listlayout.itemSize = CGSize(width: view.frame.width - 10, height: 70)
         listlayout.minimumLineSpacing = 5
         listlayout.scrollDirection = .vertical
         listlayout.sectionInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
@@ -71,12 +107,21 @@ extension MainMapVC {
 
 extension MainMapVC: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return searchResultList.count
+        guard let searchResults = searchResults else { return 10 }
+        return searchResults.documents.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchListCell", for: indexPath) as? SearchListCell else { return SearchListCell() }
+        guard let placeInfo = searchResults?.documents[indexPath.row] else { return cell }
+        cell.placeName = placeInfo.place_name
+        cell.roadAddress = placeInfo.road_address_name
+        cell.address = placeInfo.address_name
+        cell.longitude = Float(placeInfo.x) ?? 0
+        cell.latitude = Float(placeInfo.y) ?? 0
+
         return cell
+
     }
 
 }
@@ -153,11 +198,44 @@ extension MainMapVC {
     }
 }
 
+// MARK: - SearchBarViewDelegate
+extension MainMapVC: SearchBarViewDelegate {
+
+    func didSearchButtonClicked() {
+        mainMapVM.requestPlaceSearch(keyword: searchBar.text) { _ in }
+    }
+
+}
+
 // MARK: - MTMapViewDelegate
 extension MainMapVC: MTMapViewDelegate {
 
     func mapView(_ mapView: MTMapView!, updateCurrentLocation location: MTMapPoint!, withAccuracy accuracy: MTMapLocationAccuracy) {
         updateCurrentLocation = location
+    }
+
+}
+
+// MARK: - Keyboard
+extension MainMapVC {
+    // TODO: 키보드 내리기 구현 필요 - 현재 미작동
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+         view.endEditing(true)
+   }
+
+    private func removeKeyboard() {
+        view.endEditing(true)
+    }
+
+    private func enrollRemoveKeyboard() {
+        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapOtherMethod))
+        view.addGestureRecognizer(singleTapGestureRecognizer)
+
+    }
+
+    @objc
+    private func tapOtherMethod(sender: UITapGestureRecognizer) {
+        removeKeyboard()
     }
 
 }

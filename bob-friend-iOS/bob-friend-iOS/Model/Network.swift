@@ -22,8 +22,12 @@ final class Network {
         case checkNicknameDuplication(nickname: String)
         case signup
 
+        // kakao api
+        case kakaoKeywordSearch(keyword: String)
+
         var path: String {
             let baseUrl: String = "http://117.17.102.143:8080/"
+            let kakaoKeywordSearchUrl = "https://dapi.kakao.com/v2/local/search/keyword.json"
 
             switch self {
             case .login:
@@ -34,6 +38,8 @@ final class Network {
                 return baseUrl + "api/nickname/\(nickname)"
             case .signup:
                 return baseUrl + "api/signup"
+            case .kakaoKeywordSearch(let keyword):
+                return kakaoKeywordSearchUrl + "?query=\(keyword)"
             }
         }
 
@@ -43,6 +49,7 @@ final class Network {
             case .checkEmailDuplication(email: _): return .get
             case .checkNicknameDuplication(nickname: _): return .get
             case .signup: return .post
+            case .kakaoKeywordSearch(keyword: _): return .get
             }
         }
     }
@@ -61,6 +68,20 @@ final class Network {
 
     func signUpRequest(signUpInfo: SignUpModel, completion: @escaping (Result<SignUpResponseModel?, Error>) -> Void) {
         request(api: .signup, type: SignUpResponseModel.self, parameter: signUpInfo, completion: completion)
+    }
+
+    // TODO: request로 추상화, 카카오 앱키 관리, API 수정
+    func kakaoKeywordSearchRequest(keyword: String, page: Int, completion: @escaping (Result<KakaoKeywordSearchResultModel, AFError>) -> Void) {
+        let kakaoRestAPIKey = "3136b32531da9ba1c20a78ea3457e50d"
+        let urlWithoutQuery = "https://dapi.kakao.com/v2/local/search/keyword.json"
+        let parameters: Parameters = ["query": keyword, "page": page, "size": 15]
+        session?.request(urlWithoutQuery,
+                         method: API.kakaoKeywordSearch(keyword: "").method,
+                         parameters: parameters,
+                         headers: HTTPHeaders(["Authorization": "KakaoAK \(kakaoRestAPIKey)"])
+        ).responseDecodable(of: KakaoKeywordSearchResultModel.self) { response in
+            completion(response.result)
+        }
     }
 
 }
