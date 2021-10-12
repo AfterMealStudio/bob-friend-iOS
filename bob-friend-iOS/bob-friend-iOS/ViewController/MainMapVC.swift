@@ -124,6 +124,15 @@ extension MainMapVC: UICollectionViewDelegate, UICollectionViewDataSource {
 
     }
 
+    // TODO: 맵을 이동하지 않았을 때 검색 결과를 통해 검색장소로 이동하면 현위치로 다시 돌아오는 이슈 발생
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let placeInfo = searchResults?.documents[indexPath.row] else { return }
+        let longitude = Double(placeInfo.x) ?? 0
+        let latitude = Double(placeInfo.y) ?? 0
+        let point = MTMapPoint(geoCoord: MTMapPointGeo(latitude: latitude, longitude: longitude))
+        mapView.setMapCenter(point, animated: true)
+    }
+
 }
 
 // MARK: - Map Setting
