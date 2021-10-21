@@ -226,6 +226,12 @@ extension MainMapVC: MTMapViewDelegate {
 
     func mapView(_ mapView: MTMapView!, singleTapOn mapPoint: MTMapPoint!) {
         searchListView.isHidden = true
+        view.endEditing(true)
+    }
+
+    func mapView(_ mapView: MTMapView!, dragEndedOn mapPoint: MTMapPoint!) {
+        searchListView.isHidden = true
+        view.endEditing(true)
     }
 
 }
