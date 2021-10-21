@@ -74,7 +74,7 @@ extension LoginVC: LoginDelegate {
         print(token)
     }
 
-    func didFailLogin(_ err: Error) {
+    func didFailLogin(_ err: Error?) {
         let alertController = UIAlertController(title: "로그인 실패 하였습니다", message: nil, preferredStyle: .alert)
         let okBtn = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
             self?.dismiss(animated: true, completion: nil)

@@ -13,12 +13,14 @@ class LoginVM {
     weak var delegate: LoginDelegate?
 
     func login(id: String, pwd: String) {
-        let loginInfo = LoginModel(username: id, password: pwd)
+        let loginInfo = LoginModel(email: id, password: pwd)
 
         network.loginRequest(loginInfo: loginInfo) { [weak self] result in
             switch result {
             case .success(let token):
-                self?.delegate?.didSuccessLogin(token)
+                if let token = token {
+                    self?.delegate?.didSuccessLogin(token)
+                } else { self?.delegate?.didFailLogin(nil) }
             case .failure(let err):
                 self?.delegate?.didFailLogin(err)
             }
@@ -33,6 +35,6 @@ protocol LoginDelegate: AnyObject {
 
     func didSuccessLogin(_ token: TokenModel)
 
-    func didFailLogin(_ err: Error)
+    func didFailLogin(_ err: Error?)
 
 }
