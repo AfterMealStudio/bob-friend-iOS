@@ -21,9 +21,11 @@ final class Network {
         case checkEmailDuplication(email: String)
         case checkNicknameDuplication(nickname: String)
         case signup
+        case kakaoKeywordSearch
 
         var path: String {
             let baseUrl: String = "http://117.17.102.143:8080/"
+            let kakaoKeywordSearchUrl = "https://dapi.kakao.com/v2/local/search/keyword.json"
 
             switch self {
             case .login:
@@ -34,6 +36,8 @@ final class Network {
                 return baseUrl + "api/nickname/\(nickname)"
             case .signup:
                 return baseUrl + "api/signup"
+            case .kakaoKeywordSearch:
+                return kakaoKeywordSearchUrl
             }
         }
 
@@ -43,8 +47,10 @@ final class Network {
             case .checkEmailDuplication(email: _): return .get
             case .checkNicknameDuplication(nickname: _): return .get
             case .signup: return .post
+            case .kakaoKeywordSearch: return .get
             }
         }
+
     }
 
     func loginRequest(loginInfo: LoginModel, completion: @escaping (Result<TokenModel?, Error>) -> Void) {
@@ -63,13 +69,22 @@ final class Network {
         request(api: .signup, type: SignUpResponseModel.self, parameter: signUpInfo, completion: completion)
     }
 
+    // TODO: 카카오 앱키 관리
+    func kakaoKeywordSearchRequest(keyword: String, page: Int, completion: @escaping (Result<KakaoKeywordSearchResultModel?, Error>) -> Void) {
+        let kakaoRestAPIKey = "3136b32531da9ba1c20a78ea3457e50d"
+        let parameters: Parameters = ["query": keyword, "page": page, "size": 15]
+        let headers = HTTPHeaders(["Authorization": "KakaoAK \(kakaoRestAPIKey)"])
+
+        request(api: .kakaoKeywordSearch, type: KakaoKeywordSearchResultModel.self, headers: headers, parameters: parameters, completion: completion)
+    }
+
 }
 
 extension Network {
 
-    private func request<E: Encodable, D: Decodable>(api: API, type: D.Type, parameter: E, encoder: ParameterEncoder = JSONParameterEncoder(), completion: @escaping (Result<D?, Error>) -> Void) {
+    private func request<E: Encodable, D: Decodable>(api: API, type: D.Type, parameter: E, encoder: ParameterEncoder = JSONParameterEncoder(), headers: HTTPHeaders? = nil, completion: @escaping (Result<D?, Error>) -> Void) {
 
-        session?.request(api.path, method: api.method, parameters: parameter, encoder: encoder).response { [weak self] response in
+        session?.request(api.path, method: api.method, parameters: parameter, encoder: encoder, headers: headers).response { [weak self] response in
             switch response.result {
             case .success(let data):
                 let jsonData = self?.decodeJSONData(data: data, type: type)
@@ -81,9 +96,9 @@ extension Network {
 
     }
 
-    private func request<D: Decodable>(api: API, type: D.Type, completion: @escaping (Result<D?, Error>) -> Void) {
+    private func request<D: Decodable>(api: API, type: D.Type, headers: HTTPHeaders? = nil, parameters: Parameters? = nil, encoder: ParameterEncoder = URLEncodedFormParameterEncoder.default, completion: @escaping (Result<D?, Error>) -> Void) {
 
-        session?.request(api.path, method: api.method).response { [weak self] response in
+        session?.request(api.path, method: api.method, parameters: parameters, headers: headers).response { [weak self] response in
             switch response.result {
             case .success(let data):
                 let jsonData = self?.decodeJSONData(data: data, type: type)
