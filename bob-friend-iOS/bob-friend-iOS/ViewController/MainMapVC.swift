@@ -40,6 +40,7 @@ class MainMapVC: UIViewController {
     var searchResults: KakaoKeywordSearchResultModel? {
         didSet {
             searchListView.reloadData()
+            searchListView.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
             searchListView.isHidden = false
         }
     }
