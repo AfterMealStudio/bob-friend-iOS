@@ -223,11 +223,15 @@ extension MainMapVC: MTMapViewDelegate {
         updateCurrentLocation = location
     }
 
+    func mapView(_ mapView: MTMapView!, singleTapOn mapPoint: MTMapPoint!) {
+        searchListView.isHidden = true
+    }
+
 }
 
 // MARK: - Keyboard
 extension MainMapVC {
-    // TODO: 키보드 내리기 구현 필요 - 현재 미작동
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
          view.endEditing(true)
    }
