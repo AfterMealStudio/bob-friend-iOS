@@ -13,10 +13,14 @@ class MainMapVM {
     let network: Network = Network()
     weak var delegate: MainMapDelegate?
 
-    func requestPlaceSearch(keyword: String, page: Int = 1, completion: @escaping (Result<KakaoKeywordSearchResultModel, AFError>) -> Void) {
+    func requestPlaceSearch(keyword: String, page: Int = 1, completion: @escaping (Result<KakaoKeywordSearchResultModel?, Error>) -> Void) {
         network.kakaoKeywordSearchRequest(keyword: keyword, page: page) { [weak self] result in
             switch result {
             case .success(let data):
+                guard let data = data else {
+                    self?.delegate?.occuredError()
+                    return
+                }
                 self?.delegate?.mainMap(searchResults: data)
             case . failure(_):
                 self?.delegate?.occuredError()

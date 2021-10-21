@@ -21,9 +21,7 @@ final class Network {
         case checkEmailDuplication(email: String)
         case checkNicknameDuplication(nickname: String)
         case signup
-
-        // kakao api
-        case kakaoKeywordSearch(keyword: String)
+        case kakaoKeywordSearch
 
         var path: String {
             let baseUrl: String = "http://117.17.102.143:8080/"
@@ -38,8 +36,8 @@ final class Network {
                 return baseUrl + "api/nickname/\(nickname)"
             case .signup:
                 return baseUrl + "api/signup"
-            case .kakaoKeywordSearch(let keyword):
-                return kakaoKeywordSearchUrl + "?query=\(keyword)"
+            case .kakaoKeywordSearch:
+                return kakaoKeywordSearchUrl
             }
         }
 
@@ -49,9 +47,10 @@ final class Network {
             case .checkEmailDuplication(email: _): return .get
             case .checkNicknameDuplication(nickname: _): return .get
             case .signup: return .post
-            case .kakaoKeywordSearch(keyword: _): return .get
+            case .kakaoKeywordSearch: return .get
             }
         }
+
     }
 
     func loginRequest(loginInfo: LoginModel, completion: @escaping (Result<TokenModel?, Error>) -> Void) {
@@ -70,27 +69,22 @@ final class Network {
         request(api: .signup, type: SignUpResponseModel.self, parameter: signUpInfo, completion: completion)
     }
 
-    // TODO: request로 추상화, 카카오 앱키 관리, API 수정
-    func kakaoKeywordSearchRequest(keyword: String, page: Int, completion: @escaping (Result<KakaoKeywordSearchResultModel, AFError>) -> Void) {
+    // TODO: 카카오 앱키 관리
+    func kakaoKeywordSearchRequest(keyword: String, page: Int, completion: @escaping (Result<KakaoKeywordSearchResultModel?, Error>) -> Void) {
         let kakaoRestAPIKey = "3136b32531da9ba1c20a78ea3457e50d"
-        let urlWithoutQuery = "https://dapi.kakao.com/v2/local/search/keyword.json"
         let parameters: Parameters = ["query": keyword, "page": page, "size": 15]
-        session?.request(urlWithoutQuery,
-                         method: API.kakaoKeywordSearch(keyword: "").method,
-                         parameters: parameters,
-                         headers: HTTPHeaders(["Authorization": "KakaoAK \(kakaoRestAPIKey)"])
-        ).responseDecodable(of: KakaoKeywordSearchResultModel.self) { response in
-            completion(response.result)
-        }
+        let headers = HTTPHeaders(["Authorization": "KakaoAK \(kakaoRestAPIKey)"])
+
+        request(api: .kakaoKeywordSearch, type: KakaoKeywordSearchResultModel.self, headers: headers, parameters: parameters, completion: completion)
     }
 
 }
 
 extension Network {
 
-    private func request<E: Encodable, D: Decodable>(api: API, type: D.Type, parameter: E, encoder: ParameterEncoder = JSONParameterEncoder(), completion: @escaping (Result<D?, Error>) -> Void) {
+    private func request<E: Encodable, D: Decodable>(api: API, type: D.Type, parameter: E, encoder: ParameterEncoder = JSONParameterEncoder(), headers: HTTPHeaders? = nil, completion: @escaping (Result<D?, Error>) -> Void) {
 
-        session?.request(api.path, method: api.method, parameters: parameter, encoder: encoder).response { [weak self] response in
+        session?.request(api.path, method: api.method, parameters: parameter, encoder: encoder, headers: headers).response { [weak self] response in
             switch response.result {
             case .success(let data):
                 let jsonData = self?.decodeJSONData(data: data, type: type)
@@ -102,9 +96,9 @@ extension Network {
 
     }
 
-    private func request<D: Decodable>(api: API, type: D.Type, completion: @escaping (Result<D?, Error>) -> Void) {
+    private func request<D: Decodable>(api: API, type: D.Type, headers: HTTPHeaders? = nil, parameters: Parameters? = nil, encoder: ParameterEncoder = URLEncodedFormParameterEncoder.default, completion: @escaping (Result<D?, Error>) -> Void) {
 
-        session?.request(api.path, method: api.method).response { [weak self] response in
+        session?.request(api.path, method: api.method, parameters: parameters, headers: headers).response { [weak self] response in
             switch response.result {
             case .success(let data):
                 let jsonData = self?.decodeJSONData(data: data, type: type)
