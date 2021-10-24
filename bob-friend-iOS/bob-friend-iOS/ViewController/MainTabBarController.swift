@@ -16,7 +16,8 @@ class MainTabBarController: UITabBarController {
         tabBar.backgroundColor = .white
 
         let mainMapVC = MainMapVC()
-        let appointmentListVC = UIViewController()
+        let appointmentListVC = AppointmentVC()
+        let appointmentNavigationVC = UINavigationController(rootViewController: appointmentListVC)
         let makeAppointmentVC = UIViewController()
         let myPageVC = UIViewController()
 
@@ -25,7 +26,7 @@ class MainTabBarController: UITabBarController {
         makeAppointmentVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(systemName: "plus.app"), selectedImage: UIImage(systemName: "plus.app.fill"))
         myPageVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(systemName: "person"), selectedImage: UIImage(systemName: "person.fill"))
 
-        viewControllers = [mainMapVC, appointmentListVC, makeAppointmentVC, myPageVC]
+        viewControllers = [mainMapVC, appointmentNavigationVC, makeAppointmentVC, myPageVC]
 
     }
 
