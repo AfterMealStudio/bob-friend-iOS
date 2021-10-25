@@ -16,7 +16,7 @@ class MainTabBarController: UITabBarController {
         tabBar.backgroundColor = .white
 
         let mainMapVC = MainMapVC()
-        let appointmentListVC = AppointmentVC()
+        let appointmentListVC = AppointmentListVC()
         let appointmentNavigationVC = UINavigationController(rootViewController: appointmentListVC)
         let makeAppointmentVC = UIViewController()
         let myPageVC = UIViewController()

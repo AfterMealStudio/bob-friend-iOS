@@ -22,7 +22,7 @@
 		0B876D73270A0F4A00925881 /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B876D72270A0F4A00925881 /* SearchBarView.swift */; };
 		0B876D75270AFA0A00925881 /* SearchListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B876D74270AFA0A00925881 /* SearchListView.swift */; };
 		0BA2016F26FF93EE0072A2B6 /* SignUpTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA2016E26FF93EE0072A2B6 /* SignUpTextField.swift */; };
-		0BA716B227256BCC00A36A04 /* AppointmentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA716B127256BCC00A36A04 /* AppointmentVC.swift */; };
+		0BA716B227256BCC00A36A04 /* AppointmentListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA716B127256BCC00A36A04 /* AppointmentListVC.swift */; };
 		0BB9877726DA30C200E0CC12 /* LoginVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB9877626DA30C200E0CC12 /* LoginVM.swift */; };
 		0BB9877C26DA571D00E0CC12 /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB9877B26DA571D00E0CC12 /* LoginModel.swift */; };
 		0BB9877E26DA573B00E0CC12 /* TokenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB9877D26DA573B00E0CC12 /* TokenModel.swift */; };
@@ -357,7 +357,7 @@
 		0B876D72270A0F4A00925881 /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 		0B876D74270AFA0A00925881 /* SearchListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchListView.swift; sourceTree = "<group>"; };
 		0BA2016E26FF93EE0072A2B6 /* SignUpTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpTextField.swift; sourceTree = "<group>"; };
-		0BA716B127256BCC00A36A04 /* AppointmentVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentVC.swift; sourceTree = "<group>"; };
+		0BA716B127256BCC00A36A04 /* AppointmentListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentListVC.swift; sourceTree = "<group>"; };
 		0BB9877626DA30C200E0CC12 /* LoginVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVM.swift; sourceTree = "<group>"; };
 		0BB9877B26DA571D00E0CC12 /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
 		0BB9877D26DA573B00E0CC12 /* TokenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenModel.swift; sourceTree = "<group>"; };
@@ -730,6 +730,7 @@
 		0B2978EF26D617B4002AD75A /* bob-friend-iOS */ = {
 			isa = PBXGroup;
 			children = (
+				0BA716B7272630A200A36A04 /* AppointmentList */,
 				0BE3EDD227096AEC008265B2 /* Header */,
 				0B29798626DA1890002AD75A /* Model */,
 				0B29798526DA1886002AD75A /* ViewModel */,
@@ -789,7 +790,6 @@
 				0B876D702709B5D100925881 /* MainMapVC.swift */,
 				0B876D72270A0F4A00925881 /* SearchBarView.swift */,
 				0B876D74270AFA0A00925881 /* SearchListView.swift */,
-				0BA716B127256BCC00A36A04 /* AppointmentVC.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -820,6 +820,14 @@
 				0BD421272700601C003E8734 /* SignUpGenderSelectView.swift */,
 			);
 			path = SignUpViews;
+			sourceTree = "<group>";
+		};
+		0BA716B7272630A200A36A04 /* AppointmentList */ = {
+			isa = PBXGroup;
+			children = (
+				0BA716B127256BCC00A36A04 /* AppointmentListVC.swift */,
+			);
+			path = AppointmentList;
 			sourceTree = "<group>";
 		};
 		0BB9877A26DA570E00E0CC12 /* DataModel */ = {
@@ -1764,7 +1772,7 @@
 				0BE3EB122701AAE5008265B2 /* String+.swift in Sources */,
 				0B2978F126D617B4002AD75A /* AppDelegate.swift in Sources */,
 				0BCFD0D1271477BB0008C79F /* KakaoKeywordSearchResultModel.swift in Sources */,
-				0BA716B227256BCC00A36A04 /* AppointmentVC.swift in Sources */,
+				0BA716B227256BCC00A36A04 /* AppointmentListVC.swift in Sources */,
 				0BA2016F26FF93EE0072A2B6 /* SignUpTextField.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

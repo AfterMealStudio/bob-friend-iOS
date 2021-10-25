@@ -1,5 +1,5 @@
 //
-//  AppointmentVC.swift
+//  AppointmentListVC.swift
 //  bob-friend-iOS
 //
 //  Created by 김수진 on 2021/10/24.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AppointmentVC: UIViewController {
+class AppointmentListVC: UIViewController {
 
     let searchBar: SearchBarView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -34,7 +34,7 @@ class AppointmentVC: UIViewController {
 }
 
 // MARK: - layout
-extension AppointmentVC {
+extension AppointmentListVC {
 
     private func layout() {
 
@@ -62,13 +62,13 @@ extension AppointmentVC {
 }
 
 // MARK: - appointmentListTableView
-extension AppointmentVC {
+extension AppointmentListVC {
     private func registAppointmentListTableView() {
         appointmentListTableView.register(AppointmentListTableViewCell.self, forCellReuseIdentifier: "AppointListCell")
     }
 }
 
-extension AppointmentVC: UITableViewDelegate, UITableViewDataSource {
+extension AppointmentListVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 10
     }
