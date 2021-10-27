@@ -20,7 +20,7 @@ class AppointmentListVC: UIViewController {
         return $0
     }(UITableView())
 
-    var appointments: [AppointmentModel] = [] {
+    var appointments: [AppointmentSimpleModel] = [] {
         didSet {
             appointmentListTableView.reloadData()
         }
@@ -74,7 +74,7 @@ extension AppointmentListVC {
 
 // MARK: - AppointmentListVM Delegate
 extension AppointmentListVC: AppointmentListDelegate {
-    func didGetAppointments(_ appointments: [AppointmentModel]) {
+    func didGetAppointments(_ appointments: [AppointmentSimpleModel]) {
         self.appointments += appointments
     }
 
@@ -102,6 +102,12 @@ extension AppointmentListVC: UITableViewDelegate, UITableViewDataSource {
         cell.commentCntLabel.text = "\(0)"
         cell.dateLabel.text = "\(appointment.createdAt)"
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row == appointments.count - 1 {
+            appointmentListVM.getAppointmentList()
+        }
     }
 
 }

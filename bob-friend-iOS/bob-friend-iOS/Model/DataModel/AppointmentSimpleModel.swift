@@ -7,6 +7,24 @@
 
 import Foundation
 
+struct AppointmentSimpleModel: Decodable {
+    let id: Int
+    let title: String
+    let content: String
+    let author: User
+    let totalNumberOfPeople: Int
+    let currentNumberOfPeople: Int
+    let full: Bool
+//    let sexRestriction
+//    let appointmentTime: String?
+    let createdAt: String
+
+    struct User: Decodable {
+        let nickname: String
+    }
+
+}
+
 struct AppointmentModel: Decodable {
     let id: Int
     let title: String
@@ -31,7 +49,7 @@ struct AppointmentModel: Decodable {
 }
 
 struct AppointmentListModel: Decodable {
-    let content: [AppointmentModel]
+    let content: [AppointmentSimpleModel]
     let first: Bool
     let last: Bool
     let totalPages: Int

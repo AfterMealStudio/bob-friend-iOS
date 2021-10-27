@@ -16,7 +16,7 @@ class AppointmentListVM {
     var isLast = false
 
     func getAppointmentList() {
-
+        if isLast { return }
         network.getAppointmentListRequest(page: nextPage) { [weak self] result in
             switch result {
             case .success(let appointmentList):
@@ -36,5 +36,5 @@ class AppointmentListVM {
 }
 
 protocol AppointmentListDelegate: AnyObject {
-    func didGetAppointments(_ appointments: [AppointmentModel])
+    func didGetAppointments(_ appointments: [AppointmentSimpleModel])
 }
