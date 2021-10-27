@@ -42,6 +42,11 @@ class AppointmentListVC: UIViewController {
         layout()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isHidden = true
+    }
+
 }
 
 // MARK: - layout
@@ -102,6 +107,13 @@ extension AppointmentListVC: UITableViewDelegate, UITableViewDataSource {
         cell.commentCntLabel.text = "\(0)"
         cell.dateLabel.text = "\(appointment.createdAt)"
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = AppointmentVC()
+        DispatchQueue.main.async { [weak self] in
+            self?.navigationController?.pushViewController(vc, animated: true)
+        }
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
