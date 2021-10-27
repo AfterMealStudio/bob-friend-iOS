@@ -20,8 +20,19 @@ class AppointmentListVC: UIViewController {
         return $0
     }(UITableView())
 
+    var appointments: [AppointmentModel] = [] {
+        didSet {
+            appointmentListTableView.reloadData()
+        }
+    }
+    let appointmentListVM: AppointmentListVM = AppointmentListVM()
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        // vm
+        appointmentListVM.delegate = self
+        appointmentListVM.getAppointmentList()
 
         // appointmentListTableView
         appointmentListTableView.delegate = self
@@ -61,6 +72,14 @@ extension AppointmentListVC {
 
 }
 
+// MARK: - AppointmentListVM Delegate
+extension AppointmentListVC: AppointmentListDelegate {
+    func didGetAppointments(_ appointments: [AppointmentModel]) {
+        self.appointments += appointments
+    }
+
+}
+
 // MARK: - appointmentListTableView
 extension AppointmentListVC {
     private func registAppointmentListTableView() {
@@ -70,12 +89,18 @@ extension AppointmentListVC {
 
 extension AppointmentListVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return appointments.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "AppointListCell", for: indexPath) as?  AppointmentListTableViewCell else { return AppointmentListTableViewCell() }
 
+        let appointment = appointments[indexPath.row]
+        cell.titleLabel.text = appointment.title
+        cell.userLabel.text = appointment.author.nickname
+        cell.peopleCntLabel.text = "\(appointment.currentNumberOfPeople)/\( appointment.totalNumberOfPeople)"
+        cell.commentCntLabel.text = "\(0)"
+        cell.dateLabel.text = "\(appointment.createdAt)"
         return cell
     }
 

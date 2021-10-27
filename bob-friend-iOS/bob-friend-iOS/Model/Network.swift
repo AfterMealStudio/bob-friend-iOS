@@ -16,12 +16,15 @@ final class Network {
         self.session = session
     }
 
+    static var token: String = ""
+
     private enum API {
         case login
         case checkEmailDuplication(email: String)
         case checkNicknameDuplication(nickname: String)
         case signup
         case kakaoKeywordSearch
+        case appointmentList
 
         var path: String {
             let baseUrl: String = "http://117.17.102.143:8080/"
@@ -38,6 +41,8 @@ final class Network {
                 return baseUrl + "api/signup"
             case .kakaoKeywordSearch:
                 return kakaoKeywordSearchUrl
+            case .appointmentList:
+                return baseUrl + "recruitments"
             }
         }
 
@@ -48,6 +53,7 @@ final class Network {
             case .checkNicknameDuplication(nickname: _): return .get
             case .signup: return .post
             case .kakaoKeywordSearch: return .get
+            case .appointmentList: return .get
             }
         }
 
@@ -75,7 +81,13 @@ final class Network {
         let parameters: Parameters = ["query": keyword, "page": page, "size": 15]
         let headers = HTTPHeaders(["Authorization": "KakaoAK \(kakaoRestAPIKey)"])
 
-        request(api: .kakaoKeywordSearch, type: KakaoKeywordSearchResultModel.self, headers: headers, parameters: parameters, completion: completion)
+        request(api: .kakaoKeywordSearch, type: KakaoKeywordSearchResultModel.self, parameters: parameters, headers: headers, completion: completion)
+    }
+
+    func getAppointmentListRequest(page: Int = 0, completion: @escaping(Result<AppointmentListModel?, Error>) -> Void) {
+        let parameters: Parameters = ["page": page]
+        let headers = HTTPHeaders(["Authorization": Network.token])
+        request(api: .appointmentList, type: AppointmentListModel.self, parameters: parameters, headers: headers, completion: completion)
     }
 
 }
@@ -96,7 +108,7 @@ extension Network {
 
     }
 
-    private func request<D: Decodable>(api: API, type: D.Type, headers: HTTPHeaders? = nil, parameters: Parameters? = nil, encoder: ParameterEncoder = URLEncodedFormParameterEncoder.default, completion: @escaping (Result<D?, Error>) -> Void) {
+    private func request<D: Decodable>(api: API, type: D.Type, parameters: Parameters? = nil, encoder: ParameterEncoder = URLEncodedFormParameterEncoder.default, headers: HTTPHeaders? = nil, completion: @escaping (Result<D?, Error>) -> Void) {
 
         session?.request(api.path, method: api.method, parameters: parameters, headers: headers).response { [weak self] response in
             switch response.result {

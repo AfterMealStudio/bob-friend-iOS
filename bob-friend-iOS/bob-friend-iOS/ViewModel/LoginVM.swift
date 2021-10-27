@@ -20,6 +20,7 @@ class LoginVM {
             case .success(let token):
                 if let token = token {
                     self?.delegate?.didSuccessLogin(token)
+                    Network.token = token.token
                 } else { self?.delegate?.didFailLogin(nil) }
             case .failure(let err):
                 self?.delegate?.didFailLogin(err)
