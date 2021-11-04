@@ -131,6 +131,7 @@ extension MainMapVC: UICollectionViewDelegate, UICollectionViewDataSource {
         let longitude = Double(placeInfo.x) ?? 0
         let latitude = Double(placeInfo.y) ?? 0
         let point = MTMapPoint(geoCoord: MTMapPointGeo(latitude: latitude, longitude: longitude))
+        unlockMapTrackingMode()
         mapView.setMapCenter(point, animated: true)
     }
 
@@ -149,6 +150,11 @@ extension MainMapVC: CLLocationManagerDelegate {
         mapView.currentLocationTrackingMode = .onWithoutHeading
 
         locationManager.startUpdatingLocation()
+
+    }
+
+    func unlockMapTrackingMode() {
+        mapView.currentLocationTrackingMode = .onWithoutHeadingWithoutMapMoving
     }
 }
 

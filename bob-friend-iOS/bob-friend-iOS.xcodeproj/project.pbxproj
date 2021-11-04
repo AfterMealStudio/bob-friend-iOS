@@ -31,6 +31,8 @@
 		0BB9877C26DA571D00E0CC12 /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB9877B26DA571D00E0CC12 /* LoginModel.swift */; };
 		0BB9877E26DA573B00E0CC12 /* TokenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB9877D26DA573B00E0CC12 /* TokenModel.swift */; };
 		0BBADAA226E1AE7D00EAA23D /* LoginVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0BBADAA126E1AE7D00EAA23D /* LoginVC.storyboard */; };
+		0BCCDF312731533D0042C226 /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BCCDF302731533D0042C226 /* CommentTableViewCell.swift */; };
+		0BCCDF332731539B0042C226 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BCCDF322731539B0042C226 /* DetailView.swift */; };
 		0BCFD0D1271477BB0008C79F /* KakaoKeywordSearchResultModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BCFD0D0271477BB0008C79F /* KakaoKeywordSearchResultModel.swift */; };
 		0BCFD0D32715A1660008C79F /* MainMapVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BCFD0D22715A1660008C79F /* MainMapVM.swift */; };
 		0BD421282700601C003E8734 /* SignUpGenderSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD421272700601C003E8734 /* SignUpGenderSelectView.swift */; };
@@ -370,6 +372,8 @@
 		0BB9877B26DA571D00E0CC12 /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
 		0BB9877D26DA573B00E0CC12 /* TokenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenModel.swift; sourceTree = "<group>"; };
 		0BBADAA126E1AE7D00EAA23D /* LoginVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LoginVC.storyboard; sourceTree = "<group>"; };
+		0BCCDF302731533D0042C226 /* CommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
+		0BCCDF322731539B0042C226 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		0BCFD0D0271477BB0008C79F /* KakaoKeywordSearchResultModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoKeywordSearchResultModel.swift; sourceTree = "<group>"; };
 		0BCFD0D22715A1660008C79F /* MainMapVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMapVM.swift; sourceTree = "<group>"; };
 		0BD421272700601C003E8734 /* SignUpGenderSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpGenderSelectView.swift; sourceTree = "<group>"; };
@@ -845,6 +849,8 @@
 			isa = PBXGroup;
 			children = (
 				0BA716BF2729414600A36A04 /* AppointmentVC.swift */,
+				0BCCDF302731533D0042C226 /* CommentTableViewCell.swift */,
+				0BCCDF322731539B0042C226 /* DetailView.swift */,
 			);
 			path = Appointment;
 			sourceTree = "<group>";
@@ -1776,10 +1782,12 @@
 			files = (
 				0BCFD0D32715A1660008C79F /* MainMapVM.swift in Sources */,
 				0BDDC26326EF46A0008C9363 /* SignUpVC.swift in Sources */,
+				0BCCDF312731533D0042C226 /* CommentTableViewCell.swift in Sources */,
 				0BD421282700601C003E8734 /* SignUpGenderSelectView.swift in Sources */,
 				0B170B9726F2D63B00C25EA1 /* SignUpVM.swift in Sources */,
 				0B876D75270AFA0A00925881 /* SearchListView.swift in Sources */,
 				0BA716BB27290CA800A36A04 /* AppointmentSimpleModel.swift in Sources */,
+				0BCCDF332731539B0042C226 /* DetailView.swift in Sources */,
 				0BA716C02729414600A36A04 /* AppointmentVC.swift in Sources */,
 				0B29798826DA18A9002AD75A /* Network.swift in Sources */,
 				0BA716B9272632D800A36A04 /* AppointmentListTableViewCell.swift in Sources */,
