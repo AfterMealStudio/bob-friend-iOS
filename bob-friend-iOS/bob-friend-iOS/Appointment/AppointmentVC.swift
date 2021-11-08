@@ -23,10 +23,42 @@ class AppointmentVC: UIViewController {
     let commentTableView: UITableView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.allowsSelection = false
+        $0.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         return $0
     }(UITableView())
 
-    var appointmentInfo: AppointmentModel?
+    var appointmentInfo: AppointmentModel? {
+        didSet {
+            layout()
+            if let appointmentInfo = appointmentInfo {
+                comments = appointmentInfo.comments
+            }
+        }
+    }
+    var comments: [CommentModel] = [] {
+        didSet {
+            var commentsAndReplies: [CommentsAndRepliesModel] = []
+            for comment in comments {
+                let refinedComment = CommentsAndRepliesModel(id: comment.id, author: comment.author.nickname, content: comment.content, parentId: nil, createdAt: comment.createdAt)
+                commentsAndReplies.append(refinedComment)
+                for reply in comment.replies {
+                    let refinedReply = CommentsAndRepliesModel(id: reply.id, author: reply.author.nickname, content: reply.content, parentId: comment.id, createdAt: reply.createdAt)
+                    commentsAndReplies.append(refinedReply)
+                }
+            }
+            self.commentsAndReplies = commentsAndReplies
+        }
+    }
+
+    var commentsAndReplies: [CommentsAndRepliesModel] = [] { didSet { commentTableView.reloadData() } }
+
+    struct CommentsAndRepliesModel {
+        let id: Int
+        let author: String
+        let content: String
+        let parentId: Int?
+        let createdAt: String
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,7 +82,7 @@ class AppointmentVC: UIViewController {
         registCommentTableView()
 
         // layout
-        layout()
+//        layout()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -237,14 +269,18 @@ extension AppointmentVC: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return commentsAndReplies.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "CommentTableView", for: indexPath) as? CommentTableViewCell else { return CommentTableViewCell() }
-        cell.userName = "username"
-        cell.time = "2021-10-23 11:22"
-        cell.content = "comment content"
+        let comment = commentsAndReplies[indexPath.row]
+        cell.userName = comment.author
+        cell.time = comment.createdAt
+        cell.content = comment.content
+        if comment.parentId != nil {
+            cell.replyMode = true
+        }
 
         return cell
     }

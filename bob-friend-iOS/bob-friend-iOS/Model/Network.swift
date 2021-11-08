@@ -25,6 +25,7 @@ final class Network {
         case signup
         case kakaoKeywordSearch
         case appointmentList
+        case appointment(id: Int)
 
         var path: String {
             let baseUrl: String = "http://117.17.102.143:8080/"
@@ -43,6 +44,8 @@ final class Network {
                 return kakaoKeywordSearchUrl
             case .appointmentList:
                 return baseUrl + "recruitments"
+            case .appointment(let id):
+                return baseUrl + "recruitments/\(id)"
             }
         }
 
@@ -54,6 +57,7 @@ final class Network {
             case .signup: return .post
             case .kakaoKeywordSearch: return .get
             case .appointmentList: return .get
+            case .appointment(id: _): return .get
             }
         }
 
@@ -90,6 +94,22 @@ final class Network {
         request(api: .appointmentList, type: AppointmentListModel.self, parameters: parameters, headers: headers, completion: completion)
     }
 
+    func getAppointment(_ appointmentID: Int, completion: @escaping(Result<AppointmentModel?, Error>) -> Void) {
+        let headers = HTTPHeaders(["Authorization": Network.token])
+        request(api: .appointment(id: appointmentID), type: AppointmentModel.self, headers: headers) { result in
+            print(result)
+            switch result {
+            case .success(let appointment):
+                print(1, appointment)
+                break
+            case .failure:
+
+                break
+            }
+            completion(result)
+        }
+    }
+
 }
 
 extension Network {
@@ -111,6 +131,7 @@ extension Network {
     private func request<D: Decodable>(api: API, type: D.Type, parameters: Parameters? = nil, encoder: ParameterEncoder = URLEncodedFormParameterEncoder.default, headers: HTTPHeaders? = nil, completion: @escaping (Result<D?, Error>) -> Void) {
 
         session?.request(api.path, method: api.method, parameters: parameters, headers: headers).response { [weak self] response in
+            print(response.debugDescription)
             switch response.result {
             case .success(let data):
                 let jsonData = self?.decodeJSONData(data: data, type: type)

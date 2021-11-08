@@ -104,14 +104,20 @@ extension AppointmentListVC: UITableViewDelegate, UITableViewDataSource {
         cell.titleLabel.text = appointment.title
         cell.userLabel.text = appointment.author.nickname
         cell.peopleCntLabel.text = "\(appointment.currentNumberOfPeople)/\( appointment.totalNumberOfPeople)"
-        cell.commentCntLabel.text = "\(0)"
+        cell.commentCntLabel.text = "\(appointment.amountOfComments)"
         cell.dateLabel.text = "\(appointment.createdAt)"
         return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = AppointmentVC()
+
         DispatchQueue.main.async { [weak self] in
+            let appointmentID = self?.appointments[indexPath.row].id
+            guard let appointmentID = appointmentID else { return }
+            self?.appointmentListVM.getAppointment(appointmentID) { appointment in
+                vc.appointmentInfo = appointment
+            }
             self?.navigationController?.pushViewController(vc, animated: true)
         }
     }

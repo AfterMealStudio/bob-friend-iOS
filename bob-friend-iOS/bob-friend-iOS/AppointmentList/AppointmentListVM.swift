@@ -33,6 +33,23 @@ class AppointmentListVM {
 
     }
 
+    func getAppointment(_ id: Int, completion: @escaping (AppointmentModel) -> Void) {
+        network.getAppointment(id) { result in
+            print(result)
+            switch result {
+            case .success(let appointment):
+
+                if let appointment = appointment {
+                    print(appointment)
+                    completion(appointment)
+                }
+            case .failure:
+                break
+            }
+
+        }
+    }
+
 }
 
 protocol AppointmentListDelegate: AnyObject {

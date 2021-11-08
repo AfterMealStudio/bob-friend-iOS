@@ -12,6 +12,7 @@ struct AppointmentSimpleModel: Decodable {
     let title: String
     let content: String
     let author: User
+    let amountOfComments: Int
     let totalNumberOfPeople: Int
     let currentNumberOfPeople: Int
     let full: Bool
@@ -31,6 +32,8 @@ struct AppointmentModel: Decodable {
     let content: String
     let author: User
     let members: [User]
+    let amountOfComments: Int
+    let comments: [CommentModel]
     let totalNumberOfPeople: Int
     let currentNumberOfPeople: Int
     let full: Bool
@@ -46,6 +49,25 @@ struct AppointmentModel: Decodable {
         let nickname: String
     }
 
+}
+
+struct CommentModel: Decodable {
+    let id: Int
+    let author: User
+    let content: String
+    let replies: [Reply]
+    let createdAt: String
+
+    struct User: Decodable {
+        let nickname: String
+    }
+
+    struct Reply: Decodable {
+        let id: Int
+        let author: User
+        let content: String
+        let createdAt: String
+    }
 }
 
 struct AppointmentListModel: Decodable {

@@ -17,6 +17,24 @@ class CommentTableViewCell: UITableViewCell {
             contentTextField.sizeToFit()
         }
     }
+    var viewLeadingConstraint: NSLayoutConstraint?
+    var replyMode: Bool = false {
+        didSet {
+            if replyMode {
+                backgroundColor = UIColor(rgb: 0xefefef)
+                contentTextField.backgroundColor = UIColor(rgb: 0xefefef)
+                if let viewLeadingConstraint = viewLeadingConstraint {
+                    viewLeadingConstraint.isActive = false
+                }
+                view.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 30).isActive = true
+            }
+        }
+    }
+
+    private let view: UIView = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        return $0
+    }(UIView())
 
     private let userNameLabel: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -59,32 +77,42 @@ class CommentTableViewCell: UITableViewCell {
     }
 
     func layout() {
-        addSubview(userNameLabel)
+        addSubview(view)
+        viewLeadingConstraint = view.leadingAnchor.constraint(equalTo: leadingAnchor)
+        guard let viewLeadingConstraint = viewLeadingConstraint else { return }
         NSLayoutConstraint.activate([
-            userNameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 10),
-            userNameLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10)
+            view.topAnchor.constraint(equalTo: topAnchor),
+            view.bottomAnchor.constraint(equalTo: bottomAnchor),
+            viewLeadingConstraint,
+            view.trailingAnchor.constraint(equalTo: trailingAnchor)
+        ])
+
+        view.addSubview(userNameLabel)
+        NSLayoutConstraint.activate([
+            userNameLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
+            userNameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10)
         ])
         userNameLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
 
-        addSubview(timeLabel)
+        view.addSubview(timeLabel)
         NSLayoutConstraint.activate([
             timeLabel.centerYAnchor.constraint(equalTo: userNameLabel.centerYAnchor),
             timeLabel.leadingAnchor.constraint(equalTo: userNameLabel.trailingAnchor, constant: 10)
         ])
 
-        addSubview(reportButton)
+        view.addSubview(reportButton)
         NSLayoutConstraint.activate([
             reportButton.centerYAnchor.constraint(equalTo: userNameLabel.centerYAnchor),
             reportButton.leadingAnchor.constraint(equalTo: timeLabel.trailingAnchor, constant: 10),
-            reportButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10)
+            reportButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10)
         ])
 
-        addSubview(contentTextField)
+        view.addSubview(contentTextField)
         NSLayoutConstraint.activate([
             contentTextField.topAnchor.constraint(equalTo: userNameLabel.bottomAnchor, constant: 2),
-            contentTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
-            contentTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
-            contentTextField.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10)
+            contentTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            contentTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            contentTextField.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10)
         ])
     }
 
