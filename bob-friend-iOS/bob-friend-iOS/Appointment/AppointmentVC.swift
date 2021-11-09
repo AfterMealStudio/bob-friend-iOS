@@ -65,11 +65,19 @@ class AppointmentVC: UIViewController {
         let createdAt: String
     }
 
+    var appointmentVM: AppointmentVM = AppointmentVM()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // AppointmentVM
+        appointmentVM.delegate = self
+
         // view
         view.backgroundColor = UIColor(named: "MainColor1")
+
+        // commentWritingView
+        commentWritingView.delegate = self
 
         // navigationBar
         navigationController?.navigationBar.backgroundColor = UIColor(named: "MainColor1")
@@ -284,6 +292,22 @@ extension AppointmentVC {
         ])
     }
 
+}
+
+// MARK: - Appointment Delegate
+extension AppointmentVC: AppointmentDelegate {
+    func didEnrollComment() {
+
+    }
+
+}
+
+// MARK: - CommentWritingView Delegate
+extension AppointmentVC: CommentWritingViewDelegate {
+    func didWriteButtonClicked(content: String) {
+        guard let appointmentID = appointmentInfo?.id else { return }
+        appointmentVM.enrollComment(appointmentID: appointmentID, content: content)
+    }
 }
 
 // MARK: - CommentTableView Delegate

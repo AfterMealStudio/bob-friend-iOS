@@ -8,6 +8,11 @@
 import UIKit
 
 class CommentWritingView: UIView {
+
+    weak var delegate: CommentWritingViewDelegate?
+
+    private var content: String = ""
+
     private let textBoxView: UIView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.layer.cornerRadius = 5
@@ -27,11 +32,14 @@ class CommentWritingView: UIView {
         $0.setImage(UIImage(systemName: "paperplane.fill"), for: .normal)
         $0.backgroundColor = UIColor(named: "MainColor3")
         $0.tintColor = UIColor(named: "MainColor2")
+        $0.addTarget(self, action: #selector(didWriteButtonClicked), for: .touchUpInside)
         return $0
     }(UIButton())
 
     init() {
         super.init(frame: .zero)
+
+        commentView.delegate = self
 
         backgroundColor = .white
         layout()
@@ -69,4 +77,19 @@ class CommentWritingView: UIView {
         ])
     }
 
+    @objc
+    func didWriteButtonClicked() {
+        delegate?.didWriteButtonClicked(content: content)
+    }
+
+}
+
+extension CommentWritingView: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        content = textView.text
+    }
+}
+
+protocol CommentWritingViewDelegate: AnyObject {
+    func didWriteButtonClicked(content: String)
 }

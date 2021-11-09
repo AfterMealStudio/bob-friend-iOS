@@ -26,6 +26,7 @@ final class Network {
         case kakaoKeywordSearch
         case appointmentList
         case appointment(id: Int)
+        case enrollComment(appointmentID: Int)
 
         var path: String {
             let baseUrl: String = "http://117.17.102.143:8080/"
@@ -46,6 +47,8 @@ final class Network {
                 return baseUrl + "recruitments"
             case .appointment(let id):
                 return baseUrl + "recruitments/\(id)"
+            case .enrollComment(appointmentID: let id):
+                return baseUrl + "recruitments/\(id)/comments"
             }
         }
 
@@ -58,6 +61,7 @@ final class Network {
             case .kakaoKeywordSearch: return .get
             case .appointmentList: return .get
             case .appointment(id: _): return .get
+            case .enrollComment(appointmentID: _): return .post
             }
         }
 
@@ -97,17 +101,13 @@ final class Network {
     func getAppointment(_ appointmentID: Int, completion: @escaping(Result<AppointmentModel?, Error>) -> Void) {
         let headers = HTTPHeaders(["Authorization": Network.token])
         request(api: .appointment(id: appointmentID), type: AppointmentModel.self, headers: headers) { result in
-            print(result)
-            switch result {
-            case .success(let appointment):
-                print(1, appointment)
-                break
-            case .failure:
-
-                break
-            }
             completion(result)
         }
+    }
+
+    func enrollCommentRequest(appointmentID: Int, comment: EnrollCommentModel, completion: @escaping(Result<EnrollCommentResponseModel?, Error>) -> Void) {
+        let headers = HTTPHeaders(["Authorization": Network.token])
+        request(api: API.enrollComment(appointmentID: appointmentID), type: EnrollCommentResponseModel.self, parameter: comment, headers: headers, completion: completion)
     }
 
 }
