@@ -9,6 +9,8 @@ import UIKit
 
 class AppointmentVC: UIViewController {
 
+    let appointmentID: Int
+
     let scrollView: UIScrollView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.backgroundColor = .white
@@ -32,46 +34,23 @@ class AppointmentVC: UIViewController {
         return $0
     }(CommentWritingView())
 
-    var appointmentInfo: AppointmentModel? {
-        didSet {
-            layout()
-            if let appointmentInfo = appointmentInfo {
-                comments = appointmentInfo.comments
-            }
-        }
-    }
-    var comments: [CommentModel] = [] {
-        didSet {
-            var commentsAndReplies: [CommentsAndRepliesModel] = []
-            for comment in comments {
-                let refinedComment = CommentsAndRepliesModel(id: comment.id, author: comment.author.nickname, content: comment.content, parentId: nil, createdAt: comment.createdAt)
-                commentsAndReplies.append(refinedComment)
-                for reply in comment.replies {
-                    let refinedReply = CommentsAndRepliesModel(id: reply.id, author: reply.author.nickname, content: reply.content, parentId: comment.id, createdAt: reply.createdAt)
-                    commentsAndReplies.append(refinedReply)
-                }
-            }
-            self.commentsAndReplies = commentsAndReplies
-        }
-    }
-
-    var commentsAndReplies: [CommentsAndRepliesModel] = [] { didSet { commentTableView.reloadData() } }
-
-    struct CommentsAndRepliesModel {
-        let id: Int
-        let author: String
-        let content: String
-        let parentId: Int?
-        let createdAt: String
-    }
-
     var appointmentVM: AppointmentVM = AppointmentVM()
+
+    init(appointmentID: Int) {
+        self.appointmentID = appointmentID
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // AppointmentVM
         appointmentVM.delegate = self
+        appointmentVM.getAppointment(appointmentID) { _ in }
 
         // view
         view.backgroundColor = UIColor(named: "MainColor1")
@@ -145,7 +124,7 @@ extension AppointmentVC {
         // MARK: - title layout
         let titleTextView: UITextView = {
             $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.text = appointmentInfo?.title
+            $0.text = appointmentVM.appointmentInfo?.title
             $0.font = UIFont.boldSystemFont(ofSize: 18)
             $0.isSelectable = false
             $0.isEditable = false
@@ -164,7 +143,7 @@ extension AppointmentVC {
         // MARK: - content layout
         let contentTextView: UITextView = {
             $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.text = appointmentInfo?.content
+            $0.text = appointmentVM.appointmentInfo?.content
             $0.font = UIFont.systemFont(ofSize: 16)
             $0.isSelectable = false
             $0.isEditable = false
@@ -208,13 +187,13 @@ extension AppointmentVC {
 
         let placeLabel: UILabel = {
             $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.text = appointmentInfo?.restaurantName
+            $0.text = appointmentVM.appointmentInfo?.restaurantName
             return $0
         }(UILabel())
 
         let timeLabel: UILabel = {
             $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.text = appointmentInfo?.appointmentTime
+            $0.text = appointmentVM.appointmentInfo?.appointmentTime
             return $0
         }(UILabel())
 
@@ -260,8 +239,8 @@ extension AppointmentVC {
         scrollStackView.addArrangedSubview(DividerView())
 
         // MARK: - members
-        let currentPeople: Int = appointmentInfo?.currentNumberOfPeople ?? 0
-        let totalPeople: Int = appointmentInfo?.totalNumberOfPeople ?? 0
+        let currentPeople: Int = appointmentVM.appointmentInfo?.currentNumberOfPeople ?? 0
+        let totalPeople: Int = appointmentVM.appointmentInfo?.totalNumberOfPeople ?? 0
 
         let memberLabel: UILabel = {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -296,8 +275,12 @@ extension AppointmentVC {
 
 // MARK: - Appointment Delegate
 extension AppointmentVC: AppointmentDelegate {
-    func didEnrollComment() {
+    func didSetCommentsAndRepliesData() {
+        commentTableView.reloadData()
+    }
 
+    func didEnrollComment() {
+        viewDidLoad()
     }
 
 }
@@ -305,7 +288,7 @@ extension AppointmentVC: AppointmentDelegate {
 // MARK: - CommentWritingView Delegate
 extension AppointmentVC: CommentWritingViewDelegate {
     func didWriteButtonClicked(content: String) {
-        guard let appointmentID = appointmentInfo?.id else { return }
+        guard let appointmentID = appointmentVM.appointmentInfo?.id else { return }
         appointmentVM.enrollComment(appointmentID: appointmentID, content: content)
     }
 }
@@ -317,12 +300,12 @@ extension AppointmentVC: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return commentsAndReplies.count
+        return appointmentVM.commentsAndReplies.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "CommentTableView", for: indexPath) as? CommentTableViewCell else { return CommentTableViewCell() }
-        let comment = commentsAndReplies[indexPath.row]
+        let comment = appointmentVM.commentsAndReplies[indexPath.row]
         cell.userName = comment.author
         cell.time = comment.createdAt
         cell.content = comment.content
@@ -343,7 +326,7 @@ struct AppointmentVCRepresentable: UIViewControllerRepresentable {
     typealias UIViewControllerType = AppointmentVC
 
     func makeUIViewController(context: Context) -> AppointmentVC {
-        return AppointmentVC()
+        return AppointmentVC(appointmentID: 1)
     }
 
     func updateUIViewController(_ uiViewController: AppointmentVC, context: Context) {

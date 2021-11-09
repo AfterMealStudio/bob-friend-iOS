@@ -110,16 +110,18 @@ extension AppointmentListVC: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = AppointmentVC()
+        let vc = AppointmentVC(appointmentID: appointments[indexPath.row].id)
 
-        DispatchQueue.main.async { [weak self] in
-            let appointmentID = self?.appointments[indexPath.row].id
-            guard let appointmentID = appointmentID else { return }
-            self?.appointmentListVM.getAppointment(appointmentID) { appointment in
-                vc.appointmentInfo = appointment
-            }
-            self?.navigationController?.pushViewController(vc, animated: true)
-        }
+//        DispatchQueue.main.async { [weak self] in
+//            let appointmentID = self?.appointments[indexPath.row].id
+//            guard let appointmentID = appointmentID else { return }
+//            self?.appointmentListVM.getAppointment(appointmentID) { appointment in
+//                vc.appointmentInfo = appointment
+//            }
+//            self?.navigationController?.pushViewController(vc, animated: true)
+//        }
+
+        navigationController?.pushViewController(vc, animated: true)
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
