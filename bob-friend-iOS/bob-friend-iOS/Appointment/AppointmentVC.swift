@@ -27,6 +27,11 @@ class AppointmentVC: UIViewController {
         return $0
     }(UITableView())
 
+    let commentWritingView: CommentWritingView = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        return $0
+    }(CommentWritingView())
+
     var appointmentInfo: AppointmentModel? {
         didSet {
             layout()
@@ -82,7 +87,8 @@ class AppointmentVC: UIViewController {
         registCommentTableView()
 
         // layout
-//        layout()
+        layout()
+
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -94,6 +100,7 @@ class AppointmentVC: UIViewController {
 
 // MARK: - layout
 extension AppointmentVC {
+
     func layout() {
         let safeArea = view.safeAreaLayoutGuide
 
@@ -105,6 +112,12 @@ extension AppointmentVC {
             scrollView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor)
         ])
 
+        layoutContentStack()
+        layoutCommentWritingView()
+
+    }
+
+    func layoutContentStack() {
         let scrollStackView: UIStackView = {
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.axis = .vertical
@@ -260,6 +273,17 @@ extension AppointmentVC {
         // tableView의 스크롤이 아닌 상위 스크롤 뷰의 스크롤로 확인 가능하도록.
         commentTableView.heightAnchor.constraint(equalToConstant: 300).isActive = true
     }
+
+    // MARK: - commentWriting layout
+    func layoutCommentWritingView() {
+        scrollView.addSubview(commentWritingView)
+        NSLayoutConstraint.activate([
+            commentWritingView.leadingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.leadingAnchor),
+            commentWritingView.trailingAnchor.constraint(equalTo: scrollView.frameLayoutGuide.trailingAnchor),
+            commentWritingView.bottomAnchor.constraint(equalTo: scrollView.frameLayoutGuide.bottomAnchor)
+        ])
+    }
+
 }
 
 // MARK: - CommentTableView Delegate
