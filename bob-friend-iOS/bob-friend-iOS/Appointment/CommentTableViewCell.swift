@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class CommentTableViewCell: UITableViewCell {
 
@@ -18,15 +19,23 @@ class CommentTableViewCell: UITableViewCell {
         }
     }
     var viewLeadingConstraint: NSLayoutConstraint?
-    var replyMode: Bool = false {
+    var commentMode: CommentMode? {
         didSet {
-            if replyMode {
-                backgroundColor = UIColor(rgb: 0xefefef)
-                contentTextField.backgroundColor = UIColor(rgb: 0xefefef)
-                if let viewLeadingConstraint = viewLeadingConstraint {
-                    viewLeadingConstraint.isActive = false
-                }
-                view.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 30).isActive = true
+            backgroundColor = commentMode?.bgColor
+            contentTextField.backgroundColor = commentMode?.bgColor
+            switch commentMode {
+            case .comment:
+                viewLeadingConstraint?.isActive = false
+                viewLeadingConstraint = commentMode?.viewLeadingConstraint
+                viewLeadingConstraint?.isActive = true
+            case .reply:
+                viewLeadingConstraint?.isActive = false
+                viewLeadingConstraint = commentMode?.viewLeadingConstraint
+                viewLeadingConstraint?.isActive = true
+            case .none:
+                break
+            case .some:
+                break
             }
         }
     }
@@ -68,6 +77,7 @@ class CommentTableViewCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        commentMode = .comment(cell: self)
         layout()
         backgroundColor = .white
     }
@@ -78,7 +88,7 @@ class CommentTableViewCell: UITableViewCell {
 
     func layout() {
         addSubview(view)
-        viewLeadingConstraint = view.leadingAnchor.constraint(equalTo: leadingAnchor)
+        viewLeadingConstraint = commentMode?.viewLeadingConstraint
         guard let viewLeadingConstraint = viewLeadingConstraint else { return }
         NSLayoutConstraint.activate([
             view.topAnchor.constraint(equalTo: topAnchor),
@@ -125,6 +135,34 @@ class CommentTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+
+}
+
+extension CommentTableViewCell {
+
+    enum CommentMode {
+        case comment(cell: CommentTableViewCell)
+        case reply(cell: CommentTableViewCell)
+
+        var viewLeadingConstraint: NSLayoutConstraint {
+            switch self {
+            case .comment(let cell):
+                return cell.view.leadingAnchor.constraint(equalTo: cell.leadingAnchor)
+            case .reply(let cell):
+                return cell.view.leadingAnchor.constraint(equalTo: cell.leadingAnchor, constant: 30)
+            }
+        }
+
+        var bgColor: UIColor {
+            switch self {
+            case .comment:
+                return .white
+            case .reply:
+                return UIColor(rgb: 0xefefef)
+            }
+        }
+
     }
 
 }

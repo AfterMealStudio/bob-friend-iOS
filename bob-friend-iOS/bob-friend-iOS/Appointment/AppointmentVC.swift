@@ -310,8 +310,8 @@ extension AppointmentVC: UITableViewDelegate, UITableViewDataSource {
         cell.time = comment.createdAt
         cell.content = comment.content
         if comment.parentId != nil {
-            cell.replyMode = true
-        }
+            cell.commentMode = .reply(cell: cell)
+        } else { cell.commentMode = .comment(cell: cell) }
 
         return cell
     }
