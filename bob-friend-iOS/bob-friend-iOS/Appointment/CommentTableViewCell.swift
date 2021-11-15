@@ -50,11 +50,11 @@ class CommentTableViewCell: UITableViewCell {
         return $0
     }(UILabel())
 
-    private let reportButton: UIButton = {
+    private let moreFunctionButton: UIButton = {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.setTitle("신고하기", for: .normal)
-        $0.titleLabel?.font = UIFont.systemFont(ofSize: 12)
-        $0.setTitleColor(.lightGray, for: .normal)
+        let buttonImage = UIImage(systemName: "ellipsis")
+        $0.setImage(buttonImage, for: .normal)
+        $0.tintColor = .lightGray
         return $0
     }(UIButton())
 
@@ -75,6 +75,12 @@ class CommentTableViewCell: UITableViewCell {
         return $0
     }(UITextView())
 
+    weak var delegate: UIViewController? {
+        didSet {
+            moreFunctionButton.addTarget(self, action: #selector(didMoreFunctionButtonClicked), for: .touchUpInside)
+        }
+    }
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         commentMode = .comment(cell: self)
@@ -87,14 +93,14 @@ class CommentTableViewCell: UITableViewCell {
     }
 
     func layout() {
-        addSubview(view)
+        contentView.addSubview(view)
         viewLeadingConstraint = commentMode?.viewLeadingConstraint
         guard let viewLeadingConstraint = viewLeadingConstraint else { return }
         NSLayoutConstraint.activate([
-            view.topAnchor.constraint(equalTo: topAnchor),
-            view.bottomAnchor.constraint(equalTo: bottomAnchor),
+            view.topAnchor.constraint(equalTo: contentView.topAnchor),
+            view.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             viewLeadingConstraint,
-            view.trailingAnchor.constraint(equalTo: trailingAnchor)
+            view.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         ])
 
         view.addSubview(userNameLabel)
@@ -110,11 +116,14 @@ class CommentTableViewCell: UITableViewCell {
             timeLabel.leadingAnchor.constraint(equalTo: userNameLabel.trailingAnchor, constant: 10)
         ])
 
-        view.addSubview(reportButton)
+        view.addSubview(moreFunctionButton)
         NSLayoutConstraint.activate([
-            reportButton.centerYAnchor.constraint(equalTo: userNameLabel.centerYAnchor),
-            reportButton.leadingAnchor.constraint(equalTo: timeLabel.trailingAnchor, constant: 10),
-            reportButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10)
+            moreFunctionButton.centerYAnchor.constraint(equalTo: userNameLabel.centerYAnchor),
+            moreFunctionButton.leadingAnchor.constraint(equalTo: timeLabel.trailingAnchor, constant: 10),
+            moreFunctionButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+
+            moreFunctionButton.widthAnchor.constraint(equalToConstant: 15),
+            moreFunctionButton.heightAnchor.constraint(equalTo: moreFunctionButton.widthAnchor)
         ])
 
         view.addSubview(contentTextField)
@@ -135,6 +144,29 @@ class CommentTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+
+    @objc
+    func didMoreFunctionButtonClicked() {
+
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
+        let reportAction = UIAlertAction(title: "신고하기", style: .default, handler: nil)
+
+        let replyAction = UIAlertAction(title: "대댓글닷기", style: .default, handler: nil)
+
+        let deleteAction = UIAlertAction(title: "삭제하기", style: .default, handler: nil)
+
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+
+        actionSheet.addAction(reportAction)
+        actionSheet.addAction(replyAction)
+        actionSheet.addAction(deleteAction)
+
+        actionSheet.addAction(cancelAction)
+
+        delegate?.present(actionSheet, animated: true, completion: nil)
+
     }
 
 }

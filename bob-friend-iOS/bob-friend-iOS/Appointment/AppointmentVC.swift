@@ -50,7 +50,15 @@ class AppointmentVC: UIViewController {
 
         // AppointmentVM
         appointmentVM.delegate = self
-        appointmentVM.getAppointment(appointmentID) { _ in }
+        appointmentVM.getAppointment(appointmentID) { [weak self] _ in
+            // commentTableView
+            self?.commentTableView.delegate = self
+            self?.commentTableView.dataSource = self
+            self?.registCommentTableView()
+
+            // layout
+            self?.layout()
+        }
 
         // view
         view.backgroundColor = UIColor(named: "MainColor1")
@@ -67,14 +75,6 @@ class AppointmentVC: UIViewController {
             return $0
         }(UILabel())
         navigationItem.titleView = titleView
-
-        // commentTableView
-        commentTableView.delegate = self
-        commentTableView.dataSource = self
-        registCommentTableView()
-
-        // layout
-        layout()
 
     }
 
@@ -305,6 +305,9 @@ extension AppointmentVC: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "CommentTableView", for: indexPath) as? CommentTableViewCell else { return CommentTableViewCell() }
+
+        cell.delegate = self
+
         let comment = appointmentVM.commentsAndReplies[indexPath.row]
         cell.userName = comment.author
         cell.time = comment.createdAt
