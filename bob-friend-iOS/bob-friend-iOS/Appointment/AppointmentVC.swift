@@ -309,7 +309,12 @@ extension AppointmentVC: UITableViewDelegate, UITableViewDataSource {
         cell.delegate = self
 
         let comment = appointmentVM.commentsAndReplies[indexPath.row]
-        cell.userName = comment.author
+
+        if UserInfo.myInfo?.id == comment.author.id {
+            cell.contentsOwner = .my
+        } else { cell.contentsOwner = .other }
+
+        cell.userName = comment.author.nickname
         cell.time = comment.createdAt
         cell.content = comment.content
         if comment.parentId != nil {

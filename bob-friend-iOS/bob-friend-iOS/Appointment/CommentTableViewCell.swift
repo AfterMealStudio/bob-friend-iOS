@@ -75,7 +75,9 @@ class CommentTableViewCell: UITableViewCell {
         return $0
     }(UITextView())
 
-    weak var delegate: UIViewController? {
+    weak var delegate: UIViewController?
+
+    var contentsOwner: ContentsOwner = .other {
         didSet {
             moreFunctionButton.addTarget(self, action: #selector(didMoreFunctionButtonClicked), for: .touchUpInside)
         }
@@ -151,17 +153,26 @@ class CommentTableViewCell: UITableViewCell {
 
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
+        let replyAction = UIAlertAction(title: "대댓글달기", style: .default, handler: nil)
         let reportAction = UIAlertAction(title: "신고하기", style: .default, handler: nil)
-
-        let replyAction = UIAlertAction(title: "대댓글닷기", style: .default, handler: nil)
-
         let deleteAction = UIAlertAction(title: "삭제하기", style: .default, handler: nil)
-
         let cancelAction = UIAlertAction(title: "취소", style: .cancel)
 
-        actionSheet.addAction(reportAction)
-        actionSheet.addAction(replyAction)
-        actionSheet.addAction(deleteAction)
+        guard let commentMode = commentMode else { return }
+
+        switch commentMode {
+        case .comment:
+            actionSheet.addAction(replyAction)
+        default:
+            break
+        }
+
+        switch contentsOwner {
+        case .my:
+            actionSheet.addAction(deleteAction)
+        case .other:
+            actionSheet.addAction(reportAction)
+        }
 
         actionSheet.addAction(cancelAction)
 
@@ -195,6 +206,11 @@ extension CommentTableViewCell {
             }
         }
 
+    }
+
+    enum ContentsOwner {
+        case my
+        case other
     }
 
 }

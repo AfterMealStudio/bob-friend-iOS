@@ -46,6 +46,7 @@ struct AppointmentModel: Decodable {
     let createdAt: String
 
     struct User: Decodable {
+        let id: Int
         let nickname: String
     }
 
@@ -59,6 +60,7 @@ struct CommentModel: Decodable {
     let createdAt: String
 
     struct User: Decodable {
+        let id: Int
         let nickname: String
     }
 

@@ -24,10 +24,10 @@ class AppointmentVM {
         didSet {
             var commentsAndReplies: [CommentsAndRepliesModel] = []
             for comment in comments {
-                let refinedComment = CommentsAndRepliesModel(id: comment.id, author: comment.author.nickname, content: comment.content, parentId: nil, createdAt: comment.createdAt)
+                let refinedComment = CommentsAndRepliesModel(id: comment.id, author: CommentsAndRepliesModel.User(id: comment.author.id, nickname: comment.author.nickname), content: comment.content, parentId: nil, createdAt: comment.createdAt)
                 commentsAndReplies.append(refinedComment)
                 for reply in comment.replies {
-                    let refinedReply = CommentsAndRepliesModel(id: reply.id, author: reply.author.nickname, content: reply.content, parentId: comment.id, createdAt: reply.createdAt)
+                    let refinedReply = CommentsAndRepliesModel(id: reply.id, author: CommentsAndRepliesModel.User(id: reply.author.id, nickname: reply.author.nickname), content: reply.content, parentId: comment.id, createdAt: reply.createdAt)
                     commentsAndReplies.append(refinedReply)
                 }
             }
@@ -41,10 +41,15 @@ class AppointmentVM {
 
     struct CommentsAndRepliesModel {
         let id: Int
-        let author: String
+        let author: User
         let content: String
         let parentId: Int?
         let createdAt: String
+
+        struct User {
+            let id: Int
+            let nickname: String
+        }
     }
 
     func getAppointment(_ id: Int, completion: @escaping (AppointmentModel) -> Void) {

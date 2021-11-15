@@ -27,6 +27,7 @@ final class Network {
         case appointmentList
         case appointment(id: Int)
         case enrollComment(appointmentID: Int)
+        case userInfo
 
         var path: String {
             let baseUrl: String = "http://117.17.102.143:8080/"
@@ -49,6 +50,8 @@ final class Network {
                 return baseUrl + "recruitments/\(id)"
             case .enrollComment(appointmentID: let id):
                 return baseUrl + "recruitments/\(id)/comments"
+            case .userInfo:
+                return baseUrl + "api/user"
             }
         }
 
@@ -62,6 +65,7 @@ final class Network {
             case .appointmentList: return .get
             case .appointment(id: _): return .get
             case .enrollComment(appointmentID: _): return .post
+            case .userInfo: return .get
             }
         }
 
@@ -108,6 +112,11 @@ final class Network {
     func enrollCommentRequest(appointmentID: Int, comment: EnrollCommentModel, completion: @escaping(Result<EnrollCommentResponseModel?, Error>) -> Void) {
         let headers = HTTPHeaders(["Authorization": Network.token])
         request(api: API.enrollComment(appointmentID: appointmentID), type: EnrollCommentResponseModel.self, parameter: comment, headers: headers, completion: completion)
+    }
+
+    func getUserInfoRequest(completion: @escaping(Result<UserInfoModel?, Error>) -> Void) {
+        let headers = HTTPHeaders(["Authorization": Network.token])
+        request(api: .userInfo, type: UserInfoModel.self, headers: headers, completion: completion)
     }
 
 }

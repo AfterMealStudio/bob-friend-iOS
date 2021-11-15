@@ -30,6 +30,20 @@ class LoginVM {
 
     }
 
+    func getUserInfo() {
+        network.getUserInfoRequest { result in
+            switch result {
+            case .success(let myInfo):
+                if let myInfo = myInfo {
+                    UserInfo.myInfo = myInfo
+                }
+            case .failure:
+                break
+            }
+
+        }
+    }
+
 }
 
 protocol LoginDelegate: AnyObject {
