@@ -63,6 +63,30 @@ class AppointmentVM {
         }
     }
 
+    func reportAppointment(appointmentID: Int) {
+        network.reportAppointmentRequest(appointmentID: appointmentID) { [weak self] result in
+            switch result {
+            case .success:
+                self?.delegate?.didReportAppointment()
+            case .failure:
+                break
+            }
+        }
+    }
+
+    func deleteAppointment(appointmentID: Int) {
+        network.deleteAppointmentRequest(appointmentID: appointmentID) { [weak self] result in
+            switch result {
+            case .success:
+                self?.delegate?.didDeleteAppointment()
+            case .failure:
+                break
+            }
+
+        }
+
+    }
+
     // MARK: - Comment Methods
 
     func enrollComment(appointmentID: Int, content: String) {
@@ -147,6 +171,8 @@ extension AppointmentVM {
 protocol AppointmentDelegate: AnyObject {
     func didSetCommentsAndRepliesData()
     func didEnrollComment()
+    func didReportAppointment()
+    func didDeleteAppointment()
     func didReportCommentOrReply()
     func didDeleteCommentOrReply()
 }

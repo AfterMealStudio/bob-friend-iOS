@@ -76,6 +76,9 @@ class AppointmentVC: UIViewController {
         }(UILabel())
         navigationItem.titleView = titleView
 
+        let moreFunctionButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), style: .plain, target: self, action: #selector(didMoreFunctionButtonClicked))
+        navigationItem.rightBarButtonItem = moreFunctionButton
+
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -271,10 +274,45 @@ extension AppointmentVC {
         ])
     }
 
+    // MARK: - NavigationBar button event
+    @objc
+    func didMoreFunctionButtonClicked() {
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
+        let reportAction = UIAlertAction(title: "신고하기", style: .default) { [weak self] _ in
+            guard let appointmentID = self?.appointmentID else { return }
+            self?.appointmentVM.reportAppointment(appointmentID: appointmentID)
+        }
+        let deleteAction = UIAlertAction(title: "삭제하기", style: .default) { [weak self] _ in
+            guard let appointmentID = self?.appointmentID else { return }
+            self?.appointmentVM.deleteAppointment(appointmentID: appointmentID)
+        }
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+
+        guard let authorID = appointmentVM.appointmentInfo?.author.id, let userID = UserInfo.myInfo?.id else { return }
+
+        if userID == authorID {
+            actionSheet.addAction(deleteAction)
+        } else {
+            actionSheet.addAction(reportAction)
+        }
+        actionSheet.addAction(cancelAction)
+        present(actionSheet, animated: true, completion: nil)
+
+    }
+
 }
 
 // MARK: - Appointment Delegate
 extension AppointmentVC: AppointmentDelegate {
+    func didReportAppointment() {
+        viewDidLoad()
+    }
+
+    func didDeleteAppointment() {
+        navigationController?.popViewController(animated: true)
+    }
+
     func didSetCommentsAndRepliesData() {
         commentTableView.reloadData()
     }
