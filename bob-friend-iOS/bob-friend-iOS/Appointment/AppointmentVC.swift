@@ -283,6 +283,10 @@ extension AppointmentVC: AppointmentDelegate {
         viewDidLoad()
     }
 
+    func didReportCommentOrReply() {
+        viewDidLoad()
+    }
+
     func didDeleteCommentOrReply() {
         viewDidLoad()
     }
@@ -333,6 +337,14 @@ extension AppointmentVC: UITableViewDelegate, UITableViewDataSource {
 
 // MARK: - CommentTableViewCell Delegate
 extension AppointmentVC: CommentTableViewCellDelegate {
+
+    func didCommentReportClicked(commentID: Int) {
+        appointmentVM.reportComment(appointmentID: appointmentID, commentID: commentID)
+    }
+
+    func didReplyReportClicked(commentID: Int, replyID: Int) {
+        appointmentVM.reportReply(appointmentID: appointmentID, commentID: commentID, replyID: replyID)
+    }
 
     func didDeleteCommentClicked(commentID: Int) {
         appointmentVM.deleteComment(appointmentID: appointmentID, commentID: commentID)

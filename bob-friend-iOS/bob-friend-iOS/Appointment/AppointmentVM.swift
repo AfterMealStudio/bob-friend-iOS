@@ -77,6 +77,30 @@ class AppointmentVM {
         }
     }
 
+    func reportComment(appointmentID: Int, commentID: Int) {
+        network.reportCommentRequest(appointmentID: appointmentID, commentID: commentID) { [weak self] result in
+            switch result {
+            case .success:
+                self?.delegate?.didReportCommentOrReply()
+            case .failure:
+                break
+            }
+
+        }
+
+    }
+
+    func reportReply(appointmentID: Int, commentID: Int, replyID: Int) {
+        network.reportReplyRequest(appointmentID: appointmentID, commentID: commentID, replyID: replyID) { [weak self] result in
+            switch result {
+            case .success:
+                self?.delegate?.didReportCommentOrReply()
+            case .failure:
+                break
+            }
+        }
+    }
+
     func deleteComment(appointmentID: Int, commentID: Int) {
         network.deleteCommentRequest(appointmentID: appointmentID, commentID: commentID) { [weak self] result in
             switch result {
@@ -123,5 +147,6 @@ extension AppointmentVM {
 protocol AppointmentDelegate: AnyObject {
     func didSetCommentsAndRepliesData()
     func didEnrollComment()
+    func didReportCommentOrReply()
     func didDeleteCommentOrReply()
 }

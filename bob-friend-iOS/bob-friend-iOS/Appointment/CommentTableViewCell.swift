@@ -158,7 +158,15 @@ class CommentTableViewCell: UITableViewCell {
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
         let replyAction = UIAlertAction(title: "대댓글달기", style: .default, handler: nil)
-        let reportAction = UIAlertAction(title: "신고하기", style: .default, handler: nil)
+        let reportAction = UIAlertAction(title: "신고하기", style: .default) { [weak self] _ in
+            guard let commentMode = self?.commentMode, let commentID = self?.commentID else { return }
+            switch commentMode {
+            case .comment:
+                self?.delegate?.didCommentReportClicked(commentID: commentID)
+            case .reply:
+                self?.delegate?.didReplyReportClicked(commentID: commentMode.parentID, replyID: commentID)
+            }
+        }
         let deleteAction = UIAlertAction(title: "삭제하기", style: .default) { [weak self] _ in
             guard let commentMode = self?.commentMode, let commentID = self?.commentID else { return }
             switch commentMode {
@@ -240,6 +248,8 @@ extension CommentTableViewCell {
 // MARK: - CommentTableViewCell Delegate
 protocol CommentTableViewCellDelegate: UIViewController {
 
+    func didCommentReportClicked(commentID: Int)
+    func didReplyReportClicked(commentID: Int, replyID: Int)
     func didDeleteCommentClicked(commentID: Int)
     func didDeleteReplyClicked(commentID: Int, replyID: Int)
 

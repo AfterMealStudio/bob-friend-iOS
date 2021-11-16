@@ -28,6 +28,8 @@ final class Network {
         case appointment(id: Int)
         case enrollComment(appointmentID: Int)
         case userInfo
+        case reportComment(appointmentID: Int, commentID: Int)
+        case reportReply(appointmentID: Int, commentID: Int, replyID: Int)
         case deleteComment(appointmentID: Int, commentID: Int)
         case deleteReply(appointmentID: Int, commentID: Int, replyID: Int)
 
@@ -54,6 +56,10 @@ final class Network {
                 return baseUrl + "recruitments/\(id)/comments"
             case .userInfo:
                 return baseUrl + "api/user"
+            case .reportComment(appointmentID: let appointmentID, commentID: let commentID):
+                return baseUrl + "recruitments/\(appointmentID)/comments/\(commentID)/report"
+            case .reportReply(appointmentID: let appointmentID, commentID: let commentID, replyID: let replyID):
+                return baseUrl + "recruitments/\(appointmentID)/comments/\(commentID)/replies/\(replyID)/report"
             case .deleteComment(appointmentID: let appointmentID, commentID: let commentID):
                 return baseUrl + "recruitments/\(appointmentID)/comments/\(commentID)"
             case .deleteReply(appointmentID: let appointmentID, commentID: let commentID, replyID: let replyID):
@@ -72,6 +78,8 @@ final class Network {
             case .appointment(id: _): return .get
             case .enrollComment(appointmentID: _): return .post
             case .userInfo: return .get
+            case .reportComment(appointmentID: _, commentID: _): return .patch
+            case .reportReply(appointmentID: _, commentID: _, replyID: _): return .patch
             case .deleteComment(appointmentID: _, commentID: _): return .delete
             case .deleteReply(appointmentID: _, commentID: _, replyID: _): return .delete
             }
@@ -125,6 +133,16 @@ final class Network {
     func getUserInfoRequest(completion: @escaping(Result<UserInfoModel?, Error>) -> Void) {
         let headers = HTTPHeaders(["Authorization": Network.token])
         request(api: .userInfo, type: UserInfoModel.self, headers: headers, completion: completion)
+    }
+
+    func reportCommentRequest(appointmentID: Int, commentID: Int, completion: @escaping(Result<Void?, Error>) -> Void) {
+        let headers = HTTPHeaders(["Authorization": Network.token])
+        request(api: .reportComment(appointmentID: appointmentID, commentID: commentID), headers: headers, completion: completion)
+    }
+
+    func reportReplyRequest(appointmentID: Int, commentID: Int, replyID: Int, completion: @escaping(Result<Void?, Error>) -> Void) {
+        let headers = HTTPHeaders(["Authorization": Network.token])
+        request(api: .reportReply(appointmentID: appointmentID, commentID: commentID, replyID: replyID), headers: headers, completion: completion)
     }
 
     func deleteCommentRequest(appointmentID: Int, commentID: Int, completion: @escaping(Result<Void?, Error>) -> Void) {
