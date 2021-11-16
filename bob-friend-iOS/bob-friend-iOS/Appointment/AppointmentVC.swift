@@ -283,6 +283,10 @@ extension AppointmentVC: AppointmentDelegate {
         viewDidLoad()
     }
 
+    func didDeleteCommentOrReply() {
+        viewDidLoad()
+    }
+
 }
 
 // MARK: - CommentWritingView Delegate
@@ -314,14 +318,28 @@ extension AppointmentVC: UITableViewDelegate, UITableViewDataSource {
             cell.contentsOwner = .my
         } else { cell.contentsOwner = .other }
 
+        cell.commentID = comment.id
         cell.userName = comment.author.nickname
         cell.time = comment.createdAt
         cell.content = comment.content
-        if comment.parentId != nil {
-            cell.commentMode = .reply(cell: cell)
+        if let parentID = comment.parentId {
+            cell.commentMode = .reply(cell: cell, commentID: parentID)
         } else { cell.commentMode = .comment(cell: cell) }
 
         return cell
+    }
+
+}
+
+// MARK: - CommentTableViewCell Delegate
+extension AppointmentVC: CommentTableViewCellDelegate {
+
+    func didDeleteCommentClicked(commentID: Int) {
+        appointmentVM.deleteComment(appointmentID: appointmentID, commentID: commentID)
+    }
+
+    func didDeleteReplyClicked(commentID: Int, replyID: Int) {
+        appointmentVM.deleteReply(appointmentID: appointmentID, commentID: commentID, replyID: replyID)
     }
 
 }

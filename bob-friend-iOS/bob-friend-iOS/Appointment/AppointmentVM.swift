@@ -24,7 +24,14 @@ class AppointmentVM {
         didSet {
             var commentsAndReplies: [CommentsAndRepliesModel] = []
             for comment in comments {
-                let refinedComment = CommentsAndRepliesModel(id: comment.id, author: CommentsAndRepliesModel.User(id: comment.author.id, nickname: comment.author.nickname), content: comment.content, parentId: nil, createdAt: comment.createdAt)
+
+                let refinedComment: CommentsAndRepliesModel
+                if let author = comment.author, let content = comment.content {
+                    refinedComment = CommentsAndRepliesModel(id: comment.id, author: CommentsAndRepliesModel.User(id: author.id, nickname: author.nickname), content: content, parentId: nil, createdAt: comment.createdAt)
+                } else {
+                    refinedComment = CommentsAndRepliesModel(id: comment.id, author: CommentsAndRepliesModel.User(id: -1, nickname: "(알 수 없음)"), content: "삭제 된 댓글입니다.", parentId: nil, createdAt: comment.createdAt)
+                }
+
                 commentsAndReplies.append(refinedComment)
                 for reply in comment.replies {
                     let refinedReply = CommentsAndRepliesModel(id: reply.id, author: CommentsAndRepliesModel.User(id: reply.author.id, nickname: reply.author.nickname), content: reply.content, parentId: comment.id, createdAt: reply.createdAt)
@@ -39,18 +46,7 @@ class AppointmentVM {
         didSet { delegate?.didSetCommentsAndRepliesData() }
     }
 
-    struct CommentsAndRepliesModel {
-        let id: Int
-        let author: User
-        let content: String
-        let parentId: Int?
-        let createdAt: String
-
-        struct User {
-            let id: Int
-            let nickname: String
-        }
-    }
+    // MARK: - Appointment Methods
 
     func getAppointment(_ id: Int, completion: @escaping (AppointmentModel) -> Void) {
         network.getAppointment(id) { [weak self] result in
@@ -67,6 +63,8 @@ class AppointmentVM {
         }
     }
 
+    // MARK: - Comment Methods
+
     func enrollComment(appointmentID: Int, content: String) {
         let enrollCommentModel: EnrollCommentModel = EnrollCommentModel(content: content)
         network.enrollCommentRequest(appointmentID: appointmentID, comment: enrollCommentModel) { [weak self] result in
@@ -79,9 +77,51 @@ class AppointmentVM {
         }
     }
 
+    func deleteComment(appointmentID: Int, commentID: Int) {
+        network.deleteCommentRequest(appointmentID: appointmentID, commentID: commentID) { [weak self] result in
+            switch result {
+            case .success:
+                self?.delegate?.didDeleteCommentOrReply()
+            case .failure:
+                break
+            }
+
+        }
+
+    }
+
+    func deleteReply(appointmentID: Int, commentID: Int, replyID: Int) {
+        network.deleteReplyRequest(appointmentID: appointmentID, commentID: commentID, replyID: replyID) { [weak self] result in
+            switch result {
+            case .success:
+                self?.delegate?.didDeleteCommentOrReply()
+            case .failure:
+                break
+            }
+        }
+    }
+
+}
+
+extension AppointmentVM {
+
+    struct CommentsAndRepliesModel {
+        let id: Int
+        let author: User
+        let content: String
+        let parentId: Int?
+        let createdAt: String
+
+        struct User {
+            let id: Int
+            let nickname: String
+        }
+    }
+
 }
 
 protocol AppointmentDelegate: AnyObject {
     func didSetCommentsAndRepliesData()
     func didEnrollComment()
+    func didDeleteCommentOrReply()
 }

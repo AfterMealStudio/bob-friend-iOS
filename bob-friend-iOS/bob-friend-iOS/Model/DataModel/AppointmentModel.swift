@@ -54,8 +54,8 @@ struct AppointmentModel: Decodable {
 
 struct CommentModel: Decodable {
     let id: Int
-    let author: User
-    let content: String
+    let author: User?
+    let content: String?
     let replies: [Reply]
     let createdAt: String
 

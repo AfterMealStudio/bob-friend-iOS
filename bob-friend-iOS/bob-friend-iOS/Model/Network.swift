@@ -28,6 +28,8 @@ final class Network {
         case appointment(id: Int)
         case enrollComment(appointmentID: Int)
         case userInfo
+        case deleteComment(appointmentID: Int, commentID: Int)
+        case deleteReply(appointmentID: Int, commentID: Int, replyID: Int)
 
         var path: String {
             let baseUrl: String = "http://117.17.102.143:8080/"
@@ -52,6 +54,10 @@ final class Network {
                 return baseUrl + "recruitments/\(id)/comments"
             case .userInfo:
                 return baseUrl + "api/user"
+            case .deleteComment(appointmentID: let appointmentID, commentID: let commentID):
+                return baseUrl + "recruitments/\(appointmentID)/comments/\(commentID)"
+            case .deleteReply(appointmentID: let appointmentID, commentID: let commentID, replyID: let replyID):
+                return baseUrl + "recruitments/\(appointmentID)/comments/\(commentID)/replies/\(replyID)"
             }
         }
 
@@ -66,6 +72,8 @@ final class Network {
             case .appointment(id: _): return .get
             case .enrollComment(appointmentID: _): return .post
             case .userInfo: return .get
+            case .deleteComment(appointmentID: _, commentID: _): return .delete
+            case .deleteReply(appointmentID: _, commentID: _, replyID: _): return .delete
             }
         }
 
@@ -119,6 +127,16 @@ final class Network {
         request(api: .userInfo, type: UserInfoModel.self, headers: headers, completion: completion)
     }
 
+    func deleteCommentRequest(appointmentID: Int, commentID: Int, completion: @escaping(Result<Void?, Error>) -> Void) {
+        let headers = HTTPHeaders(["Authorization": Network.token])
+        request(api: .deleteComment(appointmentID: appointmentID, commentID: commentID), headers: headers, completion: completion)
+    }
+
+    func deleteReplyRequest(appointmentID: Int, commentID: Int, replyID: Int, completion: @escaping(Result<Void?, Error>) -> Void) {
+        let headers = HTTPHeaders(["Authorization": Network.token])
+        request(api: .deleteReply(appointmentID: appointmentID, commentID: commentID, replyID: replyID), headers: headers, completion: completion)
+    }
+
 }
 
 extension Network {
@@ -140,10 +158,25 @@ extension Network {
     private func request<D: Decodable>(api: API, type: D.Type, parameters: Parameters? = nil, encoder: ParameterEncoder = URLEncodedFormParameterEncoder.default, headers: HTTPHeaders? = nil, completion: @escaping (Result<D?, Error>) -> Void) {
 
         session?.request(api.path, method: api.method, parameters: parameters, headers: headers).response { [weak self] response in
+            print(response.debugDescription)
             switch response.result {
             case .success(let data):
                 let jsonData = self?.decodeJSONData(data: data, type: type)
                 completion(.success(jsonData))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+
+    }
+
+    private func request(api: API, parameters: Parameters? = nil, encoder: ParameterEncoder = URLEncodedFormParameterEncoder.default, headers: HTTPHeaders? = nil, completion: @escaping (Result<Void?, Error>) -> Void) {
+
+        session?.request(api.path, method: api.method, parameters: parameters, headers: headers).response { response in
+            print(response.debugDescription)
+            switch response.result {
+            case .success:
+                completion(.success(Void()))
             case .failure(let error):
                 completion(.failure(error))
             }

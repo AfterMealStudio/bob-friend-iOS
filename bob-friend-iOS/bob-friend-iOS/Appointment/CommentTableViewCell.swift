@@ -10,6 +10,7 @@ import SwiftUI
 
 class CommentTableViewCell: UITableViewCell {
 
+    var commentID: Int = 0
     var userName: String = " " { didSet { userNameLabel.text = userName } }
     var time: String = " " { didSet { timeLabel.text = time } }
     var content: String = " " {
@@ -75,7 +76,7 @@ class CommentTableViewCell: UITableViewCell {
         return $0
     }(UITextView())
 
-    weak var delegate: UIViewController?
+    weak var delegate: CommentTableViewCellDelegate?
 
     var contentsOwner: ContentsOwner = .other {
         didSet {
@@ -83,6 +84,7 @@ class CommentTableViewCell: UITableViewCell {
         }
     }
 
+    // MARK: - init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         commentMode = .comment(cell: self)
@@ -94,6 +96,18 @@ class CommentTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
+
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+
+        // Configure the view for the selected state
+    }
+
+    // MARK: - layout
     func layout() {
         contentView.addSubview(view)
         viewLeadingConstraint = commentMode?.viewLeadingConstraint
@@ -137,17 +151,7 @@ class CommentTableViewCell: UITableViewCell {
         ])
     }
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-
+    // MARK: moreFunctionButton Event
     @objc
     func didMoreFunctionButtonClicked() {
 
@@ -155,7 +159,15 @@ class CommentTableViewCell: UITableViewCell {
 
         let replyAction = UIAlertAction(title: "대댓글달기", style: .default, handler: nil)
         let reportAction = UIAlertAction(title: "신고하기", style: .default, handler: nil)
-        let deleteAction = UIAlertAction(title: "삭제하기", style: .default, handler: nil)
+        let deleteAction = UIAlertAction(title: "삭제하기", style: .default) { [weak self] _ in
+            guard let commentMode = self?.commentMode, let commentID = self?.commentID else { return }
+            switch commentMode {
+            case .comment:
+                self?.delegate?.didDeleteCommentClicked(commentID: commentID)
+            case .reply:
+                self?.delegate?.didDeleteReplyClicked(commentID: commentMode.parentID, replyID: commentID)
+            }
+        }
         let cancelAction = UIAlertAction(title: "취소", style: .cancel)
 
         guard let commentMode = commentMode else { return }
@@ -182,17 +194,18 @@ class CommentTableViewCell: UITableViewCell {
 
 }
 
+// MARK: - Enums
 extension CommentTableViewCell {
 
     enum CommentMode {
         case comment(cell: CommentTableViewCell)
-        case reply(cell: CommentTableViewCell)
+        case reply(cell: CommentTableViewCell, commentID: Int)
 
         var viewLeadingConstraint: NSLayoutConstraint {
             switch self {
             case .comment(let cell):
                 return cell.view.leadingAnchor.constraint(equalTo: cell.leadingAnchor)
-            case .reply(let cell):
+            case .reply(let cell, _):
                 return cell.view.leadingAnchor.constraint(equalTo: cell.leadingAnchor, constant: 30)
             }
         }
@@ -206,11 +219,28 @@ extension CommentTableViewCell {
             }
         }
 
+        var parentID: Int {
+            switch self {
+            case .comment:
+                return 0
+            case .reply(_, let commentID):
+                return commentID
+            }
+        }
+
     }
 
     enum ContentsOwner {
         case my
         case other
     }
+
+}
+
+// MARK: - CommentTableViewCell Delegate
+protocol CommentTableViewCellDelegate: UIViewController {
+
+    func didDeleteCommentClicked(commentID: Int)
+    func didDeleteReplyClicked(commentID: Int, replyID: Int)
 
 }
