@@ -101,6 +101,18 @@ class AppointmentVM {
         }
     }
 
+    func enrollReply(appointmentID: Int, commentID: Int, content: String) {
+        let enrollCommentModel: EnrollCommentModel = EnrollCommentModel(content: content)
+        network.enrollReplyRequest(appointmentID: appointmentID, commentID: commentID, comment: enrollCommentModel) { [weak self] result in
+            switch result {
+            case .success:
+                self?.delegate?.didEnrollComment()
+            case .failure:
+                break
+            }
+        }
+    }
+
     func reportComment(appointmentID: Int, commentID: Int) {
         network.reportCommentRequest(appointmentID: appointmentID, commentID: commentID) { [weak self] result in
             switch result {

@@ -10,20 +10,22 @@ import SwiftUI
 
 class CommentTableViewCell: UITableViewCell {
 
+    var tableIndex: IndexPath?
+
     var commentID: Int = 0
     var userName: String = " " { didSet { userNameLabel.text = userName } }
     var time: String = " " { didSet { timeLabel.text = time } }
     var content: String = " " {
         didSet {
-            contentTextField.text = content
-            contentTextField.sizeToFit()
+            contentTextView.text = content
+            contentTextView.sizeToFit()
         }
     }
     var viewLeadingConstraint: NSLayoutConstraint?
     var commentMode: CommentMode? {
         didSet {
             backgroundColor = commentMode?.bgColor
-            contentTextField.backgroundColor = commentMode?.bgColor
+            contentTextView.backgroundColor = commentMode?.bgColor
             switch commentMode {
             case .comment:
                 viewLeadingConstraint?.isActive = false
@@ -66,7 +68,7 @@ class CommentTableViewCell: UITableViewCell {
         return $0
     }(UILabel())
 
-    private let contentTextField: UITextView = {
+    private let contentTextView: UITextView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.isSelectable = false
         $0.isEditable = false
@@ -81,6 +83,21 @@ class CommentTableViewCell: UITableViewCell {
     var contentsOwner: ContentsOwner = .other {
         didSet {
             moreFunctionButton.addTarget(self, action: #selector(didMoreFunctionButtonClicked), for: .touchUpInside)
+        }
+    }
+
+    var replyWritingMode: Bool? {
+        didSet {
+            switch replyWritingMode {
+            case true:
+                backgroundColor = UIColor(named: "MainColor4")
+                contentTextView.backgroundColor = UIColor(named: "MainColor4")
+            case false:
+                backgroundColor = .white
+                contentTextView.backgroundColor = .white
+            default:
+                break
+            }
         }
     }
 
@@ -142,12 +159,12 @@ class CommentTableViewCell: UITableViewCell {
             moreFunctionButton.heightAnchor.constraint(equalTo: moreFunctionButton.widthAnchor)
         ])
 
-        view.addSubview(contentTextField)
+        view.addSubview(contentTextView)
         NSLayoutConstraint.activate([
-            contentTextField.topAnchor.constraint(equalTo: userNameLabel.bottomAnchor, constant: 2),
-            contentTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            contentTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            contentTextField.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10)
+            contentTextView.topAnchor.constraint(equalTo: userNameLabel.bottomAnchor, constant: 2),
+            contentTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            contentTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            contentTextView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10)
         ])
     }
 
@@ -157,7 +174,11 @@ class CommentTableViewCell: UITableViewCell {
 
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
-        let replyAction = UIAlertAction(title: "대댓글달기", style: .default, handler: nil)
+        let replyAction = UIAlertAction(title: "대댓글달기", style: .default) { [weak self] _ in
+            guard let commentID = self?.commentID, let tableIndex = self?.tableIndex else { return }
+            self?.replyWritingMode = true
+            self?.delegate?.didTurnOnReplyWritingMode(commentID: commentID, tableIndex: tableIndex)
+        }
         let reportAction = UIAlertAction(title: "신고하기", style: .default) { [weak self] _ in
             guard let commentMode = self?.commentMode, let commentID = self?.commentID else { return }
             switch commentMode {
@@ -252,5 +273,6 @@ protocol CommentTableViewCellDelegate: UIViewController {
     func didReplyReportClicked(commentID: Int, replyID: Int)
     func didDeleteCommentClicked(commentID: Int)
     func didDeleteReplyClicked(commentID: Int, replyID: Int)
+    func didTurnOnReplyWritingMode(commentID: Int, tableIndex: IndexPath)
 
 }

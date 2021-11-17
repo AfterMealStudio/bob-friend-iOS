@@ -27,6 +27,7 @@ final class Network {
         case appointmentList
         case appointment(id: Int)
         case enrollComment(appointmentID: Int)
+        case enrollReply(appointmentID: Int, commentID: Int)
         case userInfo
         case reportAppointment(appointmentID: Int)
         case deleteAppointment(appointmentID: Int)
@@ -56,6 +57,8 @@ final class Network {
                 return baseUrl + "recruitments/\(id)"
             case .enrollComment(appointmentID: let id):
                 return baseUrl + "recruitments/\(id)/comments"
+            case .enrollReply(appointmentID: let appointmentID, commentID: let commentID):
+                return baseUrl + "recruitments/\(appointmentID)/comments/\(commentID)/replies"
             case .userInfo:
                 return baseUrl + "api/user"
             case .reportAppointment(appointmentID: let appointmentID):
@@ -83,6 +86,7 @@ final class Network {
             case .appointmentList: return .get
             case .appointment(id: _): return .get
             case .enrollComment(appointmentID: _): return .post
+            case .enrollReply(appointmentID: _): return .post
             case .userInfo: return .get
             case .reportAppointment(appointmentID: _): return .patch
             case .deleteAppointment(appointmentID: _): return .delete
@@ -137,6 +141,11 @@ final class Network {
     func enrollCommentRequest(appointmentID: Int, comment: EnrollCommentModel, completion: @escaping(Result<EnrollCommentResponseModel?, Error>) -> Void) {
         let headers = HTTPHeaders(["Authorization": Network.token])
         request(api: API.enrollComment(appointmentID: appointmentID), type: EnrollCommentResponseModel.self, parameter: comment, headers: headers, completion: completion)
+    }
+
+    func enrollReplyRequest(appointmentID: Int, commentID: Int, comment: EnrollCommentModel, completion: @escaping(Result<EnrollCommentResponseModel?, Error>) -> Void) {
+        let headers = HTTPHeaders(["Authorization": Network.token])
+        request(api: API.enrollReply(appointmentID: appointmentID, commentID: commentID), type: EnrollCommentResponseModel.self, parameter: comment, headers: headers, completion: completion)
     }
 
     func getUserInfoRequest(completion: @escaping(Result<UserInfoModel?, Error>) -> Void) {

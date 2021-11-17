@@ -36,6 +36,27 @@ class AppointmentVC: UIViewController {
 
     var appointmentVM: AppointmentVM = AppointmentVM()
 
+    var replyWritngInfo: ReplyWritingInfo? {
+        willSet {
+            if let replyWritngInfo = replyWritngInfo {
+                let cell = commentTableView.cellForRow(at: replyWritngInfo.index) as? CommentTableViewCell
+                cell?.replyWritingMode = false
+            }
+        }
+
+        didSet {
+            if let replyWritngInfo = replyWritngInfo {
+                let cell = commentTableView.cellForRow(at: replyWritngInfo.index) as? CommentTableViewCell
+                cell?.replyWritingMode = true
+            }
+        }
+    }
+
+    struct ReplyWritingInfo {
+        let commentID: Int
+        let index: IndexPath
+    }
+
     init(appointmentID: Int) {
         self.appointmentID = appointmentID
         super.init(nibName: nil, bundle: nil)
@@ -261,7 +282,7 @@ extension AppointmentVC {
         scrollStackView.addArrangedSubview(commentTableView)
         // TODO: 댓글들 개수에 따라 댓글들을 한번에 표시해야함
         // tableView의 스크롤이 아닌 상위 스크롤 뷰의 스크롤로 확인 가능하도록.
-        commentTableView.heightAnchor.constraint(equalToConstant: 300).isActive = true
+        commentTableView.heightAnchor.constraint(equalToConstant: 1000).isActive = true
     }
 
     // MARK: - commentWriting layout
@@ -335,7 +356,13 @@ extension AppointmentVC: AppointmentDelegate {
 extension AppointmentVC: CommentWritingViewDelegate {
     func didWriteButtonClicked(content: String) {
         guard let appointmentID = appointmentVM.appointmentInfo?.id else { return }
-        appointmentVM.enrollComment(appointmentID: appointmentID, content: content)
+
+        if let replyWritngInfo = replyWritngInfo {
+            appointmentVM.enrollReply(appointmentID: appointmentID, commentID: replyWritngInfo.commentID, content: content)
+        } else {
+            appointmentVM.enrollComment(appointmentID: appointmentID, content: content)
+        }
+
     }
 }
 
@@ -360,6 +387,8 @@ extension AppointmentVC: UITableViewDelegate, UITableViewDataSource {
             cell.contentsOwner = .my
         } else { cell.contentsOwner = .other }
 
+        cell.tableIndex = indexPath
+
         cell.commentID = comment.id
         cell.userName = comment.author.nickname
         cell.time = comment.createdAt
@@ -375,6 +404,9 @@ extension AppointmentVC: UITableViewDelegate, UITableViewDataSource {
 
 // MARK: - CommentTableViewCell Delegate
 extension AppointmentVC: CommentTableViewCellDelegate {
+    func didTurnOnReplyWritingMode(commentID: Int, tableIndex: IndexPath) {
+        replyWritngInfo = ReplyWritingInfo(commentID: commentID, index: tableIndex)
+    }
 
     func didCommentReportClicked(commentID: Int) {
         appointmentVM.reportComment(appointmentID: appointmentID, commentID: commentID)
