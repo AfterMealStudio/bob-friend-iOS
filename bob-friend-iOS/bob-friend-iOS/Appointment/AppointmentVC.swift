@@ -185,6 +185,7 @@ class AppointmentVC: UIViewController {
 extension AppointmentVC: UITableViewDelegate, UITableViewDataSource {
     func registAppointmentDetailTableView() {
 
+        appointmentDetailTableView.register(MemberListCell.self, forCellReuseIdentifier: "MemberListCell")
         appointmentDetailTableView.register(CommentTableViewCell.self, forCellReuseIdentifier: "CommentReplyCell")
 
         appointmentDetailTableView.register(TitleContentView.self, forHeaderFooterViewReuseIdentifier: "TitleContentHeader")
@@ -208,7 +209,7 @@ extension AppointmentVC: UITableViewDelegate, UITableViewDataSource {
         switch section {
         case 0: return 0
         case 1: return 0
-        case 2: return 0
+        case 2: return appointmentVM.appointmentInfo?.members.count ?? 0
         case 3: return appointmentVM.commentsAndReplies.count
         default: return 0
         }
@@ -216,7 +217,12 @@ extension AppointmentVC: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
-        case 2: break
+        case 2:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "MemberListCell") as? MemberListCell else { return MemberListCell() }
+            guard let member = appointmentVM.appointmentInfo?.members[indexPath.row] else { return MemberListCell() }
+            cell.username = member.nickname
+            cell.rating = String(member.rating)
+            return cell
         case 3:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "CommentReplyCell", for: indexPath) as? CommentTableViewCell else { return CommentTableViewCell() }
 
@@ -242,7 +248,6 @@ extension AppointmentVC: UITableViewDelegate, UITableViewDataSource {
 
         default: return UITableViewCell()
         }
-        return UITableViewCell()
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -672,4 +677,51 @@ extension AppointmentVC {
         }
     }
 
+}
+
+class MemberListCell: UITableViewCell {
+
+    var username: String = "" { didSet { usernameLabel.text = username} }
+    var rating: String = "" { didSet { ratingLabel.text = rating} }
+
+    private let usernameLabel: UILabel = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.text = " "
+        return $0
+    }(UILabel())
+
+    private let ratingLabel: UILabel = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.text = " "
+        return $0
+    }(UILabel())
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        layout()
+        backgroundColor = .white
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    func layout() {
+
+        contentView.addSubview(usernameLabel)
+        contentView.addSubview(ratingLabel)
+
+        NSLayoutConstraint.activate([
+            usernameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
+            usernameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
+            usernameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            usernameLabel.widthAnchor.constraint(equalToConstant: 100),
+
+            ratingLabel.leadingAnchor.constraint(equalTo: usernameLabel.trailingAnchor),
+            ratingLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            ratingLabel.centerYAnchor.constraint(equalTo: usernameLabel.centerYAnchor)
+
+        ])
+
+    }
 }
