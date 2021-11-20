@@ -204,7 +204,7 @@ extension Network {
     private func request<D: Decodable>(api: API, type: D.Type, parameters: Parameters? = nil, encoder: ParameterEncoder = URLEncodedFormParameterEncoder.default, headers: HTTPHeaders? = nil, completion: @escaping (Result<D?, Error>) -> Void) {
 
         session?.request(api.path, method: api.method, parameters: parameters, headers: headers).response { [weak self] response in
-            print(response.debugDescription)
+//            print(response.debugDescription)
             switch response.result {
             case .success(let data):
                 let jsonData = self?.decodeJSONData(data: data, type: type)
@@ -219,7 +219,7 @@ extension Network {
     private func request(api: API, parameters: Parameters? = nil, encoder: ParameterEncoder = URLEncodedFormParameterEncoder.default, headers: HTTPHeaders? = nil, completion: @escaping (Result<Void?, Error>) -> Void) {
 
         session?.request(api.path, method: api.method, parameters: parameters, headers: headers).response { response in
-            print(response.debugDescription)
+//            print(response.debugDescription)
             switch response.result {
             case .success:
                 completion(.success(Void()))

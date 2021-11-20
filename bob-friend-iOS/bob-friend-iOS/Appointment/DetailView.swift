@@ -41,16 +41,14 @@ extension AppointmentVC {
         func layout() {
             addSubview(titleLabel)
             NSLayoutConstraint.activate([
-                titleLabel.topAnchor.constraint(equalTo: topAnchor),
+                titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 5),
                 titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-                titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
-
-                titleLabel.heightAnchor.constraint(equalToConstant: 20)
+                titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor)
             ])
 
             addSubview(contentView)
             NSLayoutConstraint.activate([
-                contentView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
+                contentView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5),
                 contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
                 contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
                 contentView.bottomAnchor.constraint(equalTo: bottomAnchor)
