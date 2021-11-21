@@ -35,6 +35,8 @@ final class Network {
         case reportReply(appointmentID: Int, commentID: Int, replyID: Int)
         case deleteComment(appointmentID: Int, commentID: Int)
         case deleteReply(appointmentID: Int, commentID: Int, replyID: Int)
+        case closeAppointment(appointmentID: Int)
+        case joinOrCancelAppointment(appointmentID: Int)
 
         var path: String {
             let baseUrl: String = "http://117.17.102.143:8080/"
@@ -73,6 +75,10 @@ final class Network {
                 return baseUrl + "recruitments/\(appointmentID)/comments/\(commentID)"
             case .deleteReply(appointmentID: let appointmentID, commentID: let commentID, replyID: let replyID):
                 return baseUrl + "recruitments/\(appointmentID)/comments/\(commentID)/replies/\(replyID)"
+            case .closeAppointment(appointmentID: let appointmentID):
+                return baseUrl + "recruitments/\(appointmentID)/close"
+            case .joinOrCancelAppointment(appointmentID: let appointmentID):
+                return baseUrl + "recruitments/\(appointmentID)"
             }
         }
 
@@ -94,7 +100,8 @@ final class Network {
             case .reportReply(appointmentID: _, commentID: _, replyID: _): return .patch
             case .deleteComment(appointmentID: _, commentID: _): return .delete
             case .deleteReply(appointmentID: _, commentID: _, replyID: _): return .delete
-
+            case .closeAppointment(appointmentID: _): return .patch
+            case .joinOrCancelAppointment(appointmentID: _): return .patch
             }
         }
 
@@ -181,6 +188,16 @@ final class Network {
     func deleteReplyRequest(appointmentID: Int, commentID: Int, replyID: Int, completion: @escaping(Result<Void?, Error>) -> Void) {
         let headers = HTTPHeaders(["Authorization": Network.token])
         request(api: .deleteReply(appointmentID: appointmentID, commentID: commentID, replyID: replyID), headers: headers, completion: completion)
+    }
+
+    func closeAppointmentRequest(appointmentID: Int, completion: @escaping(Result<Void?, Error>) -> Void) {
+        let headers = HTTPHeaders(["Authorization": Network.token])
+        request(api: .closeAppointment(appointmentID: appointmentID), headers: headers, completion: completion)
+    }
+
+    func joinOrCancelAppointmentRequest(appointmentID: Int, completion: @escaping(Result<AppointmentModel?, Error>) -> Void) {
+        let headers = HTTPHeaders(["Authorization": Network.token])
+        request(api: .joinOrCancelAppointment(appointmentID: appointmentID), type: AppointmentModel.self, headers: headers, completion: completion)
     }
 
 }

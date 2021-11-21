@@ -299,12 +299,26 @@ extension AppointmentVC: UITableViewDelegate, UITableViewDataSource {
         case 2:
             let footer = tableView.dequeueReusableHeaderFooterView(withIdentifier: "MemberJoinFooter")
             footerViews.append(footer ?? nil)
+            guard let footer = footer as? MemberJoinFooterView else { return footer }
+            footer.delegate = self
             return footer
         default:
             let footer: UITableViewHeaderFooterView? = nil
             footerViews.append(footer ?? nil)
             return footer
         }
+    }
+
+}
+
+extension AppointmentVC: MemberJoinFooterDelegate {
+    func closeAppointment() {
+        appointmentVM.closeAppointment(appointmentID: appointmentID)
+    }
+
+    func joinOrCancelAppointment() {
+        appointmentVM.joinOrCancelAppointment(appointmentID: appointmentID)
+
     }
 
 }
@@ -356,6 +370,14 @@ extension AppointmentVC: AppointmentDelegate {
     }
 
     func didDeleteCommentOrReply() {
+        viewDidLoad()
+    }
+
+    func didCloseAppointment() {
+        viewDidLoad()
+    }
+
+    func didJoinOrCancelAppointment() {
         viewDidLoad()
     }
 
@@ -700,6 +722,8 @@ extension AppointmentVC {
 
     private class MemberJoinFooterView: UITableViewHeaderFooterView {
 
+        weak var delegate: MemberJoinFooterDelegate?
+
         var mode: Mode? {
             didSet {
                 button.backgroundColor = mode?.buttonColor
@@ -712,8 +736,21 @@ extension AppointmentVC {
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.layer.cornerRadius = 5
             $0.backgroundColor = .white
+            $0.addTarget(self, action: #selector(didButtonClicked), for: .touchUpInside)
             return $0
         }(UIButton())
+
+        @objc
+        func didButtonClicked() {
+            switch mode {
+            case .ownerOpened:
+                delegate?.closeAppointment()
+            case .ownerCloesed: return
+            case .nonOwnerNonJoined, .nonOwnerJoined:
+                delegate?.joinOrCancelAppointment()
+            case .none: return
+            }
+        }
 
         override init(reuseIdentifier: String?) {
             super.init(reuseIdentifier: reuseIdentifier)
@@ -784,6 +821,11 @@ extension AppointmentVC {
         }
     }
 
+}
+
+protocol MemberJoinFooterDelegate: AnyObject {
+    func closeAppointment()
+    func joinOrCancelAppointment()
 }
 
 class MemberListCell: UITableViewCell {

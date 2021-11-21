@@ -161,8 +161,32 @@ class AppointmentVM {
         }
     }
 
+    // MARK: - Join Cancle Close Method
+    func closeAppointment(appointmentID: Int) {
+        network.closeAppointmentRequest(appointmentID: appointmentID) { [weak self] result in
+            switch result {
+            case .success:
+                self?.delegate?.didCloseAppointment()
+            case .failure:
+                break
+            }
+        }
+    }
+
+    func joinOrCancelAppointment(appointmentID: Int) {
+        network.joinOrCancelAppointmentRequest(appointmentID: appointmentID) { [weak self] result in
+            switch result {
+            case .success:
+                self?.delegate?.didJoinOrCancelAppointment()
+            case .failure:
+                break
+            }
+        }
+    }
+
 }
 
+// MARK: - Data Model
 extension AppointmentVM {
 
     struct CommentsAndRepliesModel {
@@ -180,6 +204,7 @@ extension AppointmentVM {
 
 }
 
+// MARK: - AppointmentDelegate protocol
 protocol AppointmentDelegate: AnyObject {
     func didSetCommentsAndRepliesData()
     func didEnrollComment()
@@ -187,4 +212,6 @@ protocol AppointmentDelegate: AnyObject {
     func didDeleteAppointment()
     func didReportCommentOrReply()
     func didDeleteCommentOrReply()
+    func didCloseAppointment()
+    func didJoinOrCancelAppointment()
 }
