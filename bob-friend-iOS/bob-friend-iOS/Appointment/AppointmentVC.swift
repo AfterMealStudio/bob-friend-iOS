@@ -21,6 +21,7 @@ class AppointmentVC: UIViewController {
     }(UITableView(frame: .zero, style: .grouped))
 
     private var headerViews: [UITableViewHeaderFooterView?] = []
+    private var footerViews: [UITableViewHeaderFooterView?] = []
 
     private let commentWritingView: CommentWritingView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -100,6 +101,19 @@ class AppointmentVC: UIViewController {
             guard let section2Header = self?.headerViews[2] as? MemberJoinView else { return }
             section2Header.nowMemberCount = appointment.currentNumberOfPeople
             section2Header.fullMemberCount = appointment.totalNumberOfPeople
+
+            // set footerData
+            guard let section2Footer = self?.footerViews[2] as? MemberJoinFooterView else { return }
+            if appointment.author.id == UserInfo.myInfo?.id {
+                section2Footer.mode = .ownerOpened
+            } else {
+                section2Footer.mode = .nonOwnerNonJoined
+                for members in appointment.members {
+                    if members.id == UserInfo.myInfo?.id {
+                        section2Footer.mode = .nonOwnerJoined
+                    }
+                }
+            }
 
             self?.appointmentDetailTableView.reloadData()
         }
@@ -194,6 +208,7 @@ extension AppointmentVC: UITableViewDelegate, UITableViewDataSource {
         appointmentDetailTableView.register(CommentView.self, forHeaderFooterViewReuseIdentifier: "CommentHeader")
 
         appointmentDetailTableView.register(DivderFooterView.self, forHeaderFooterViewReuseIdentifier: "DividerFooter")
+        appointmentDetailTableView.register(MemberJoinFooterView.self, forHeaderFooterViewReuseIdentifier: "MemberJoinFooter")
 
     }
 
@@ -278,11 +293,17 @@ extension AppointmentVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         switch section {
         case 0, 1:
-            return tableView.dequeueReusableHeaderFooterView(withIdentifier: "DividerFooter")
+            let footer = tableView.dequeueReusableHeaderFooterView(withIdentifier: "DividerFooter")
+            footerViews.append(footer ?? nil)
+            return footer
         case 2:
-            return tableView.dequeueReusableHeaderFooterView(withIdentifier: "DividerFooter")
+            let footer = tableView.dequeueReusableHeaderFooterView(withIdentifier: "MemberJoinFooter")
+            footerViews.append(footer ?? nil)
+            return footer
         default:
-            return nil
+            let footer: UITableViewHeaderFooterView? = nil
+            footerViews.append(footer ?? nil)
+            return footer
         }
     }
 
@@ -674,6 +695,92 @@ extension AppointmentVC {
                 dividerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
                 dividerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
             ])
+        }
+    }
+
+    private class MemberJoinFooterView: UITableViewHeaderFooterView {
+
+        var mode: Mode? {
+            didSet {
+                button.backgroundColor = mode?.buttonColor
+                button.setTitle(mode?.buttonTitle ?? "", for: .normal)
+                button.setTitleColor(mode?.buttonTitleColor ?? .black, for: .normal)
+            }
+        }
+
+        let button: UIButton = {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.layer.cornerRadius = 5
+            $0.backgroundColor = .white
+            return $0
+        }(UIButton())
+
+        override init(reuseIdentifier: String?) {
+            super.init(reuseIdentifier: reuseIdentifier)
+            commonInit()
+        }
+
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+
+        func commonInit() {
+            backgroundColor = .white
+            layout()
+        }
+
+        func layout() {
+            let dividerView: DividerView = DividerView()
+
+            contentView.addSubview(button)
+            contentView.addSubview(dividerView)
+
+            NSLayoutConstraint.activate([
+                button.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
+                button.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),
+                button.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5),
+                button.heightAnchor.constraint(equalToConstant: 50),
+
+                dividerView.topAnchor.constraint(equalTo: button.bottomAnchor, constant: 5),
+                dividerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+                dividerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+                dividerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+            ])
+
+        }
+
+        enum Mode {
+            case ownerOpened
+            case ownerCloesed
+            case nonOwnerNonJoined
+            case nonOwnerJoined
+
+            var buttonColor: UIColor {
+                switch self {
+                case .ownerOpened: return UIColor(named: "MainColor1") ?? .black
+                case .ownerCloesed: return .gray
+                case .nonOwnerNonJoined: return UIColor(named: "MainColor3") ?? .yellow
+                case .nonOwnerJoined: return UIColor(named: "MainColor2") ?? .blue
+                }
+            }
+
+            var buttonTitle: String {
+                switch self {
+                case .ownerOpened: return "마감하기"
+                case .ownerCloesed: return "마감되었습니다"
+                case .nonOwnerNonJoined: return "참가하기"
+                case .nonOwnerJoined: return "취소하기"
+                }
+            }
+
+            var buttonTitleColor: UIColor {
+                switch self {
+                case .ownerOpened: return .white
+                case .ownerCloesed: return .black
+                case .nonOwnerNonJoined: return .black
+                case .nonOwnerJoined: return .white
+                }
+            }
         }
     }
 
