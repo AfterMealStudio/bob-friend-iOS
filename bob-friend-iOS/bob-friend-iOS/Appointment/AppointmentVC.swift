@@ -28,6 +28,9 @@ class AppointmentVC: UIViewController {
         return $0
     }(CommentWritingView())
 
+    var commentWritingViewBottomConstraint: NSLayoutConstraint?
+    var commentWritingViewKeyboardBottomConstraint: NSLayoutConstraint?
+
     private let appointmentVM: AppointmentVM = AppointmentVM()
 
     private var replyWritngInfo: ReplyWritingInfo? {
@@ -121,6 +124,13 @@ class AppointmentVC: UIViewController {
         // commentWritingView
         commentWritingView.delegate = self
 
+        // layout + keyboard
+        commentWritingViewBottomConstraint = commentWritingView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        commentWritingViewKeyboardBottomConstraint = commentWritingView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        commentWritingViewKeyboardBottomConstraint?.priority = .defaultHigh
+        commentWritingViewBottomConstraint?.priority = .defaultLow
+        enrollKeyboardNotification()
+        enrollRemoveKeyboard()
         layout()
     }
 
@@ -157,11 +167,12 @@ class AppointmentVC: UIViewController {
 
         // commentWritingView
         view.addSubview(commentWritingView)
+        guard let commentWritingViewBottomConstraint = commentWritingViewBottomConstraint else { return }
         NSLayoutConstraint.activate([
             commentWritingView.topAnchor.constraint(equalTo: appointmentDetailTableView.bottomAnchor),
             commentWritingView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
             commentWritingView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor),
-            commentWritingView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor)
+            commentWritingViewBottomConstraint
         ])
 
     }
@@ -394,6 +405,55 @@ extension AppointmentVC: CommentWritingViewDelegate {
             appointmentVM.enrollComment(appointmentID: appointmentID, content: content)
         }
 
+    }
+}
+
+// MARK: - keyboard Management
+extension AppointmentVC {
+    private func enrollKeyboardNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
+    @objc
+    private func keyboardWillShow(_ sender: Notification) {
+        guard let commentWritingViewKeyboardBottomConstraint = commentWritingViewKeyboardBottomConstraint else { return }
+        if commentWritingViewKeyboardBottomConstraint.constant == 0 {
+            guard let userInfo = sender.userInfo,
+                  let keyboardFrame: NSValue = userInfo[ UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            let keyboardHeight = keyboardRectangle.height
+
+            commentWritingViewKeyboardBottomConstraint.isActive = true
+            commentWritingViewKeyboardBottomConstraint.constant = -keyboardHeight
+        }
+    }
+
+    @objc
+    private func keyboardWillHide(_ sender: Notification) {
+        guard let commentWritingViewKeyboardBottomConstraint = commentWritingViewKeyboardBottomConstraint else { return }
+        if commentWritingViewKeyboardBottomConstraint.constant != 0 {
+            commentWritingViewKeyboardBottomConstraint.isActive = false
+            commentWritingViewKeyboardBottomConstraint.constant = 0
+        }
+    }
+
+    private func removeKeyboard() {
+        view.endEditing(true)
+        if replyWritngInfo != nil {
+            replyWritngInfo = nil
+        }
+    }
+
+    private func enrollRemoveKeyboard() {
+        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapOtherMethod))
+            appointmentDetailTableView.addGestureRecognizer(singleTapGestureRecognizer)
+    }
+
+    @objc
+    private func tapOtherMethod(sender: UITapGestureRecognizer) {
+        removeKeyboard()
     }
 }
 
