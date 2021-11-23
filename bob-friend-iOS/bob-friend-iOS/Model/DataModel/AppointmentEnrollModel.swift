@@ -13,8 +13,8 @@ struct AppointmentEnrollModel: Encodable {
     let totalNumberOfPeople: Int
     let restaurantName: String
     let restaurantAddress: String
-    let latitude: Float
-    let longitude: Float
+    let latitude: Double
+    let longitude: Double
     let sexRestriction: Gender
     let appointmentTime: String
 }

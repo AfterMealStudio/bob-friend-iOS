@@ -21,6 +21,7 @@
 		0B52D2572709A2FB00133F5B /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B52D2562709A2FB00133F5B /* MainTabBarController.swift */; };
 		0B6B8A09274CB8A6004BF879 /* AppointmentEnrollModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6B8A08274CB8A6004BF879 /* AppointmentEnrollModel.swift */; };
 		0B6B8A0B274CB953004BF879 /* WriteAppointmentVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6B8A0A274CB953004BF879 /* WriteAppointmentVM.swift */; };
+		0B6B8A0D274D2B4A004BF879 /* PlaceSearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6B8A0C274D2B4A004BF879 /* PlaceSearchVC.swift */; };
 		0B6E0CBF27427FBC006CC18D /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6E0CBE27427FBC006CC18D /* UserInfo.swift */; };
 		0B876D712709B5D100925881 /* MainMapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B876D702709B5D100925881 /* MainMapVC.swift */; };
 		0B876D73270A0F4A00925881 /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B876D72270A0F4A00925881 /* SearchBarView.swift */; };
@@ -370,6 +371,7 @@
 		0B52D2562709A2FB00133F5B /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		0B6B8A08274CB8A6004BF879 /* AppointmentEnrollModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentEnrollModel.swift; sourceTree = "<group>"; };
 		0B6B8A0A274CB953004BF879 /* WriteAppointmentVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteAppointmentVM.swift; sourceTree = "<group>"; };
+		0B6B8A0C274D2B4A004BF879 /* PlaceSearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceSearchVC.swift; sourceTree = "<group>"; };
 		0B6E0CBE27427FBC006CC18D /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
 		0B876D702709B5D100925881 /* MainMapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMapVC.swift; sourceTree = "<group>"; };
 		0B876D72270A0F4A00925881 /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
@@ -849,6 +851,7 @@
 			children = (
 				0B95E52C274B57D700D090C5 /* WriteAppointmentVC.swift */,
 				0B6B8A0A274CB953004BF879 /* WriteAppointmentVM.swift */,
+				0B6B8A0C274D2B4A004BF879 /* PlaceSearchVC.swift */,
 			);
 			path = WriteAppoinment;
 			sourceTree = "<group>";
@@ -1827,6 +1830,7 @@
 				0BA716C02729414600A36A04 /* AppointmentVC.swift in Sources */,
 				0B29798826DA18A9002AD75A /* Network.swift in Sources */,
 				0BA716B9272632D800A36A04 /* AppointmentListTableViewCell.swift in Sources */,
+				0B6B8A0D274D2B4A004BF879 /* PlaceSearchVC.swift in Sources */,
 				0BA716BD27291E1500A36A04 /* AppointmentListVM.swift in Sources */,
 				0B876D73270A0F4A00925881 /* SearchBarView.swift in Sources */,
 				0BB9877E26DA573B00E0CC12 /* TokenModel.swift in Sources */,

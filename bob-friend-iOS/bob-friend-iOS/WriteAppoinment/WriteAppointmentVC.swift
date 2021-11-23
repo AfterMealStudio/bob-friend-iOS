@@ -38,6 +38,16 @@ class WriteAppointmentVC: UIViewController {
         return $0
     }(UIDatePicker())
 
+    let placeSearchButton: UIButton = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.backgroundColor = UIColor(named: "MainColor3")
+        $0.layer.cornerRadius = 5
+        $0.setTitle("장소 검색하기", for: .normal)
+        $0.setTitleColor(.black, for: .normal)
+        $0.addTarget(self, action: #selector(didPlaceSearchButtonClicked), for: .touchUpInside)
+        return $0
+    }(UIButton())
+
     let memberAmountTextField: UITextField = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.addBorder(.bottom, color: .lightGray, width: 1)
@@ -150,6 +160,11 @@ class WriteAppointmentVC: UIViewController {
         }
     }
 
+    var restaurantName: String = ""
+    var restaurantAddress: String = ""
+    var longitude: Double?
+    var latitude: Double?
+
     // MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -228,15 +243,6 @@ class WriteAppointmentVC: UIViewController {
             $0.translatesAutoresizingMaskIntoConstraints = false
             return $0
         }(UIView())
-
-        let placeSearchButton: UIButton = {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.backgroundColor = UIColor(named: "MainColor3")
-            $0.layer.cornerRadius = 5
-            $0.setTitle("장소 검색하기", for: .normal)
-            $0.setTitleColor(.black, for: .normal)
-            return $0
-        }(UIButton())
 
         let mapView: MTMapView = {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -328,9 +334,9 @@ extension WriteAppointmentVC {
     func didEnrollButtonClicked() {
         print("didEnrollButtonClicked")
 
-        guard let title = titleTextField.text, let content = contentTextView.text, let strMemberAmount = memberAmountTextField.text, let totalNumberOfPeople = Int(strMemberAmount) else { return }
+        guard let title = titleTextField.text, let content = contentTextView.text, let strMemberAmount = memberAmountTextField.text, let totalNumberOfPeople = Int(strMemberAmount), let longitude = longitude, let latitude = latitude else { return }
 
-        print("--")
+        if title == "" || content == "" || restaurantName == "" || restaurantAddress == "" { return }
 
         let dateAndTime = timePicker.date
         let dateFormatter = DateFormatter()
@@ -343,11 +349,16 @@ extension WriteAppointmentVC {
 
         let appointmentTime = dateString + "T" + timeString + ":00"
 
-        let appointment = AppointmentEnrollModel(title: title, content: content, totalNumberOfPeople: totalNumberOfPeople, restaurantName: "제주대학교", restaurantAddress: "제주특별자치도 제주시 아라일동 제주대학로 102", latitude: 33.4558924, longitude: 126.5620301, sexRestriction: gender, appointmentTime: appointmentTime)
-
-        dump(appointment)
+        let appointment = AppointmentEnrollModel(title: title, content: content, totalNumberOfPeople: totalNumberOfPeople, restaurantName: restaurantName, restaurantAddress: restaurantAddress, latitude: latitude, longitude: longitude, sexRestriction: gender, appointmentTime: appointmentTime)
 
         writeAppointmentVM.enrollAppointment(appointment: appointment)
+    }
+    // MARK: - Place Search Button Event
+    @objc
+    func didPlaceSearchButtonClicked() {
+        let vc = PlaceSearchVC()
+        vc.delegate = self
+        navigationController?.pushViewController(vc, animated: true)
     }
 
     // MARK: - Age Buttons Event
@@ -379,6 +390,7 @@ extension WriteAppointmentVC {
 
 }
 
+// MARK: - WriteAppointment Delegate
 extension WriteAppointmentVC: WriteAppointmentDelegate {
 
     func didEnrollAppointment() {
@@ -400,4 +412,14 @@ extension WriteAppointmentVC: WriteAppointmentDelegate {
         viewDidLoad()
     }
 
+}
+
+// MARK: - PlaceSerachDelegate
+extension WriteAppointmentVC: PlaceSearchDelegate {
+    func didSelectPlace(restaurantName: String, restaurantAddress: String, longitude: Double, latitude: Double) {
+        self.restaurantName = restaurantName
+        self.restaurantAddress = restaurantAddress
+        self.longitude = longitude
+        self.latitude = latitude
+    }
 }
