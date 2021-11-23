@@ -22,6 +22,9 @@ final class SignUpGenderSelectView: UIView {
             case .female:
                 maleButton.isSelected = false
                 femaleButton.isSelected = true
+            case .none:
+                maleButton.isSelected = false
+                femaleButton.isSelected = false
             }
         }
     }

@@ -37,6 +37,7 @@ final class Network {
         case deleteReply(appointmentID: Int, commentID: Int, replyID: Int)
         case closeAppointment(appointmentID: Int)
         case joinOrCancelAppointment(appointmentID: Int)
+        case enrollAppointment
 
         var path: String {
             let baseUrl: String = "http://117.17.102.143:8080/"
@@ -79,6 +80,8 @@ final class Network {
                 return baseUrl + "recruitments/\(appointmentID)/close"
             case .joinOrCancelAppointment(appointmentID: let appointmentID):
                 return baseUrl + "recruitments/\(appointmentID)"
+            case .enrollAppointment:
+                return baseUrl + "recruitments"
             }
         }
 
@@ -102,6 +105,7 @@ final class Network {
             case .deleteReply(appointmentID: _, commentID: _, replyID: _): return .delete
             case .closeAppointment(appointmentID: _): return .patch
             case .joinOrCancelAppointment(appointmentID: _): return .patch
+            case .enrollAppointment: return .post
             }
         }
 
@@ -200,6 +204,11 @@ final class Network {
         request(api: .joinOrCancelAppointment(appointmentID: appointmentID), type: AppointmentModel.self, headers: headers, completion: completion)
     }
 
+    func enrollAppointment(appointment: AppointmentEnrollModel, completion: @escaping(Result<AppointmentModel?, Error>) -> Void) {
+        let headers = HTTPHeaders(["Authorization": Network.token])
+        request(api: .enrollAppointment, type: AppointmentModel.self, parameter: appointment, headers: headers, completion: completion)
+    }
+
 }
 
 extension Network {
@@ -207,6 +216,7 @@ extension Network {
     private func request<E: Encodable, D: Decodable>(api: API, type: D.Type, parameter: E, encoder: ParameterEncoder = JSONParameterEncoder(), headers: HTTPHeaders? = nil, completion: @escaping (Result<D?, Error>) -> Void) {
 
         session?.request(api.path, method: api.method, parameters: parameter, encoder: encoder, headers: headers).response { [weak self] response in
+            print(response.debugDescription)
             switch response.result {
             case .success(let data):
                 let jsonData = self?.decodeJSONData(data: data, type: type)

@@ -19,6 +19,7 @@ struct SignUpModel: Encodable {
 enum Gender: String, Codable {
     case male = "MALE"
     case female = "FEMALE"
+    case none = "NONE"
 }
 
 struct SignUpResponseModel: Decodable {

@@ -15,14 +15,155 @@ class WriteAppointmentVC: UIViewController {
         return $0
     }(UIScrollView())
 
+    let titleTextField: UITextField = {
+        $0.placeholder = "제목을 입력하세요."
+        $0.addBorder(.bottom, color: .lightGray, width: 1)
+        return $0
+    }(UITextField())
+
+    let contentTextView: UITextView = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.contentInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 2)
+        $0.heightAnchor.constraint(equalToConstant: 250).isActive = true
+        $0.font = UIFont.systemFont(ofSize: 15)
+        $0.layer.borderWidth = 1
+        $0.layer.borderColor = UIColor.lightGray.cgColor
+        $0.layer.cornerRadius = 5
+        return $0
+    }(UITextView())
+
+    let timePicker: UIDatePicker = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.preferredDatePickerStyle = .inline
+        return $0
+    }(UIDatePicker())
+
+    let memberAmountTextField: UITextField = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.addBorder(.bottom, color: .lightGray, width: 1)
+        $0.placeholder = "ex) 4"
+        return $0
+    }(UITextField())
+
+    let considerAgeButton: UIButton = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.setTitle(" 상관있음", for: .normal)
+        $0.setTitleColor(.black, for: .normal)
+        $0.setImage(UIImage(systemName: "circle"), for: .normal)
+        $0.setImage(UIImage(systemName: "circle.circle"), for: .selected)
+        $0.tintColor = UIColor(named: "MainColor3")
+        $0.isEnabled = true
+        $0.isSelected = true
+
+        $0.addTarget(self, action: #selector(didConsiderAgeButtonClicked), for: .touchUpInside)
+        return $0
+    }(UIButton())
+
+    let notConsiderAgeButton: UIButton = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.setTitle(" 상관없음", for: .normal)
+        $0.setTitleColor(.black, for: .normal)
+        $0.setImage(UIImage(systemName: "circle"), for: .normal)
+        $0.setImage(UIImage(systemName: "circle.circle"), for: .selected)
+        $0.tintColor = UIColor(named: "MainColor3")
+        $0.isEnabled = true
+        $0.isSelected = false
+
+        $0.addTarget(self, action: #selector(didDontConsiderAgeButtonClicked), for: .touchUpInside)
+        return $0
+    }(UIButton())
+
+    let ageSelectView: UIView = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        return $0
+    }(UIView())
+
+    let onlyMaleButton: UIButton = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.setTitle(" 남성만", for: .normal)
+        $0.setTitleColor(.black, for: .normal)
+        $0.setImage(UIImage(systemName: "circle"), for: .normal)
+        $0.setImage(UIImage(systemName: "circle.circle"), for: .selected)
+        $0.tintColor = UIColor(named: "MainColor3")
+        $0.isEnabled = true
+
+        $0.addTarget(self, action: #selector(didOnlyMaleButtonClicked), for: .touchUpInside)
+        return $0
+    }(UIButton())
+
+    let onlyFemaleButton: UIButton = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.setTitle(" 여성만", for: .normal)
+        $0.setTitleColor(.black, for: .normal)
+        $0.setImage(UIImage(systemName: "circle"), for: .normal)
+        $0.setImage(UIImage(systemName: "circle.circle"), for: .selected)
+        $0.tintColor = UIColor(named: "MainColor3")
+        $0.isEnabled = true
+
+        $0.addTarget(self, action: #selector(didOnlyFemaleButtonClicked), for: .touchUpInside)
+        return $0
+    }(UIButton())
+
+    let dontMentionGenderButton: UIButton = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.setTitle(" 상관없음", for: .normal)
+        $0.setTitleColor(.black, for: .normal)
+        $0.setImage(UIImage(systemName: "circle"), for: .normal)
+        $0.setImage(UIImage(systemName: "circle.circle"), for: .selected)
+        $0.tintColor = UIColor(named: "MainColor3")
+        $0.isEnabled = true
+        $0.isSelected = true
+
+        $0.addTarget(self, action: #selector(didDontMentionGenderButtonClicked), for: .touchUpInside)
+        return $0
+    }(UIButton())
+
+    let writeAppointmentVM: WriteAppointmentVM = WriteAppointmentVM()
+
+    var willConsiderAge: Bool = false {
+        didSet {
+            switch willConsiderAge {
+            case true:
+                considerAgeButton.isSelected = true
+                notConsiderAgeButton.isSelected = false
+                ageSelectView.isHidden = false
+            case false:
+                considerAgeButton.isSelected = false
+                notConsiderAgeButton.isSelected = true
+                ageSelectView.isHidden = true
+            }
+        }
+    }
+
+    var gender: Gender = .none {
+        didSet {
+            onlyMaleButton.isSelected = false
+            onlyFemaleButton.isSelected = false
+            dontMentionGenderButton.isSelected = false
+
+            switch gender {
+            case .male: onlyMaleButton.isSelected = true
+            case .female: onlyFemaleButton.isSelected = true
+            case .none: dontMentionGenderButton.isSelected = true
+            }
+        }
+    }
+
+    // MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = UIColor(named: "MainColor1")
 
+        // VM Delegate
+        writeAppointmentVM.delegate = self
+
         // set navigation
         navigationItem.title = "약속 작성하기"
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        let enrollButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "checkmark.circle"), style: .plain, target: self, action: #selector(didEnrollButtonClicked))
+        navigationItem.rightBarButtonItem = enrollButton
 
         // layout
         layout()
@@ -59,12 +200,6 @@ class WriteAppointmentVC: UIViewController {
         ])
 
         // MARK: - title
-        let titleTextField: UITextField = {
-            $0.placeholder = "제목을 입력하세요."
-            $0.addBorder(.bottom, color: .lightGray, width: 1)
-            return $0
-        }(UITextField())
-
         let titleView: AppointmentVC.AppointmentDetailView = {
             $0.translatesAutoresizingMaskIntoConstraints = false
             return $0
@@ -73,17 +208,6 @@ class WriteAppointmentVC: UIViewController {
         scrollStackView.addArrangedSubview(titleView)
 
         // MARK: - content
-        let contentTextView: UITextView = {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.contentInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 2)
-            $0.heightAnchor.constraint(equalToConstant: 250).isActive = true
-            $0.font = UIFont.systemFont(ofSize: 15)
-            $0.layer.borderWidth = 1
-            $0.layer.borderColor = UIColor.lightGray.cgColor
-            $0.layer.cornerRadius = 5
-            return $0
-        }(UITextView())
-
         let contentView: AppointmentVC.AppointmentDetailView = {
             $0.translatesAutoresizingMaskIntoConstraints = false
             return $0
@@ -92,12 +216,6 @@ class WriteAppointmentVC: UIViewController {
         scrollStackView.addArrangedSubview(contentView)
 
         // MARK: - time
-        let timePicker: UIDatePicker = {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.preferredDatePickerStyle = .inline
-            return $0
-        }(UIDatePicker())
-
         let timeView: AppointmentVC.AppointmentDetailView = {
             $0.translatesAutoresizingMaskIntoConstraints = false
             return $0
@@ -148,14 +266,7 @@ class WriteAppointmentVC: UIViewController {
 
         scrollStackView.addArrangedSubview(placeView)
 
-        // MARK: member amount & age limit
-        let memberAmountTextField: UITextField = {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.addBorder(.bottom, color: .lightGray, width: 1)
-            $0.placeholder = "ex) 4"
-            return $0
-        }(UITextField())
-
+        // MARK: - member amount & age limit
         let memberAmountView: AppointmentVC.AppointmentDetailView = {
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.widthAnchor.constraint(equalToConstant: 80).isActive = true
@@ -168,30 +279,6 @@ class WriteAppointmentVC: UIViewController {
             $0.distribution = .fillEqually
             return $0
         }(UIStackView())
-
-        let considerAgeButton: UIButton = {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.setTitle(" 상관있음", for: .normal)
-            $0.setTitleColor(.black, for: .normal)
-            $0.setImage(UIImage(systemName: "circle"), for: .normal)
-            $0.setImage(UIImage(systemName: "circle.circle"), for: .selected)
-            $0.tintColor = UIColor(named: "MainColor3")
-            $0.isEnabled = true
-            $0.isSelected = true
-            return $0
-        }(UIButton())
-
-        let notConsiderAgeButton: UIButton = {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.setTitle(" 상관있음", for: .normal)
-            $0.setTitleColor(.black, for: .normal)
-            $0.setImage(UIImage(systemName: "circle"), for: .normal)
-            $0.setImage(UIImage(systemName: "circle.circle"), for: .selected)
-            $0.tintColor = UIColor(named: "MainColor3")
-            $0.isEnabled = true
-            $0.isSelected = false
-            return $0
-        }(UIButton())
 
         ageOptionView.addArrangedSubview(considerAgeButton)
         ageOptionView.addArrangedSubview(notConsiderAgeButton)
@@ -211,13 +298,6 @@ class WriteAppointmentVC: UIViewController {
         memberAndAgeView.addArrangedSubview(ageView)
 
         scrollStackView.addArrangedSubview(memberAndAgeView)
-
-        let ageSelectView: UIView = {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.heightAnchor.constraint(equalToConstant: 50).isActive = true
-            return $0
-        }(UIView())
-
         scrollStackView.addArrangedSubview(ageSelectView)
 
         // MARK: - gender
@@ -228,40 +308,6 @@ class WriteAppointmentVC: UIViewController {
             return $0
         }(UIStackView())
 
-        let onlyMaleButton: UIButton = {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.setTitle(" 남성만", for: .normal)
-            $0.setTitleColor(.black, for: .normal)
-            $0.setImage(UIImage(systemName: "circle"), for: .normal)
-            $0.setImage(UIImage(systemName: "circle.circle"), for: .selected)
-            $0.tintColor = UIColor(named: "MainColor3")
-            $0.isEnabled = true
-            return $0
-        }(UIButton())
-
-        let onlyFemaleButton: UIButton = {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.setTitle(" 여성만", for: .normal)
-            $0.setTitleColor(.black, for: .normal)
-            $0.setImage(UIImage(systemName: "circle"), for: .normal)
-            $0.setImage(UIImage(systemName: "circle.circle"), for: .selected)
-            $0.tintColor = UIColor(named: "MainColor3")
-            $0.isEnabled = true
-            return $0
-        }(UIButton())
-
-        let dontMentionGenderButton: UIButton = {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            $0.setTitle(" 상관없음", for: .normal)
-            $0.setTitleColor(.black, for: .normal)
-            $0.setImage(UIImage(systemName: "circle"), for: .normal)
-            $0.setImage(UIImage(systemName: "circle.circle"), for: .selected)
-            $0.tintColor = UIColor(named: "MainColor3")
-            $0.isEnabled = true
-            $0.isSelected = true
-            return $0
-        }(UIButton())
-
         genderStackview.addArrangedSubview(onlyMaleButton)
         genderStackview.addArrangedSubview(onlyFemaleButton)
         genderStackview.addArrangedSubview(dontMentionGenderButton)
@@ -271,6 +317,87 @@ class WriteAppointmentVC: UIViewController {
         }(AppointmentVC.AppointmentDetailView(title: "성별", contentView: genderStackview))
 
         scrollStackView.addArrangedSubview(genderView)
+    }
+
+}
+
+// MARK: - Buttons Events
+extension WriteAppointmentVC {
+    // MARK: - Enroll Button Event
+    @objc
+    func didEnrollButtonClicked() {
+        print("didEnrollButtonClicked")
+
+        guard let title = titleTextField.text, let content = contentTextView.text, let strMemberAmount = memberAmountTextField.text, let totalNumberOfPeople = Int(strMemberAmount) else { return }
+
+        print("--")
+
+        let dateAndTime = timePicker.date
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "YYYY-MM-dd"
+        let timeFormatter = DateFormatter()
+        timeFormatter.dateFormat = "HH:mm"
+
+        let dateString = dateFormatter.string(from: dateAndTime)
+        let timeString = timeFormatter.string(from: dateAndTime)
+
+        let appointmentTime = dateString + "T" + timeString + ":00"
+
+        let appointment = AppointmentEnrollModel(title: title, content: content, totalNumberOfPeople: totalNumberOfPeople, restaurantName: "제주대학교", restaurantAddress: "제주특별자치도 제주시 아라일동 제주대학로 102", latitude: 33.4558924, longitude: 126.5620301, sexRestriction: gender, appointmentTime: appointmentTime)
+
+        dump(appointment)
+
+        writeAppointmentVM.enrollAppointment(appointment: appointment)
+    }
+
+    // MARK: - Age Buttons Event
+    @objc
+    func didConsiderAgeButtonClicked() {
+        willConsiderAge = true
+    }
+
+    @objc
+    func didDontConsiderAgeButtonClicked() {
+        willConsiderAge = false
+    }
+
+    // MARK: - Gender Buttons Event
+    @objc
+    func didOnlyMaleButtonClicked() {
+        gender = .male
+    }
+
+    @objc
+    func didOnlyFemaleButtonClicked() {
+        gender = .female
+    }
+
+    @objc
+    func didDontMentionGenderButtonClicked() {
+        gender = .none
+    }
+
+}
+
+extension WriteAppointmentVC: WriteAppointmentDelegate {
+
+    func didEnrollAppointment() {
+
+        let alertController = UIAlertController(title: "게시글이 등록되었습니다.", message: nil, preferredStyle: .alert)
+        let okBtn = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
+            self?.dismiss(animated: true) { [weak self] in
+                self?.dismiss(animated: true, completion: nil)
+            }
+        }
+
+        alertController.addAction(okBtn)
+
+        DispatchQueue.main.async {
+            [weak self] in
+            self?.present(alertController, animated: true, completion: nil)
+        }
+
+        viewDidLoad()
     }
 
 }
