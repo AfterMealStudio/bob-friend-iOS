@@ -20,15 +20,20 @@ class AppointmentListVC: UIViewController {
         return $0
     }(UITableView())
 
+    let refreshControl: UIRefreshControl = UIRefreshControl()
+
     var appointments: [AppointmentSimpleModel] = [] {
         didSet {
             appointmentListTableView.reloadData()
+            refreshControl.endRefreshing()
         }
     }
     let appointmentListVM: AppointmentListVM = AppointmentListVM()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        print("viewDidLoad")
 
         // vm
         appointmentListVM.delegate = self
@@ -38,6 +43,8 @@ class AppointmentListVC: UIViewController {
         appointmentListTableView.delegate = self
         appointmentListTableView.dataSource = self
         registAppointmentListTableView()
+        appointmentListTableView.refreshControl = refreshControl
+        appointmentListTableView.refreshControl?.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
 
         layout()
     }
@@ -45,6 +52,13 @@ class AppointmentListVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = true
+    }
+
+    @objc
+    func pullToRefresh() {
+        appointments = []
+        appointmentListVM.setToInit()
+        appointmentListVM.getAppointmentList()
     }
 
 }

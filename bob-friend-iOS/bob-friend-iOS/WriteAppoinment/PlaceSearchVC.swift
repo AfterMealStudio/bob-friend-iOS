@@ -93,7 +93,7 @@ extension PlaceSearchVC: UICollectionViewDelegate, UICollectionViewDataSource {
         searchListView = SearchListView(frame: .zero, collectionViewLayout: listlayout)
         searchListView.register(SearchListCell.self, forCellWithReuseIdentifier: "SearchListCell")
 
-        //TODO: 배경색을 여기보다 빨리 지정해주면(ex, 이 함수의 첫 문장 위치) 배경색이 지정되지 않는 것 같음. 이유 분석 필요.
+        // TODO: 배경색을 여기보다 빨리 지정해주면(ex, 이 함수의 첫 문장 위치) 배경색이 지정되지 않는 것 같음. 이유 분석 필요.
         searchListView.backgroundColor = .white
     }
 
