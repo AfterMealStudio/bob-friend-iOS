@@ -54,6 +54,8 @@ class AppointmentVC: UIViewController {
         let index: IndexPath
     }
 
+    let refreshControl: UIRefreshControl = UIRefreshControl()
+
     init(appointmentID: Int) {
         self.appointmentID = appointmentID
         super.init(nibName: nil, bundle: nil)
@@ -88,6 +90,8 @@ class AppointmentVC: UIViewController {
         appointmentDetailTableView.delegate = self
         appointmentDetailTableView.dataSource = self
         registAppointmentDetailTableView()
+        appointmentDetailTableView.refreshControl = refreshControl
+        appointmentDetailTableView.refreshControl?.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
 
         // set appointment
         appointmentVM.getAppointment(appointmentID) { [weak self] appointment in
@@ -137,6 +141,12 @@ class AppointmentVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = false
+    }
+
+    @objc
+    func pullToRefresh() {
+        viewDidLoad()
+        refreshControl.endRefreshing()
     }
 
     // MARK: - layout
