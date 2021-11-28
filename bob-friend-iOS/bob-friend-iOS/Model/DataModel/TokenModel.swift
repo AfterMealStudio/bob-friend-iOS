@@ -8,5 +8,5 @@
 import Foundation
 
 struct TokenModel: Codable {
-    let token: String
+    let accessToken: String
 }
