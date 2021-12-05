@@ -74,6 +74,8 @@ class PlaceSearchVC: UIViewController {
 
 // MARK: - SearchBarViewDelegate
 extension PlaceSearchVC: SearchBarViewDelegate {
+    func didBeginEditing() {}
+
     func didSearchButtonClicked() {
         placeSearchVM.requestPlaceSearch(keyword: searchBar.text) { _ in }
     }

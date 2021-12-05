@@ -73,6 +73,8 @@ class SearchBarView: UIView {
 
         button.addTarget(self, action: #selector(didButtonClicked), for: .touchUpInside)
         textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
+
+        textField.delegate = self
     }
 
     required init?(coder: NSCoder) {
@@ -133,10 +135,18 @@ extension SearchBarView {
 
 }
 
+// MARK: - textField Delegate
+extension SearchBarView: UITextFieldDelegate {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        delegate?.didBeginEditing()
+    }
+}
+
 // MARK: - Delegate
 
 protocol SearchBarViewDelegate: AnyObject {
     func didSearchButtonClicked()
+    func didBeginEditing()
 }
 
 // MARK: - use Canvas

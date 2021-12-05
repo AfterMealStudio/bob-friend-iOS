@@ -33,9 +33,6 @@ class AppointmentListVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let vc = SearchAppointmentVC()
-        navigationController?.pushViewController(vc, animated: true)
-
         // vm
         appointmentListVM.delegate = self
         appointmentListVM.getAppointmentList()
@@ -46,6 +43,8 @@ class AppointmentListVC: UIViewController {
         registAppointmentListTableView()
         appointmentListTableView.refreshControl = refreshControl
         appointmentListTableView.refreshControl?.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
+
+        searchBar.delegate = self
 
         layout()
     }
@@ -89,6 +88,23 @@ extension AppointmentListVC {
         ])
 
     }
+
+}
+
+// MARK: - SearchBarView Delegate
+extension AppointmentListVC: SearchBarViewDelegate {
+    func didSearchButtonClicked() {
+
+    }
+
+    func didBeginEditing() {
+        view.endEditing(true)
+        searchBar.text = ""
+
+        let vc = SearchAppointmentVC()
+        navigationController?.pushViewController(vc, animated: true)
+    }
+
 
 }
 

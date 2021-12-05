@@ -384,6 +384,7 @@ extension SearchAppointmentVC {
         vc.searchWord = searchWord
         vc.selectedTime = selectedTime
         vc.searchType = searchType
+        vc.searchBar.text = searchWord
         navigationController?.pushViewController(vc, animated: true)
     }
 

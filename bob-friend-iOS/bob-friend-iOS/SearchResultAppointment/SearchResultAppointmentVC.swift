@@ -48,6 +48,8 @@ class SearchResultAppointmentVC: UIViewController {
         appointmentListTableView.refreshControl = refreshControl
         appointmentListTableView.refreshControl?.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
 
+        searchBar.delegate = self
+
         layout()
     }
 
@@ -91,6 +93,18 @@ extension SearchResultAppointmentVC {
 
     }
 
+}
+
+// MARK: - SearchBarView Delegate
+extension SearchResultAppointmentVC: SearchBarViewDelegate {
+    func didSearchButtonClicked() {
+
+    }
+
+    func didBeginEditing() {
+        view.endEditing(true)
+        navigationController?.popViewController(animated: true)
+    }
 }
 
 // MARK: - searchResultAppointmentVM Delegate
