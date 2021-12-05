@@ -25,6 +25,7 @@ final class Network {
         case signup
         case kakaoKeywordSearch
         case appointmentList
+        case searchAppointmentList
         case appointment(id: Int)
         case enrollComment(appointmentID: Int)
         case enrollReply(appointmentID: Int, commentID: Int)
@@ -56,6 +57,8 @@ final class Network {
                 return kakaoKeywordSearchUrl
             case .appointmentList:
                 return baseUrl + "recruitments"
+            case .searchAppointmentList:
+                return baseUrl + "recruitments/search"
             case .appointment(let id):
                 return baseUrl + "recruitments/\(id)"
             case .enrollComment(appointmentID: let id):
@@ -93,6 +96,7 @@ final class Network {
             case .signup: return .post
             case .kakaoKeywordSearch: return .get
             case .appointmentList: return .get
+            case .searchAppointmentList: return .get
             case .appointment(id: _): return .get
             case .enrollComment(appointmentID: _): return .post
             case .enrollReply(appointmentID: _): return .post
@@ -140,6 +144,16 @@ final class Network {
         let parameters: Parameters = ["page": page]
         let headers = HTTPHeaders(["Authorization": Network.token])
         request(api: .appointmentList, type: AppointmentListModel.self, parameters: parameters, headers: headers, completion: completion)
+    }
+
+    func getSearchAppointmentListRequest(searchWord: String, selectedTime: (String, String)?, category: SearchCategory, page: Int = 0, completion: @escaping(Result<AppointmentListModel?, Error>) -> Void) {
+        var parameters: Parameters = ["page": page, "category": category, "keyword": searchWord]
+        if let selectedTime = selectedTime {
+            parameters.updateValue(selectedTime.0, forKey: "start")
+            parameters.updateValue(selectedTime.1, forKey: "end")
+        }
+        let headers = HTTPHeaders(["Authorization": Network.token])
+        request(api: .searchAppointmentList, type: AppointmentListModel.self, parameters: parameters, headers: headers, completion: completion)
     }
 
     func getAppointment(_ appointmentID: Int, completion: @escaping(Result<AppointmentModel?, Error>) -> Void) {
@@ -231,7 +245,7 @@ extension Network {
     private func request<D: Decodable>(api: API, type: D.Type, parameters: Parameters? = nil, encoder: ParameterEncoder = URLEncodedFormParameterEncoder.default, headers: HTTPHeaders? = nil, completion: @escaping (Result<D?, Error>) -> Void) {
 
         session?.request(api.path, method: api.method, parameters: parameters, headers: headers).response { [weak self] response in
-//            print(response.debugDescription)
+            print(response.debugDescription)
             switch response.result {
             case .success(let data):
                 let jsonData = self?.decodeJSONData(data: data, type: type)
@@ -246,7 +260,7 @@ extension Network {
     private func request(api: API, parameters: Parameters? = nil, encoder: ParameterEncoder = URLEncodedFormParameterEncoder.default, headers: HTTPHeaders? = nil, completion: @escaping (Result<Void?, Error>) -> Void) {
 
         session?.request(api.path, method: api.method, parameters: parameters, headers: headers).response { response in
-//            print(response.debugDescription)
+            print(response.debugDescription)
             switch response.result {
             case .success:
                 completion(.success(Void()))

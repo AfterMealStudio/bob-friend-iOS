@@ -10,6 +10,25 @@ import UIKit
 class SearchBarView: UIView {
 
     var text: String = ""
+    var activeMode: ActiveMode = .displayMode {
+        didSet {
+            switch activeMode {
+            case .displayMode:
+                button.isHidden = true
+                textFieldContainerTrailingToViewConstraint?.isActive = true
+                textFieldContainerTrailingToButtonConstraint?.isActive = false
+            case .searchOptionMode:
+                button.isHidden = false
+                textFieldContainerTrailingToViewConstraint?.isActive = false
+                textFieldContainerTrailingToButtonConstraint?.isActive = true
+            }
+        }
+    }
+
+    enum ActiveMode {
+        case displayMode
+        case searchOptionMode
+    }
 
     private let textFieldContainer: UIView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -27,16 +46,30 @@ class SearchBarView: UIView {
 
     private let button: UIButton = {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.setImage(UIImage(systemName: "magnifyingglass"), for: .normal)
+        let buttonImage = UIImage(systemName: "chevron.down.circle")
+        $0.setImage(buttonImage, for: .normal)
         $0.tintColor = .white
         return $0
     }(UIButton())
+
+    private var textFieldContainerTrailingToButtonConstraint: NSLayoutConstraint?
+    private var textFieldContainerTrailingToViewConstraint: NSLayoutConstraint?
 
     weak var delegate: SearchBarViewDelegate?
 
     init() {
         super.init(frame: .zero)
         layout()
+        switch activeMode {
+        case .displayMode:
+            button.isHidden = true
+            textFieldContainerTrailingToViewConstraint?.isActive = true
+            textFieldContainerTrailingToButtonConstraint?.isActive = false
+        case .searchOptionMode:
+            button.isHidden = false
+            textFieldContainerTrailingToViewConstraint?.isActive = false
+            textFieldContainerTrailingToButtonConstraint?.isActive = true
+        }
 
         button.addTarget(self, action: #selector(didButtonClicked), for: .touchUpInside)
         textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
@@ -84,12 +117,16 @@ extension SearchBarView {
             textField.trailingAnchor.constraint(equalTo: textFieldContainer.trailingAnchor, constant: -10)
         ])
 
+        textFieldContainerTrailingToButtonConstraint = textFieldContainer.trailingAnchor.constraint(equalTo: button.leadingAnchor, constant: -10)
+
+        textFieldContainerTrailingToViewConstraint = textFieldContainer.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10)
+
         addSubview(button)
         NSLayoutConstraint.activate([
             button.heightAnchor.constraint(equalTo: textFieldContainer.heightAnchor),
             button.widthAnchor.constraint(equalTo: textFieldContainer.heightAnchor),
             button.centerYAnchor.constraint(equalTo: centerYAnchor),
-            button.leadingAnchor.constraint(equalTo: textFieldContainer.trailingAnchor, constant: 10),
+//            button.leadingAnchor.constraint(equalTo: textFieldContainer.trailingAnchor, constant: 10),
             button.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10)
         ])
     }

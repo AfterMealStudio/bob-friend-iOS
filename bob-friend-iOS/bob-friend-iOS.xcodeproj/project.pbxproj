@@ -19,6 +19,7 @@
 		0B29797426D8D13C002AD75A /* UIView+Border.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B29797326D8D13C002AD75A /* UIView+Border.swift */; };
 		0B29798826DA18A9002AD75A /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B29798726DA18A9002AD75A /* Network.swift */; };
 		0B52D2572709A2FB00133F5B /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B52D2562709A2FB00133F5B /* MainTabBarController.swift */; };
+		0B626A192758DCBF009E7E2D /* SearchResultAppointmentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B626A182758DCBF009E7E2D /* SearchResultAppointmentVC.swift */; };
 		0B6B8A09274CB8A6004BF879 /* AppointmentEnrollModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6B8A08274CB8A6004BF879 /* AppointmentEnrollModel.swift */; };
 		0B6B8A0B274CB953004BF879 /* WriteAppointmentVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6B8A0A274CB953004BF879 /* WriteAppointmentVM.swift */; };
 		0B6B8A0D274D2B4A004BF879 /* PlaceSearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B6B8A0C274D2B4A004BF879 /* PlaceSearchVC.swift */; };
@@ -31,6 +32,7 @@
 		0B9B0609273A80EB00689E92 /* CommentWritingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9B0608273A80EB00689E92 /* CommentWritingView.swift */; };
 		0B9B060B273AB3FE00689E92 /* AppointmentVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9B060A273AB3FE00689E92 /* AppointmentVM.swift */; };
 		0B9B060D273AC6F500689E92 /* EnrollCommentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9B060C273AC6F500689E92 /* EnrollCommentModel.swift */; };
+		0B9EC9F1275B5F8000A222A8 /* SearchResultAppointmentVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9EC9F0275B5F8000A222A8 /* SearchResultAppointmentVM.swift */; };
 		0BA2016F26FF93EE0072A2B6 /* SignUpTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA2016E26FF93EE0072A2B6 /* SignUpTextField.swift */; };
 		0BA716B227256BCC00A36A04 /* AppointmentListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA716B127256BCC00A36A04 /* AppointmentListVC.swift */; };
 		0BA716B9272632D800A36A04 /* AppointmentListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA716B8272632D800A36A04 /* AppointmentListTableViewCell.swift */; };
@@ -370,6 +372,7 @@
 		0B29797326D8D13C002AD75A /* UIView+Border.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Border.swift"; sourceTree = "<group>"; };
 		0B29798726DA18A9002AD75A /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		0B52D2562709A2FB00133F5B /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		0B626A182758DCBF009E7E2D /* SearchResultAppointmentVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultAppointmentVC.swift; sourceTree = "<group>"; };
 		0B6B8A08274CB8A6004BF879 /* AppointmentEnrollModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentEnrollModel.swift; sourceTree = "<group>"; };
 		0B6B8A0A274CB953004BF879 /* WriteAppointmentVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WriteAppointmentVM.swift; sourceTree = "<group>"; };
 		0B6B8A0C274D2B4A004BF879 /* PlaceSearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceSearchVC.swift; sourceTree = "<group>"; };
@@ -382,6 +385,7 @@
 		0B9B0608273A80EB00689E92 /* CommentWritingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentWritingView.swift; sourceTree = "<group>"; };
 		0B9B060A273AB3FE00689E92 /* AppointmentVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentVM.swift; sourceTree = "<group>"; };
 		0B9B060C273AC6F500689E92 /* EnrollCommentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnrollCommentModel.swift; sourceTree = "<group>"; };
+		0B9EC9F0275B5F8000A222A8 /* SearchResultAppointmentVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultAppointmentVM.swift; sourceTree = "<group>"; };
 		0BA2016E26FF93EE0072A2B6 /* SignUpTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpTextField.swift; sourceTree = "<group>"; };
 		0BA716B127256BCC00A36A04 /* AppointmentListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentListVC.swift; sourceTree = "<group>"; };
 		0BA716B8272632D800A36A04 /* AppointmentListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentListTableViewCell.swift; sourceTree = "<group>"; };
@@ -762,6 +766,7 @@
 		0B2978EF26D617B4002AD75A /* bob-friend-iOS */ = {
 			isa = PBXGroup;
 			children = (
+				0B626A172758DC9C009E7E2D /* SearchResultAppointment */,
 				0B88509727534E720043354E /* SearchAppointment */,
 				0B95E52B274B579A00D090C5 /* WriteAppoinment */,
 				0BA716BE2729412C00A36A04 /* Appointment */,
@@ -847,6 +852,15 @@
 				0B29798726DA18A9002AD75A /* Network.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		0B626A172758DC9C009E7E2D /* SearchResultAppointment */ = {
+			isa = PBXGroup;
+			children = (
+				0B626A182758DCBF009E7E2D /* SearchResultAppointmentVC.swift */,
+				0B9EC9F0275B5F8000A222A8 /* SearchResultAppointmentVM.swift */,
+			);
+			path = SearchResultAppointment;
 			sourceTree = "<group>";
 		};
 		0B88509727534E720043354E /* SearchAppointment */ = {
@@ -1831,6 +1845,8 @@
 				0BCCDF312731533D0042C226 /* CommentTableViewCell.swift in Sources */,
 				0B1EB31D273525EF008BAE70 /* UIColor+Hex.swift in Sources */,
 				0BD421282700601C003E8734 /* SignUpGenderSelectView.swift in Sources */,
+				0B9EC9F1275B5F8000A222A8 /* SearchResultAppointmentVM.swift in Sources */,
+				0B626A192758DCBF009E7E2D /* SearchResultAppointmentVC.swift in Sources */,
 				0B9B0609273A80EB00689E92 /* CommentWritingView.swift in Sources */,
 				0B95E52D274B57D700D090C5 /* WriteAppointmentVC.swift in Sources */,
 				0B170B9726F2D63B00C25EA1 /* SignUpVM.swift in Sources */,

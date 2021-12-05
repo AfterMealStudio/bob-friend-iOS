@@ -9,6 +9,27 @@ import UIKit
 
 class SearchAppointmentVC: UIViewController {
 
+    var isTimeSettingMode: Bool = false {
+        didSet {
+            switch isTimeSettingMode {
+            case true:
+                termSettingButton.isSelected = true
+                timePickersView.isHidden = false
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyyMMddHHmm"
+                let startTime = dateFormatter.string(from: startTermPicker.date)
+                let endTime = dateFormatter.string(from: endTermPicker.date)
+                selectedTime = (startTime, endTime)
+            case false:
+                termSettingButton.isSelected = false
+                timePickersView.isHidden = true
+                selectedTime = nil
+            }
+        }
+    }
+
+    var searchType: SearchCategory = .all
+
     private let safeAreaView: UIView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.backgroundColor = .white
@@ -17,6 +38,7 @@ class SearchAppointmentVC: UIViewController {
 
     private let searchBar: SearchBarView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.activeMode = .searchOptionMode
         return $0
     }(SearchBarView())
 
@@ -104,7 +126,7 @@ class SearchAppointmentVC: UIViewController {
         return $0
     }(UIButton())
 
-    private let searchType: [String] = ["제목+내용", "제목", "내용", "장소"]
+    private let searchTypeString: [String] = ["제목+내용", "제목", "내용", "장소"]
     private var tagIndex: Int = .zero
 
     private var selectedTime: (String, String)?
@@ -291,7 +313,7 @@ extension SearchAppointmentVC {
 
     private func setSearchTypePickerView() {
 
-        searchType.enumerated().forEach { index, tag in
+        searchTypeString.enumerated().forEach { index, tag in
             searchTypePickerView.insertSegment(withTitle: tag, at: index, animated: false)
         }
 
@@ -303,6 +325,13 @@ extension SearchAppointmentVC {
     @objc
     private func pickSegmented(_ segmented: UISegmentedControl) {
         tagIndex = segmented.selectedSegmentIndex
+        switch tagIndex {
+        case 0: searchType = .all
+        case 1: searchType = .title
+        case 2: searchType = .content
+        case 3: searchType = .place
+        default: break
+        }
     }
 
 }
@@ -324,16 +353,7 @@ extension SearchAppointmentVC {
 
     @objc
     private func termSettingButtonClicked() {
-        termSettingButton.isSelected = !(termSettingButton.isSelected)
-
-        if termSettingButton.isSelected {
-            timePickersView.isHidden = false
-            // TODO: set selectedTime value
-        } else {
-            timePickersView.isHidden = true
-            selectedTime = nil
-        }
-
+        isTimeSettingMode = !isTimeSettingMode
     }
 
     @objc
@@ -357,7 +377,14 @@ extension SearchAppointmentVC {
 
     @objc
     private func searchButtonClicked() {
+        let searchWord = searchBar.text
+        if searchWord.count == 0 { return }
 
+        let vc = SearchResultAppointmentVC()
+        vc.searchWord = searchWord
+        vc.selectedTime = selectedTime
+        vc.searchType = searchType
+        navigationController?.pushViewController(vc, animated: true)
     }
 
 }

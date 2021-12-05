@@ -1,13 +1,17 @@
 //
-//  AppointmentListVC.swift
+//  SearchResultAppointmentVC.swift
 //  bob-friend-iOS
 //
-//  Created by 김수진 on 2021/10/24.
+//  Created by 김수진 on 2021/12/02.
 //
 
 import UIKit
 
-class AppointmentListVC: UIViewController {
+class SearchResultAppointmentVC: UIViewController {
+
+    var searchWord: String = ""
+    var selectedTime: (String, String)?
+    var searchType: SearchCategory = .all
 
     let searchBar: SearchBarView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -28,17 +32,14 @@ class AppointmentListVC: UIViewController {
             refreshControl.endRefreshing()
         }
     }
-    var appointmentListVM: AppointmentListVM = AppointmentListVM()
+    var searchResultAppointmentVM: SearchResultAppointmentVM = SearchResultAppointmentVM()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let vc = SearchAppointmentVC()
-        navigationController?.pushViewController(vc, animated: true)
-
         // vm
-        appointmentListVM.delegate = self
-        appointmentListVM.getAppointmentList()
+        searchResultAppointmentVM.delegate = self
+        searchResultAppointmentVM.getAppointmentList(searchWord: searchWord, selectedTime: selectedTime, searchType: searchType)
 
         // appointmentListTableView
         appointmentListTableView.delegate = self
@@ -58,14 +59,14 @@ class AppointmentListVC: UIViewController {
     @objc
     func pullToRefresh() {
         appointments = []
-        appointmentListVM.setToInit()
-        appointmentListVM.getAppointmentList()
+        searchResultAppointmentVM.setToInit()
+        searchResultAppointmentVM.getAppointmentList(searchWord: searchWord, selectedTime: selectedTime, searchType: searchType)
     }
 
 }
 
 // MARK: - layout
-extension AppointmentListVC {
+extension SearchResultAppointmentVC {
 
     private func layout() {
 
@@ -92,8 +93,8 @@ extension AppointmentListVC {
 
 }
 
-// MARK: - AppointmentListVM Delegate
-extension AppointmentListVC: AppointmentListDelegate {
+// MARK: - searchResultAppointmentVM Delegate
+extension SearchResultAppointmentVC: SearchResultAppointmentDelegate {
     func didGetAppointments(_ appointments: [AppointmentSimpleModel]) {
         self.appointments += appointments
     }
@@ -101,13 +102,13 @@ extension AppointmentListVC: AppointmentListDelegate {
 }
 
 // MARK: - appointmentListTableView
-extension AppointmentListVC {
+extension SearchResultAppointmentVC {
     private func registAppointmentListTableView() {
         appointmentListTableView.register(AppointmentListTableViewCell.self, forCellReuseIdentifier: "AppointListCell")
     }
 }
 
-extension AppointmentListVC: UITableViewDelegate, UITableViewDataSource {
+extension SearchResultAppointmentVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return appointments.count
     }
@@ -131,7 +132,7 @@ extension AppointmentListVC: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.row == appointments.count - 1 {
-            appointmentListVM.getAppointmentList()
+            searchResultAppointmentVM.getAppointmentList(searchWord: searchWord, selectedTime: selectedTime, searchType: searchType)
         }
     }
 
