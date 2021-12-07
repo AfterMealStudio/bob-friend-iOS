@@ -15,11 +15,7 @@ class SearchAppointmentVC: UIViewController {
             case true:
                 termSettingButton.isSelected = true
                 timePickersView.isHidden = false
-                let dateFormatter = DateFormatter()
-                dateFormatter.dateFormat = "yyyyMMddHHmm"
-                let startTime = dateFormatter.string(from: startTermPicker.date)
-                let endTime = dateFormatter.string(from: endTermPicker.date)
-                selectedTime = (startTime, endTime)
+                setSelectedTime()
             case false:
                 termSettingButton.isSelected = false
                 timePickersView.isHidden = true
@@ -138,6 +134,14 @@ class SearchAppointmentVC: UIViewController {
         setSearchTypePickerView()
         setSortingTypeSelectButton()
         layout()
+    }
+
+    private func setSelectedTime() {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyyMMddHHmm"
+        let startTime = dateFormatter.string(from: startTermPicker.date)
+        let endTime = dateFormatter.string(from: endTermPicker.date)
+        selectedTime = (startTime, endTime)
     }
 
 }
@@ -382,6 +386,7 @@ extension SearchAppointmentVC {
 
         let vc = SearchResultAppointmentVC()
         vc.searchWord = searchWord
+        setSelectedTime()
         vc.selectedTime = selectedTime
         vc.searchType = searchType
         vc.searchBar.text = searchWord
