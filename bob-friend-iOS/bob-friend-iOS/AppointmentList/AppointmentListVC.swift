@@ -105,7 +105,6 @@ extension AppointmentListVC: SearchBarViewDelegate {
         navigationController?.pushViewController(vc, animated: true)
     }
 
-
 }
 
 // MARK: - AppointmentListVM Delegate

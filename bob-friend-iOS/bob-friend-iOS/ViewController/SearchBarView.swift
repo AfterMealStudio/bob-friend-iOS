@@ -9,7 +9,11 @@ import UIKit
 
 class SearchBarView: UIView {
 
-    var text: String = ""
+    var text: String = "" {
+        didSet {
+            textField.text = text
+        }
+    }
     var activeMode: ActiveMode = .displayMode {
         didSet {
             switch activeMode {
