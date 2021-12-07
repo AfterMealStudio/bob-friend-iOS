@@ -376,6 +376,7 @@ extension AppointmentVC: AppointmentDelegate {
 
     func didEnrollComment() {
         viewDidLoad()
+        commentWritingView.setContentBlank()
     }
 
     func didReportAppointment() {

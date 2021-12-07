@@ -82,6 +82,11 @@ class CommentWritingView: UIView {
         delegate?.didWriteButtonClicked(content: content)
     }
 
+    func setContentBlank() {
+        content = ""
+        commentView.text = ""
+    }
+
 }
 
 extension CommentWritingView: UITextViewDelegate {
