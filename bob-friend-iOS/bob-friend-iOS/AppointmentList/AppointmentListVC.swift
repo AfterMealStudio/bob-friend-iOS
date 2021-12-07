@@ -142,6 +142,8 @@ extension AppointmentListVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = AppointmentVC(appointmentID: appointments[indexPath.row].id)
         navigationController?.pushViewController(vc, animated: true)
+
+        tableView.cellForRow(at: indexPath)?.isSelected = false
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
