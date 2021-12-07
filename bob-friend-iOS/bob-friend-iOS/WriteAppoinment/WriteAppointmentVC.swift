@@ -410,6 +410,9 @@ extension WriteAppointmentVC: WriteAppointmentDelegate {
         }
 
         viewDidLoad()
+
+        guard let naviVC = tabBarController?.viewControllers?[1] as? UINavigationController else { return }
+        naviVC.viewControllers = [AppointmentListVC()]
     }
 
 }
