@@ -12,6 +12,7 @@ class SearchResultAppointmentVC: UIViewController {
     var searchWord: String = ""
     var selectedTime: (String, String)?
     var searchType: SearchCategory = .all
+    var onlyEnterable: Bool = false
 
     let searchBar: SearchBarView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -39,7 +40,7 @@ class SearchResultAppointmentVC: UIViewController {
 
         // vm
         searchResultAppointmentVM.delegate = self
-        searchResultAppointmentVM.getAppointmentList(searchWord: searchWord, selectedTime: selectedTime, searchType: searchType)
+        searchResultAppointmentVM.getAppointmentList(searchWord: searchWord, selectedTime: selectedTime, onlyEnterable: onlyEnterable, searchType: searchType)
 
         // appointmentListTableView
         appointmentListTableView.delegate = self
@@ -62,7 +63,7 @@ class SearchResultAppointmentVC: UIViewController {
     func pullToRefresh() {
         appointments = []
         searchResultAppointmentVM.setToInit()
-        searchResultAppointmentVM.getAppointmentList(searchWord: searchWord, selectedTime: selectedTime, searchType: searchType)
+        searchResultAppointmentVM.getAppointmentList(searchWord: searchWord, selectedTime: selectedTime, onlyEnterable: onlyEnterable, searchType: searchType)
     }
 
 }
@@ -148,7 +149,7 @@ extension SearchResultAppointmentVC: UITableViewDelegate, UITableViewDataSource 
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.row == appointments.count - 1 {
-            searchResultAppointmentVM.getAppointmentList(searchWord: searchWord, selectedTime: selectedTime, searchType: searchType)
+            searchResultAppointmentVM.getAppointmentList(searchWord: searchWord, selectedTime: selectedTime, onlyEnterable: onlyEnterable, searchType: searchType)
         }
     }
 

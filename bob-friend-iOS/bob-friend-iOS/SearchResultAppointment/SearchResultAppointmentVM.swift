@@ -15,9 +15,9 @@ class SearchResultAppointmentVM {
     private var nextPage = 0
     var isLast = false
 
-    func getAppointmentList(searchWord: String, selectedTime: (String, String)?, searchType: SearchCategory) {
+    func getAppointmentList(searchWord: String, selectedTime: (String, String)?, onlyEnterable: Bool, searchType: SearchCategory) {
         if isLast { return }
-        network.getSearchAppointmentListRequest(searchWord: searchWord, selectedTime: selectedTime, category: .all, page: nextPage) { [weak self] result in
+        network.getSearchAppointmentListRequest(searchWord: searchWord, selectedTime: selectedTime, onlyEnterable: onlyEnterable, category: .all, page: nextPage) { [weak self] result in
             switch result {
             case .success(let appointmentList):
                 guard let appointmentList = appointmentList else {

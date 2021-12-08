@@ -146,11 +146,14 @@ final class Network {
         request(api: .appointmentList, type: AppointmentListModel.self, parameters: parameters, headers: headers, completion: completion)
     }
 
-    func getSearchAppointmentListRequest(searchWord: String, selectedTime: (String, String)?, category: SearchCategory, page: Int = 0, completion: @escaping(Result<AppointmentListModel?, Error>) -> Void) {
+    func getSearchAppointmentListRequest(searchWord: String, selectedTime: (String, String)?, onlyEnterable: Bool, category: SearchCategory, page: Int = 0, completion: @escaping(Result<AppointmentListModel?, Error>) -> Void) {
         var parameters: Parameters = ["page": page, "category": category, "keyword": searchWord]
         if let selectedTime = selectedTime {
             parameters.updateValue(selectedTime.0, forKey: "start")
             parameters.updateValue(selectedTime.1, forKey: "end")
+        }
+        if onlyEnterable {
+            parameters.updateValue("available", forKey: "type")
         }
         let headers = HTTPHeaders(["Authorization": Network.token])
         request(api: .searchAppointmentList, type: AppointmentListModel.self, parameters: parameters, headers: headers, completion: completion)

@@ -137,6 +137,10 @@ class SearchAppointmentVC: UIViewController {
     }
 
     private func setSelectedTime() {
+        if !isTimeSettingMode {
+            selectedTime = nil
+            return
+        }
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMMddHHmm"
         let startTime = dateFormatter.string(from: startTermPicker.date)
@@ -390,6 +394,7 @@ extension SearchAppointmentVC {
         vc.selectedTime = selectedTime
         vc.searchType = searchType
         vc.searchBar.text = searchWord
+        vc.onlyEnterable = checkOnlyEnterableButton.isSelected
         navigationController?.pushViewController(vc, animated: true)
     }
 
