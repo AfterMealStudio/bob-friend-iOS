@@ -41,7 +41,9 @@ struct AppointmentModel: Decodable {
     let restaurantAddress: String
     let latitude: Float
     let longitude: Float
-//    let sexRestriction
+    let sexRestriction: Gender
+    let ageRestrictionStart: Int?
+    let ageRestrictionEnd: Int?
     let appointmentTime: String?
     let createdAt: String
 

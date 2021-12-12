@@ -111,15 +111,47 @@ class AppointmentVC: UIViewController {
 
             // set footerData
             guard let section2Footer = self?.footerViews[2] as? MemberJoinFooterView else { return }
+            if appointment.ageRestrictionStart == nil && appointment.ageRestrictionEnd == nil {
+                section2Footer.age = "제한 없음"
+            } else {
+                var ageRestrictionStartString = " "
+                var ageRestrictionEndString = " "
+                if let ageRestrictionStart = appointment.ageRestrictionStart {
+                    ageRestrictionStartString = String(ageRestrictionStart)
+                }
+                if let ageRestrictionEnd = appointment.ageRestrictionEnd {
+                    ageRestrictionEndString = String(ageRestrictionEnd)
+                }
+                section2Footer.age = "\(ageRestrictionStartString) ~ \(ageRestrictionEndString)"
+            }
+
+            switch appointment.sexRestriction {
+            case .male:
+                section2Footer.gender = "남자만"
+            case .female:
+                section2Footer.gender = "여자만"
+            case .none:
+                section2Footer.gender = "제한 없음"
+            }
+
             if appointment.author.id == UserInfo.myInfo?.id {
                 section2Footer.mode = .ownerOpened
             } else {
-                section2Footer.mode = .nonOwnerNonJoined
-                for members in appointment.members {
-                    if members.id == UserInfo.myInfo?.id {
-                        section2Footer.mode = .nonOwnerJoined
+
+                switch appointment.sexRestriction {
+                case .male, .female:
+                    if UserInfo.myInfo?.sex != appointment.sexRestriction {
+                        section2Footer.mode = .restricted
+                    }
+                case .none:
+                    section2Footer.mode = .nonOwnerNonJoined
+                    for members in appointment.members {
+                        if members.id == UserInfo.myInfo?.id {
+                            section2Footer.mode = .nonOwnerJoined
+                        }
                     }
                 }
+
             }
 
             self?.appointmentDetailTableView.reloadData()
@@ -795,6 +827,9 @@ extension AppointmentVC {
 
         weak var delegate: MemberJoinFooterDelegate?
 
+        var age: String = " " { didSet { ageLabel.text = age } }
+        var gender: String = " " { didSet { genderLabel.text = gender } }
+
         var mode: Mode? {
             didSet {
                 button.backgroundColor = mode?.buttonColor
@@ -802,6 +837,20 @@ extension AppointmentVC {
                 button.setTitleColor(mode?.buttonTitleColor ?? .black, for: .normal)
             }
         }
+
+        private let ageLabel: UILabel = {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.text = " "
+            $0.sizeToFit()
+            return $0
+        }(UILabel())
+
+        private let genderLabel: UILabel = {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.text = " "
+            $0.sizeToFit()
+            return $0
+        }(UILabel())
 
         let button: UIButton = {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -819,6 +868,7 @@ extension AppointmentVC {
             case .ownerCloesed: return
             case .nonOwnerNonJoined, .nonOwnerJoined:
                 delegate?.joinOrCancelAppointment()
+            case .restricted: return
             case .none: return
             }
         }
@@ -838,13 +888,53 @@ extension AppointmentVC {
         }
 
         func layout() {
+
+            let ageFormLabel: UILabel = {
+                $0.translatesAutoresizingMaskIntoConstraints = false
+                $0.text = "나이제한"
+                $0.textColor = UIColor(named: "MainColor1")
+                $0.sizeToFit()
+                $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+                return $0
+            }(UILabel())
+
+            let genderFormLabel: UILabel = {
+                $0.translatesAutoresizingMaskIntoConstraints = false
+                $0.text = "성별제한"
+                $0.textColor = UIColor(named: "MainColor1")
+                $0.sizeToFit()
+                $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+                return $0
+            }(UILabel())
+
             let dividerView: DividerView = DividerView()
+
+            contentView.addSubview(ageFormLabel)
+            contentView.addSubview(ageLabel)
+            contentView.addSubview(genderFormLabel)
+            contentView.addSubview(genderLabel)
+
+            NSLayoutConstraint.activate([
+                ageFormLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
+                ageFormLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+
+                ageLabel.centerYAnchor.constraint(equalTo: ageFormLabel.centerYAnchor),
+                ageLabel.leadingAnchor.constraint(equalTo: ageFormLabel.trailingAnchor, constant: 10),
+                ageLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+
+                genderFormLabel.topAnchor.constraint(equalTo: ageFormLabel.bottomAnchor, constant: 5),
+                genderFormLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+
+                genderLabel.centerYAnchor.constraint(equalTo: genderFormLabel.centerYAnchor),
+                genderLabel.leadingAnchor.constraint(equalTo: genderFormLabel.trailingAnchor, constant: 10),
+                genderLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+            ])
 
             contentView.addSubview(button)
             contentView.addSubview(dividerView)
 
             NSLayoutConstraint.activate([
-                button.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
+                button.topAnchor.constraint(equalTo: genderFormLabel.bottomAnchor, constant: 5),
                 button.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),
                 button.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5),
                 button.heightAnchor.constraint(equalToConstant: 50),
@@ -862,6 +952,7 @@ extension AppointmentVC {
             case ownerCloesed
             case nonOwnerNonJoined
             case nonOwnerJoined
+            case restricted
 
             var buttonColor: UIColor {
                 switch self {
@@ -869,6 +960,7 @@ extension AppointmentVC {
                 case .ownerCloesed: return .gray
                 case .nonOwnerNonJoined: return UIColor(named: "MainColor3") ?? .yellow
                 case .nonOwnerJoined: return UIColor(named: "MainColor2") ?? .blue
+                case .restricted: return .gray
                 }
             }
 
@@ -878,6 +970,8 @@ extension AppointmentVC {
                 case .ownerCloesed: return "마감되었습니다"
                 case .nonOwnerNonJoined: return "참가하기"
                 case .nonOwnerJoined: return "취소하기"
+                case .restricted: return "참가대상이 아닙니다"
+
                 }
             }
 
@@ -887,6 +981,7 @@ extension AppointmentVC {
                 case .ownerCloesed: return .black
                 case .nonOwnerNonJoined: return .black
                 case .nonOwnerJoined: return .white
+                case .restricted: return .black
                 }
             }
         }
