@@ -87,7 +87,7 @@ class SearchBarView: UIView {
 
     @objc
     private func didButtonClicked() {
-        delegate?.didSearchButtonClicked()
+        delegate?.didButtonClicked()
     }
 
     @objc
@@ -146,7 +146,7 @@ extension SearchBarView: UITextFieldDelegate {
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        delegate?.didSearchButtonClicked()
+        delegate?.didReturnButtonClicked()
         return true
     }
 }
@@ -154,8 +154,9 @@ extension SearchBarView: UITextFieldDelegate {
 // MARK: - Delegate
 
 protocol SearchBarViewDelegate: AnyObject {
-    func didSearchButtonClicked()
+    func didReturnButtonClicked()
     func didBeginEditing()
+    func didButtonClicked()
 }
 
 // MARK: - use Canvas

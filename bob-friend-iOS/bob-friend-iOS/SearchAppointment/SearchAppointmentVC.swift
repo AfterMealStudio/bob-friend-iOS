@@ -131,6 +131,8 @@ class SearchAppointmentVC: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "MainColor1")
 
+        searchBar.delegate = self
+
         setSearchTypePickerView()
         setSortingTypeSelectButton()
         layout()
@@ -396,6 +398,23 @@ extension SearchAppointmentVC {
         vc.searchBar.text = searchWord
         vc.onlyEnterable = checkOnlyEnterableButton.isSelected
         navigationController?.pushViewController(vc, animated: true)
+    }
+
+}
+
+// MARK: - SearchBar Delegate
+extension SearchAppointmentVC: SearchBarViewDelegate {
+
+    func didReturnButtonClicked() {
+        searchButtonClicked()
+    }
+
+    func didBeginEditing() {
+
+    }
+
+    func didButtonClicked() {
+
     }
 
 }

@@ -216,9 +216,11 @@ extension MainMapVC {
 
 // MARK: - SearchBarViewDelegate
 extension MainMapVC: SearchBarViewDelegate {
+    func didButtonClicked() {}
+
     func didBeginEditing() {}
 
-    func didSearchButtonClicked() {
+    func didReturnButtonClicked() {
         mainMapVM.requestPlaceSearch(keyword: searchBar.text) { _ in }
     }
 

@@ -98,13 +98,17 @@ extension SearchResultAppointmentVC {
 
 // MARK: - SearchBarView Delegate
 extension SearchResultAppointmentVC: SearchBarViewDelegate {
-    func didSearchButtonClicked() {
+    func didReturnButtonClicked() {
 
     }
 
     func didBeginEditing() {
         view.endEditing(true)
         navigationController?.popViewController(animated: true)
+    }
+
+    func didButtonClicked() {
+
     }
 }
 
