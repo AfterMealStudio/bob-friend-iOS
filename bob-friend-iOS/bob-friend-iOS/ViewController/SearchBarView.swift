@@ -144,6 +144,11 @@ extension SearchBarView: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         delegate?.didBeginEditing()
     }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        delegate?.didSearchButtonClicked()
+        return true
+    }
 }
 
 // MARK: - Delegate
