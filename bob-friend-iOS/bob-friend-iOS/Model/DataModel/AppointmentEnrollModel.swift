@@ -17,4 +17,6 @@ struct AppointmentEnrollModel: Encodable {
     let longitude: Double
     let sexRestriction: Gender
     let appointmentTime: String
+    let ageRestrictionStart: Int?
+    let ageRestrictionEnd: Int?
 }

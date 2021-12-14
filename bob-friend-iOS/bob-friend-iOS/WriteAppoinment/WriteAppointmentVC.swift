@@ -63,7 +63,7 @@ class WriteAppointmentVC: UIViewController {
         $0.setImage(UIImage(systemName: "circle.circle"), for: .selected)
         $0.tintColor = UIColor(named: "MainColor3")
         $0.isEnabled = true
-        $0.isSelected = true
+        $0.isSelected = false
 
         $0.addTarget(self, action: #selector(didConsiderAgeButtonClicked), for: .touchUpInside)
         return $0
@@ -77,7 +77,7 @@ class WriteAppointmentVC: UIViewController {
         $0.setImage(UIImage(systemName: "circle.circle"), for: .selected)
         $0.tintColor = UIColor(named: "MainColor3")
         $0.isEnabled = true
-        $0.isSelected = false
+        $0.isSelected = true
 
         $0.addTarget(self, action: #selector(didDontConsiderAgeButtonClicked), for: .touchUpInside)
         return $0
@@ -86,8 +86,27 @@ class WriteAppointmentVC: UIViewController {
     let ageSelectView: UIView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        $0.isHidden = true
         return $0
     }(UIView())
+
+    let minAgeTextField: UITextField = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.placeholder = "1~100"
+        $0.text = "1"
+        $0.keyboardType = .numberPad
+        $0.addBorder()
+        return $0
+    }(UITextField())
+
+    let maxAgeTextField: UITextField = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.placeholder = "1~100"
+        $0.text = "100"
+        $0.keyboardType = .numberPad
+        $0.addBorder()
+        return $0
+    }(UITextField())
 
     let onlyMaleButton: UIButton = {
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -146,6 +165,10 @@ class WriteAppointmentVC: UIViewController {
         }
     }
 
+    var minAge: Int?
+    var maxAge: Int?
+    var ageRestrict: (Int?, Int?) = (nil, nil)
+
     var gender: Gender = .none {
         didSet {
             onlyMaleButton.isSelected = false
@@ -179,6 +202,8 @@ class WriteAppointmentVC: UIViewController {
         navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         let enrollButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "checkmark.circle"), style: .plain, target: self, action: #selector(didEnrollButtonClicked))
         navigationItem.rightBarButtonItem = enrollButton
+
+        // textField
 
         // layout
         layout()
@@ -306,6 +331,44 @@ class WriteAppointmentVC: UIViewController {
         scrollStackView.addArrangedSubview(memberAndAgeView)
         scrollStackView.addArrangedSubview(ageSelectView)
 
+        let ageMinLabel: UILabel = {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.text = "최소 나이"
+            $0.font = UIFont.systemFont(ofSize: 15)
+            $0.textColor = UIColor(named: "MainColor1")
+            return $0
+        }(UILabel())
+
+        let ageMaxLabel: UILabel = {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.text = "최대 나이"
+            $0.font = UIFont.systemFont(ofSize: 15)
+            $0.textColor = UIColor(named: "MainColor1")
+            return $0
+        }(UILabel())
+
+        ageSelectView.addSubview(ageMinLabel)
+        ageSelectView.addSubview(minAgeTextField)
+        ageSelectView.addSubview(ageMaxLabel)
+        ageSelectView.addSubview(maxAgeTextField)
+
+        NSLayoutConstraint.activate([
+            ageMinLabel.centerYAnchor.constraint(equalTo: ageSelectView.centerYAnchor),
+            ageMinLabel.leadingAnchor.constraint(equalTo: ageSelectView.leadingAnchor, constant: 10),
+//            ageMinLabel.widthAnchor.constraint(equalToConstant: 50),
+
+            minAgeTextField.centerYAnchor.constraint(equalTo: ageSelectView.centerYAnchor),
+            minAgeTextField.leadingAnchor.constraint(equalTo: ageMinLabel.trailingAnchor, constant: 10),
+            minAgeTextField.widthAnchor.constraint(equalToConstant: 50),
+
+            ageMaxLabel.centerYAnchor.constraint(equalTo: ageSelectView.centerYAnchor),
+            ageMaxLabel.leadingAnchor.constraint(equalTo: minAgeTextField.trailingAnchor, constant: 20),
+
+            maxAgeTextField.centerYAnchor.constraint(equalTo: ageSelectView.centerYAnchor),
+            maxAgeTextField.leadingAnchor.constraint(equalTo: ageMaxLabel.trailingAnchor, constant: 10),
+            maxAgeTextField.widthAnchor.constraint(equalToConstant: 50)
+        ])
+
         // MARK: - gender
         let genderStackview: UIStackView = {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -336,6 +399,13 @@ extension WriteAppointmentVC {
 
         guard let title = titleTextField.text, let content = contentTextView.text, let strMemberAmount = memberAmountTextField.text, let totalNumberOfPeople = Int(strMemberAmount), let longitude = longitude, let latitude = latitude else { return }
 
+        if willConsiderAge {
+            guard let strMinAge = minAgeTextField.text, let minAge = Int(strMinAge), let strMaxAge = maxAgeTextField.text, let maxAge = Int(strMaxAge) else { return }
+            if maxAge < minAge || minAge < 1 || minAge > 100 || maxAge < 1 || maxAge > 100 { return }
+            self.minAge = minAge
+            self.maxAge = maxAge
+        } else { (minAge, maxAge) = (nil, nil) }
+
         if title == "" || content == "" || restaurantName == "" || restaurantAddress == "" { return }
 
         let dateAndTime = timePicker.date
@@ -349,7 +419,7 @@ extension WriteAppointmentVC {
 
         let appointmentTime = dateString + "T" + timeString + ":00"
 
-        let appointment = AppointmentEnrollModel(title: title, content: content, totalNumberOfPeople: totalNumberOfPeople, restaurantName: restaurantName, restaurantAddress: restaurantAddress, latitude: latitude, longitude: longitude, sexRestriction: gender, appointmentTime: appointmentTime)
+        let appointment = AppointmentEnrollModel(title: title, content: content, totalNumberOfPeople: totalNumberOfPeople, restaurantName: restaurantName, restaurantAddress: restaurantAddress, latitude: latitude, longitude: longitude, sexRestriction: gender, appointmentTime: appointmentTime, ageRestrictionStart: minAge, ageRestrictionEnd: maxAge)
 
         writeAppointmentVM.enrollAppointment(appointment: appointment)
     }
