@@ -156,15 +156,15 @@ class ProfileView: UIView {
 
             ageLabel.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: 5),
             ageLabel.leadingAnchor.constraint(equalTo: infoSection.leadingAnchor),
-            ageLabel.widthAnchor.constraint(equalToConstant: 30),
+            ageLabel.widthAnchor.constraint(equalToConstant: 50),
 
             genderLabel.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: 5),
             genderLabel.leadingAnchor.constraint(equalTo: ageLabel.trailingAnchor, constant: 10),
-            genderLabel.widthAnchor.constraint(equalToConstant: 30),
+            genderLabel.widthAnchor.constraint(equalToConstant: 50),
 
             scoreLabel.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: 5),
             scoreLabel.leadingAnchor.constraint(equalTo: genderLabel.trailingAnchor, constant: 10),
-            scoreLabel.widthAnchor.constraint(equalToConstant: 30),
+            scoreLabel.widthAnchor.constraint(equalToConstant: 50),
 
             scoreLabel.bottomAnchor.constraint(equalTo: infoSection.bottomAnchor)
         ])

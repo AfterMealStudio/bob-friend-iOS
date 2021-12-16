@@ -14,6 +14,8 @@ class MyPageVC: UIViewController {
         return $0
     }(UITableView(frame: .zero, style: .grouped))
 
+    let myPageVM: MyPageVM = MyPageVM()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -21,6 +23,9 @@ class MyPageVC: UIViewController {
 
         setMyPageTableView()
         layout()
+
+        myPageVM.delegate = self
+        myPageVM.getMyProfile()
     }
 
 }
@@ -93,6 +98,21 @@ extension MyPageVC: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 0
+    }
+
+}
+
+// MARK: - MyPageVM Delegate
+extension MyPageVC: MyPageDelegate {
+    func didGetUserInfo(userInfo: UserInfoModel) {
+        guard let profileHeader = myPageTableView.headerView(forSection: 0) as? ProfileHeaderView else { return }
+
+        profileHeader.profileView.name = userInfo.nickname
+        profileHeader.profileView.email = userInfo.email
+        profileHeader.profileView.age = 20 // TODO: age 받아오면 age로
+        profileHeader.profileView.gender = userInfo.sex
+        profileHeader.profileView.score = 30 // TODO: score 받아오기
+
     }
 
 }
