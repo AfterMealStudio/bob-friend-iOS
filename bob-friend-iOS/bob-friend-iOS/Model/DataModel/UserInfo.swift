@@ -13,6 +13,7 @@ struct UserInfoModel: Decodable {
     let nickname: String
     let birth: String
     let sex: Gender
+    let rating: Float
 }
 
 class UserInfo {
