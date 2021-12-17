@@ -15,7 +15,9 @@ class LoginVM {
     func login(id: String, pwd: String) {
         let loginInfo = LoginModel(email: id, password: pwd)
 
+        delegate?.startLoading()
         network.loginRequest(loginInfo: loginInfo) { [weak self] result in
+            self?.delegate?.stopLoading()
             switch result {
             case .success(let token):
                 if let token = token {
@@ -31,7 +33,9 @@ class LoginVM {
     }
 
     func getUserInfo() {
-        network.getUserInfoRequest { result in
+        delegate?.startLoading()
+        network.getUserInfoRequest { [weak self] result in
+            self?.delegate?.stopLoading()
             switch result {
             case .success(let myInfo):
                 if let myInfo = myInfo {
@@ -48,8 +52,9 @@ class LoginVM {
 
 protocol LoginDelegate: AnyObject {
 
+    func startLoading()
+    func stopLoading()
     func didSuccessLogin(_ token: TokenModel)
-
     func didFailLogin(_ err: Error?)
 
 }

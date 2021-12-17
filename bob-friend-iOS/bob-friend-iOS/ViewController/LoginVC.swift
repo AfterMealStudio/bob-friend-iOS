@@ -34,6 +34,11 @@ class LoginVC: UIViewController {
         }
     }
 
+    let loadingView: LoadingView = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        return $0
+    }(LoadingView())
+
     var loginVM: LoginVM = LoginVM()
 
     override func viewDidLoad() {
@@ -70,6 +75,22 @@ extension LoginVC: UIScrollViewDelegate {
 }
 
 extension LoginVC: LoginDelegate {
+    func startLoading() {
+        view.addSubview(loadingView)
+        NSLayoutConstraint.activate([
+            loadingView.topAnchor.constraint(equalTo: view.topAnchor),
+            loadingView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            loadingView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            loadingView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+        loadingView.startLoadingAnimation()
+    }
+
+    func stopLoading() {
+        loadingView.stopLoadingAnimation()
+        loadingView.removeFromSuperview()
+    }
+
     func didSuccessLogin(_ token: TokenModel) {
         let mainTapBarController = MainTabBarController()
         mainTapBarController.modalPresentationStyle = .fullScreen
