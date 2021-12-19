@@ -11,7 +11,7 @@ struct UserInfoModel: Decodable {
     let id: Int
     let email: String
     let nickname: String
-    let birth: String
+    let age: Int
     let sex: Gender
     let rating: Float
 }

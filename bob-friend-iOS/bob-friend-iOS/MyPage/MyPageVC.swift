@@ -109,7 +109,7 @@ extension MyPageVC: MyPageDelegate {
 
         profileHeader.profileView.name = userInfo.nickname
         profileHeader.profileView.email = userInfo.email
-        profileHeader.profileView.age = 20 // TODO: age 받아오면 age로
+        profileHeader.profileView.age = userInfo.age
         profileHeader.profileView.gender = userInfo.sex
         profileHeader.profileView.score = userInfo.rating
 

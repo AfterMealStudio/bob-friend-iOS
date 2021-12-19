@@ -68,11 +68,14 @@ class ProfileView: UIView {
     private var nameLabel: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.text = "이름"
+        $0.font = UIFont.boldSystemFont(ofSize: 17)
         return $0
     }(UILabel())
 
     private var emailLabel: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.font = UIFont.systemFont(ofSize: 12)
+        $0.textColor = .gray
         $0.text = "이메일"
         return $0
     }(UILabel())
@@ -80,18 +83,21 @@ class ProfileView: UIView {
     private var ageLabel: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.text = "나이"
+        $0.font = UIFont.systemFont(ofSize: 14)
         return $0
     }(UILabel())
 
     private var genderLabel: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.text = "성별"
+        $0.font = UIFont.systemFont(ofSize: 14)
         return $0
     }(UILabel())
 
     private var scoreLabel: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.text = "점수"
+        $0.font = UIFont.systemFont(ofSize: 14)
         return $0
     }(UILabel())
 
@@ -110,29 +116,32 @@ class ProfileView: UIView {
     func layout() {
 
         NSLayoutConstraint.activate([
-            heightAnchor.constraint(equalToConstant: 150)
+            heightAnchor.constraint(equalToConstant: 90)
         ])
 
-        let profileSection: UIView = {
+        let profileImageSection: UIView = {
             $0.translatesAutoresizingMaskIntoConstraints = false
             return $0
         }(UIView())
 
-        profileSection.addSubview(profileImageView)
-        addSubview(profileSection)
+        profileImageSection.addSubview(profileImageView)
+        addSubview(profileImageSection)
+
+        let profileImageViewWidth = CGFloat(60)
+        profileImageView.layer.cornerRadius = profileImageViewWidth / 2
 
         NSLayoutConstraint.activate([
-            profileSection.widthAnchor.constraint(equalToConstant: 120),
+            profileImageSection.topAnchor.constraint(equalTo: topAnchor),
+            profileImageSection.leadingAnchor.constraint(equalTo: leadingAnchor),
+            profileImageSection.bottomAnchor.constraint(equalTo: bottomAnchor),
 
-            profileSection.topAnchor.constraint(equalTo: topAnchor),
-            profileSection.leadingAnchor.constraint(equalTo: leadingAnchor),
-            profileSection.bottomAnchor.constraint(equalTo: bottomAnchor),
-
-            profileImageView.widthAnchor.constraint(equalToConstant: 80),
+            profileImageView.widthAnchor.constraint(equalToConstant: profileImageViewWidth),
             profileImageView.heightAnchor.constraint(equalTo: profileImageView.widthAnchor),
 
-            profileImageView.centerXAnchor.constraint(equalTo: profileSection.centerXAnchor),
-            profileImageView.centerYAnchor.constraint(equalTo: profileSection.centerYAnchor)
+            profileImageView.leadingAnchor.constraint(equalTo: profileImageSection.leadingAnchor, constant: 15),
+
+            profileImageView.centerXAnchor.constraint(equalTo: profileImageSection.centerXAnchor),
+            profileImageView.centerYAnchor.constraint(equalTo: profileImageSection.centerYAnchor)
         ])
 
         let infoSection: UIView = {
@@ -145,24 +154,26 @@ class ProfileView: UIView {
         infoSection.addSubview(genderLabel)
         infoSection.addSubview(scoreLabel)
 
+        let verticalSpace: CGFloat = 3
+
         NSLayoutConstraint.activate([
             nameLabel.topAnchor.constraint(equalTo: infoSection.topAnchor),
             nameLabel.leadingAnchor.constraint(equalTo: infoSection.leadingAnchor),
             nameLabel.trailingAnchor.constraint(equalTo: infoSection.trailingAnchor),
 
-            emailLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 5),
+            emailLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: verticalSpace),
             emailLabel.leadingAnchor.constraint(equalTo: infoSection.leadingAnchor),
             emailLabel.trailingAnchor.constraint(equalTo: infoSection.trailingAnchor),
 
-            ageLabel.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: 5),
+            ageLabel.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: verticalSpace),
             ageLabel.leadingAnchor.constraint(equalTo: infoSection.leadingAnchor),
             ageLabel.widthAnchor.constraint(equalToConstant: 50),
 
-            genderLabel.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: 5),
+            genderLabel.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: verticalSpace),
             genderLabel.leadingAnchor.constraint(equalTo: ageLabel.trailingAnchor, constant: 10),
             genderLabel.widthAnchor.constraint(equalToConstant: 50),
 
-            scoreLabel.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: 5),
+            scoreLabel.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: verticalSpace),
             scoreLabel.leadingAnchor.constraint(equalTo: genderLabel.trailingAnchor, constant: 10),
             scoreLabel.widthAnchor.constraint(equalToConstant: 50),
 
@@ -171,7 +182,7 @@ class ProfileView: UIView {
 
         addSubview(infoSection)
         NSLayoutConstraint.activate([
-            infoSection.leadingAnchor.constraint(equalTo: profileSection.trailingAnchor),
+            infoSection.leadingAnchor.constraint(equalTo: profileImageSection.trailingAnchor),
             infoSection.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
 
             infoSection.centerYAnchor.constraint(equalTo: centerYAnchor)
