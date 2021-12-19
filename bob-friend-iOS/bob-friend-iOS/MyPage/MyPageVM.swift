@@ -13,7 +13,9 @@ class MyPageVM {
     let network: Network = Network()
 
     func getMyProfile() {
+        delegate?.startLoading()
         network.getUserInfoRequest { [weak self] result in
+            self?.delegate?.stopLoading()
             switch result {
             case .success(let userInfo):
                 if let userInfo = userInfo {
@@ -29,5 +31,8 @@ class MyPageVM {
 }
 
 protocol MyPageDelegate: AnyObject {
+    func startLoading()
+    func stopLoading()
+
     func didGetUserInfo(userInfo: UserInfoModel)
 }

@@ -148,6 +148,11 @@ class WriteAppointmentVC: UIViewController {
         return $0
     }(UIButton())
 
+    let loadingView: LoadingView = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        return $0
+    }(LoadingView())
+
     let writeAppointmentVM: WriteAppointmentVM = WriteAppointmentVM()
 
     var willConsiderAge: Bool = false {
@@ -208,6 +213,19 @@ class WriteAppointmentVC: UIViewController {
         // layout
         layout()
 
+    }
+
+    func resetVC() {
+        titleTextField.text = ""
+        contentTextView.text = ""
+        timePicker.setDate(Date(), animated: false)
+        restaurantName = ""
+        restaurantAddress = ""
+        longitude = nil
+        latitude = nil
+        didDontMentionGenderButtonClicked()
+        didDontConsiderAgeButtonClicked()
+        scrollView.scrollsToTop = true
     }
 
     // MARK: - layout
@@ -462,14 +480,27 @@ extension WriteAppointmentVC {
 
 // MARK: - WriteAppointment Delegate
 extension WriteAppointmentVC: WriteAppointmentDelegate {
+    func startLoading() {
+        view.addSubview(loadingView)
+        NSLayoutConstraint.activate([
+            loadingView.topAnchor.constraint(equalTo: view.topAnchor),
+            loadingView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            loadingView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            loadingView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+        loadingView.startLoadingAnimation()
+    }
+
+    func stopLoading() {
+        loadingView.stopLoadingAnimation()
+        loadingView.removeFromSuperview()
+    }
 
     func didEnrollAppointment() {
 
         let alertController = UIAlertController(title: "게시글이 등록되었습니다.", message: nil, preferredStyle: .alert)
         let okBtn = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
-            self?.dismiss(animated: true) { [weak self] in
-                self?.dismiss(animated: true, completion: nil)
-            }
+            self?.resetVC()
         }
 
         alertController.addAction(okBtn)
@@ -478,8 +509,6 @@ extension WriteAppointmentVC: WriteAppointmentDelegate {
             [weak self] in
             self?.present(alertController, animated: true, completion: nil)
         }
-
-        viewDidLoad()
 
         guard let naviVC = tabBarController?.viewControllers?[1] as? UINavigationController else { return }
         naviVC.viewControllers = [AppointmentListVC()]

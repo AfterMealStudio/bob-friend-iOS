@@ -12,8 +12,9 @@ class WriteAppointmentVM {
     weak var delegate: WriteAppointmentDelegate?
 
     func enrollAppointment(appointment: AppointmentEnrollModel) {
-
+        delegate?.startLoading()
         network.enrollAppointment(appointment: appointment) { [weak self] result in
+            self?.delegate?.stopLoading()
             switch result {
             case .success:
                 self?.delegate?.didEnrollAppointment()
@@ -27,5 +28,8 @@ class WriteAppointmentVM {
 }
 
 protocol WriteAppointmentDelegate: AnyObject {
+    func startLoading()
+    func stopLoading()
+
     func didEnrollAppointment()
 }

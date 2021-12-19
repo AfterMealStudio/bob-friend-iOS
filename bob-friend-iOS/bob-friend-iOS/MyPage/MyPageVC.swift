@@ -14,6 +14,11 @@ class MyPageVC: UIViewController {
         return $0
     }(UITableView(frame: .zero, style: .grouped))
 
+    let loadingView: LoadingView = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        return $0
+    }(LoadingView())
+
     let myPageVM: MyPageVM = MyPageVM()
 
     override func viewDidLoad() {
@@ -104,6 +109,22 @@ extension MyPageVC: UITableViewDelegate, UITableViewDataSource {
 
 // MARK: - MyPageVM Delegate
 extension MyPageVC: MyPageDelegate {
+    func startLoading() {
+        view.addSubview(loadingView)
+        NSLayoutConstraint.activate([
+            loadingView.topAnchor.constraint(equalTo: view.topAnchor),
+            loadingView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            loadingView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            loadingView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+        loadingView.startLoadingAnimation()
+    }
+
+    func stopLoading() {
+        loadingView.stopLoadingAnimation()
+        loadingView.removeFromSuperview()
+    }
+
     func didGetUserInfo(userInfo: UserInfoModel) {
         guard let profileHeader = myPageTableView.headerView(forSection: 0) as? ProfileHeaderView else { return }
 

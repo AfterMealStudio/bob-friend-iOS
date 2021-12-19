@@ -91,7 +91,10 @@ class AppointmentVM {
 
     func enrollComment(appointmentID: Int, content: String) {
         let enrollCommentModel: EnrollCommentModel = EnrollCommentModel(content: content)
+
+        delegate?.startLoading()
         network.enrollCommentRequest(appointmentID: appointmentID, comment: enrollCommentModel) { [weak self] result in
+            self?.delegate?.stopLoading()
             switch result {
             case .success:
                 self?.delegate?.didEnrollComment()
@@ -103,7 +106,10 @@ class AppointmentVM {
 
     func enrollReply(appointmentID: Int, commentID: Int, content: String) {
         let enrollCommentModel: EnrollCommentModel = EnrollCommentModel(content: content)
+
+        delegate?.startLoading()
         network.enrollReplyRequest(appointmentID: appointmentID, commentID: commentID, comment: enrollCommentModel) { [weak self] result in
+            self?.delegate?.stopLoading()
             switch result {
             case .success:
                 self?.delegate?.didEnrollComment()
@@ -206,6 +212,9 @@ extension AppointmentVM {
 
 // MARK: - AppointmentDelegate protocol
 protocol AppointmentDelegate: AnyObject {
+    func startLoading()
+    func stopLoading()
+
     func didSetCommentsAndRepliesData()
     func didEnrollComment()
     func didReportAppointment()

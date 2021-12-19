@@ -31,6 +31,11 @@ class AppointmentVC: UIViewController {
     var commentWritingViewBottomConstraint: NSLayoutConstraint?
     var commentWritingViewKeyboardBottomConstraint: NSLayoutConstraint?
 
+    let loadingView: LoadingView = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        return $0
+    }(LoadingView())
+
     private let appointmentVM: AppointmentVM = AppointmentVM()
 
     private var replyWritngInfo: ReplyWritingInfo? {
@@ -402,6 +407,22 @@ extension AppointmentVC: CommentTableViewCellDelegate {
 
 // MARK: - AppointmentDelegate
 extension AppointmentVC: AppointmentDelegate {
+    func startLoading() {
+        view.addSubview(loadingView)
+        NSLayoutConstraint.activate([
+            loadingView.topAnchor.constraint(equalTo: view.topAnchor),
+            loadingView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            loadingView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            loadingView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+        loadingView.startLoadingAnimation()
+    }
+
+    func stopLoading() {
+        loadingView.stopLoadingAnimation()
+        loadingView.removeFromSuperview()
+    }
+
     func didSetCommentsAndRepliesData() {
         appointmentDetailTableView.reloadData()
     }
