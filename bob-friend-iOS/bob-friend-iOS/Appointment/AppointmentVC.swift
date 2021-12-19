@@ -77,16 +77,15 @@ class AppointmentVC: UIViewController {
 
         // navigationBar
         navigationController?.navigationBar.backgroundColor = UIColor(named: "MainColor1")
-        navigationController?.navigationBar.isHidden = false
-        let titleView: UILabel = {
-            $0.text = "약속 내용"
-            $0.textColor = .white
-            return $0
-        }(UILabel())
-        navigationItem.titleView = titleView
+        navigationItem.title = "약속 내용"
 
         let moreFunctionButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipsis.circle"), style: .plain, target: self, action: #selector(didMoreFunctionButtonClicked))
         navigationItem.rightBarButtonItem = moreFunctionButton
+
+        let navigationAppearance = UINavigationBarAppearance()
+        navigationAppearance.backgroundColor = UIColor(named: "MainColor1")
+        navigationAppearance.titleTextAttributes =  [.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.standardAppearance = navigationAppearance
 
         // setting AppointmentVM
         appointmentVM.delegate = self

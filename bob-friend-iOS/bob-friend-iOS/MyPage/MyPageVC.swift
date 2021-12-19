@@ -26,6 +26,11 @@ class MyPageVC: UIViewController {
 
         view.backgroundColor = UIColor(named: "MainColor1")
 
+        let navigationAppearance = UINavigationBarAppearance()
+        navigationAppearance.backgroundColor = UIColor(named: "MainColor1")
+        navigationAppearance.titleTextAttributes =  [.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.standardAppearance = navigationAppearance
+
         setMyPageTableView()
         layout()
 

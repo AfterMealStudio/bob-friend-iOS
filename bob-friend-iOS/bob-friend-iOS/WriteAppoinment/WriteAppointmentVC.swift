@@ -208,6 +208,11 @@ class WriteAppointmentVC: UIViewController {
         let enrollButton: UIBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "checkmark.circle"), style: .plain, target: self, action: #selector(didEnrollButtonClicked))
         navigationItem.rightBarButtonItem = enrollButton
 
+        let navigationAppearance = UINavigationBarAppearance()
+        navigationAppearance.backgroundColor = UIColor(named: "MainColor1")
+        navigationAppearance.titleTextAttributes =  [.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.standardAppearance = navigationAppearance
+
         // textField
 
         // layout
