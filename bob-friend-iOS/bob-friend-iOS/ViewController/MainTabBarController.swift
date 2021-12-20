@@ -23,10 +23,10 @@ class MainTabBarController: UITabBarController {
         let myPageVC = MyPageVC()
         let mayPageNavigationController = UINavigationController(rootViewController: myPageVC)
 
-        mainMapVC.tabBarItem = UITabBarItem(title: "123", image: UIImage(systemName: "map"), selectedImage: UIImage(systemName: "map.fill"))
-        appointmentListVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(systemName: "list.bullet.circle"), selectedImage: UIImage(systemName: "list.bullet.circle.fill"))
-        makeAppointmentVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(systemName: "plus.app"), selectedImage: UIImage(systemName: "plus.app.fill"))
-        myPageVC.tabBarItem = UITabBarItem(title: nil, image: UIImage(systemName: "person"), selectedImage: UIImage(systemName: "person.fill"))
+        mainMapVC.tabBarItem = UITabBarItem(title: "지도", image: UIImage(systemName: "map"), selectedImage: UIImage(systemName: "map.fill"))
+        appointmentListVC.tabBarItem = UITabBarItem(title: "약속목록", image: UIImage(systemName: "list.bullet"), selectedImage: UIImage(systemName: "list.bullet"))
+        makeAppointmentVC.tabBarItem = UITabBarItem(title: "약속작성", image: UIImage(systemName: "plus.app"), selectedImage: UIImage(systemName: "plus.app.fill"))
+        myPageVC.tabBarItem = UITabBarItem(title: "내 정보", image: UIImage(systemName: "person"), selectedImage: UIImage(systemName: "person.fill"))
 
         viewControllers = [mainMapVC, appointmentNavigationVC, makeAppointmentNavigationVC, mayPageNavigationController]
 

@@ -148,6 +148,20 @@ class WriteAppointmentVC: UIViewController {
         return $0
     }(UIButton())
 
+    let restaurantNameLabel: UILabel = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.text = "없음"
+        $0.font = UIFont.systemFont(ofSize: 15)
+        return $0
+    }(UILabel())
+
+    let restaurantAddressLabel: UILabel = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.text = "없음"
+        $0.font = UIFont.systemFont(ofSize: 15)
+        return $0
+    }(UILabel())
+
     let loadingView: LoadingView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
@@ -188,8 +202,24 @@ class WriteAppointmentVC: UIViewController {
         }
     }
 
-    var restaurantName: String = ""
-    var restaurantAddress: String = ""
+    var restaurantName: String = "" {
+        didSet {
+            if restaurantName == "" {
+                restaurantNameLabel.text = "없음"
+            } else {
+                restaurantNameLabel.text = restaurantName
+            }
+        }
+    }
+    var restaurantAddress: String = "" {
+        didSet {
+            if restaurantAddress == "" {
+                restaurantAddressLabel.text = "없음"
+            } else {
+                restaurantAddressLabel.text = restaurantAddress
+            }
+        }
+    }
     var longitude: Double?
     var latitude: Double?
 
@@ -297,11 +327,50 @@ class WriteAppointmentVC: UIViewController {
             return $0
         }(MTMapView())
 
+        let restaurantNameFormLabel: UILabel = {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.text = "선택 식당"
+            $0.font = UIFont.systemFont(ofSize: 15)
+            $0.textColor = UIColor(named: "MainColor1")
+            $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+            return $0
+        }(UILabel())
+
+        let restaurantAddressFormLabel: UILabel = {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.text = "식당 정보"
+            $0.font = UIFont.systemFont(ofSize: 15)
+            $0.textColor = UIColor(named: "MainColor1")
+            $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+            return $0
+        }(UILabel())
+
+        placeInnerContentView.addSubview(restaurantNameFormLabel)
+        placeInnerContentView.addSubview(restaurantNameLabel)
+        placeInnerContentView.addSubview(restaurantAddressFormLabel)
+        placeInnerContentView.addSubview(restaurantAddressLabel)
+
+        NSLayoutConstraint.activate([
+            restaurantNameFormLabel.topAnchor.constraint(equalTo: placeInnerContentView.topAnchor),
+            restaurantNameFormLabel.leadingAnchor.constraint(equalTo: placeInnerContentView.leadingAnchor, constant: 5),
+
+            restaurantNameLabel.centerYAnchor.constraint(equalTo: restaurantNameFormLabel.centerYAnchor),
+            restaurantNameLabel.leadingAnchor.constraint(equalTo: restaurantNameFormLabel.trailingAnchor, constant: 5),
+            restaurantNameLabel.trailingAnchor.constraint(equalTo: placeInnerContentView.trailingAnchor),
+
+            restaurantAddressFormLabel.topAnchor.constraint(equalTo: restaurantNameFormLabel.bottomAnchor, constant: 5),
+            restaurantAddressFormLabel.leadingAnchor.constraint(equalTo: placeInnerContentView.leadingAnchor, constant: 5),
+
+            restaurantAddressLabel.centerYAnchor.constraint(equalTo: restaurantAddressFormLabel.centerYAnchor),
+            restaurantAddressLabel.leadingAnchor.constraint(equalTo: restaurantAddressFormLabel.trailingAnchor, constant: 5),
+            restaurantAddressLabel.trailingAnchor.constraint(equalTo: placeInnerContentView.trailingAnchor)
+        ])
+
         placeInnerContentView.addSubview(placeSearchButton)
         placeInnerContentView.addSubview(mapView)
 
         NSLayoutConstraint.activate([
-            placeSearchButton.topAnchor.constraint(equalTo: placeInnerContentView.topAnchor),
+            placeSearchButton.topAnchor.constraint(equalTo: restaurantAddressFormLabel.bottomAnchor, constant: 5),
             placeSearchButton.leadingAnchor.constraint(equalTo: placeInnerContentView.leadingAnchor),
             placeSearchButton.trailingAnchor.constraint(equalTo: placeInnerContentView.trailingAnchor),
 
