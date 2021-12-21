@@ -12,6 +12,10 @@ class MainTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        let tabBarAppearance = UITabBarAppearance()
+        tabBarAppearance.backgroundColor = .white
+        tabBar.standardAppearance = tabBarAppearance
+
         tabBar.addBorder(.top, color: .lightGray, width: 0.5)
         tabBar.backgroundColor = .white
 
