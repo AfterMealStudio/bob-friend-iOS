@@ -797,8 +797,6 @@
 				0BA716B7272630A200A36A04 /* AppointmentList */,
 				0BE3EDD227096AEC008265B2 /* Header */,
 				0B29798626DA1890002AD75A /* Model */,
-				0B29798526DA1886002AD75A /* ViewModel */,
-				0B29798426D92160002AD75A /* ViewController */,
 				0B29798326D9208A002AD75A /* SupportingFiles */,
 				0B29798026D92047002AD75A /* Extension */,
 				0B2978FE26D617B6002AD75A /* Info.plist */,
@@ -842,28 +840,6 @@
 				0B2978F926D617B6002AD75A /* Assets.xcassets */,
 			);
 			path = SupportingFiles;
-			sourceTree = "<group>";
-		};
-		0B29798426D92160002AD75A /* ViewController */ = {
-			isa = PBXGroup;
-			children = (
-				0BA2016D26FF93C80072A2B6 /* SignUpViews */,
-				0BDDC26226EF46A0008C9363 /* SignUpVC.swift */,
-				0B52D2562709A2FB00133F5B /* MainTabBarController.swift */,
-				0B876D702709B5D100925881 /* MainMapVC.swift */,
-				0B876D72270A0F4A00925881 /* SearchBarView.swift */,
-				0B876D74270AFA0A00925881 /* SearchListView.swift */,
-			);
-			path = ViewController;
-			sourceTree = "<group>";
-		};
-		0B29798526DA1886002AD75A /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				0B170B9626F2D63B00C25EA1 /* SignUpVM.swift */,
-				0BCFD0D22715A1660008C79F /* MainMapVM.swift */,
-			);
-			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		0B29798626DA1890002AD75A /* Model */ = {
@@ -957,9 +933,41 @@
 		0BA000ED27788F17006A7DA7 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				0B876D74270AFA0A00925881 /* SearchListView.swift */,
+				0BA000F027789C5B006A7DA7 /* SignUp */,
+				0BA000EF27789C24006A7DA7 /* MainMap */,
+				0BA000EE27789BF6006A7DA7 /* MainTabBarController */,
 				0BA000C6277446C2006A7DA7 /* Login */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		0BA000EE27789BF6006A7DA7 /* MainTabBarController */ = {
+			isa = PBXGroup;
+			children = (
+				0B52D2562709A2FB00133F5B /* MainTabBarController.swift */,
+			);
+			path = MainTabBarController;
+			sourceTree = "<group>";
+		};
+		0BA000EF27789C24006A7DA7 /* MainMap */ = {
+			isa = PBXGroup;
+			children = (
+				0B876D72270A0F4A00925881 /* SearchBarView.swift */,
+				0BCFD0D22715A1660008C79F /* MainMapVM.swift */,
+				0B876D702709B5D100925881 /* MainMapVC.swift */,
+			);
+			path = MainMap;
+			sourceTree = "<group>";
+		};
+		0BA000F027789C5B006A7DA7 /* SignUp */ = {
+			isa = PBXGroup;
+			children = (
+				0B170B9626F2D63B00C25EA1 /* SignUpVM.swift */,
+				0BA2016D26FF93C80072A2B6 /* SignUpViews */,
+				0BDDC26226EF46A0008C9363 /* SignUpVC.swift */,
+			);
+			path = SignUp;
 			sourceTree = "<group>";
 		};
 		0BA2016D26FF93C80072A2B6 /* SignUpViews */ = {
