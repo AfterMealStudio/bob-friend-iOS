@@ -55,7 +55,9 @@ class LoginVC: UIViewController {
     @IBAction func loginBtnClicked(_ sender: Any) {
         removeKeyboard()
         if let id = idTxtField.text, let pwd = pwdTxtField.text {
-            loginVM.login(id: id, pwd: pwd)
+            loginVM.setEmail(id)
+            loginVM.setPassword(pwd)
+            loginVM.login()
         }
     }
 
@@ -75,7 +77,46 @@ extension LoginVC: UIScrollViewDelegate {
 }
 
 extension LoginVC: LoginDelegate {
-    func startLoading() {
+    func didSuccessLogin() {
+        self.loginVM.setMyInfo()
+    }
+
+    func didFailLogin(errMessage: String) {
+        let alertController = UIAlertController(title: errMessage, message: nil, preferredStyle: .alert)
+        let okBtn = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
+            self?.dismiss(animated: true, completion: nil)
+        }
+
+        alertController.addAction(okBtn)
+
+        DispatchQueue.main.async { [weak self] in
+            self?.present(alertController, animated: true, completion: nil)
+        }
+    }
+
+    func didSetMyInfoAtDevice() {
+        let mainTapBarController = MainTabBarController()
+        mainTapBarController.modalPresentationStyle = .fullScreen
+
+        DispatchQueue.main.async { [weak self] in
+            self?.present(mainTapBarController, animated: true, completion: nil)
+        }
+    }
+
+    func didFailToSetMyInfoAtDevice(errMessage: String) {
+        let alertController = UIAlertController(title: errMessage, message: nil, preferredStyle: .alert)
+        let okBtn = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
+            self?.dismiss(animated: true, completion: nil)
+        }
+
+        alertController.addAction(okBtn)
+
+        DispatchQueue.main.async { [weak self] in
+            self?.present(alertController, animated: true, completion: nil)
+        }
+    }
+
+    func didStartLoading() {
         view.addSubview(loadingView)
         NSLayoutConstraint.activate([
             loadingView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -86,34 +127,9 @@ extension LoginVC: LoginDelegate {
         loadingView.startLoadingAnimation()
     }
 
-    func stopLoading() {
+    func didStopLoading() {
         loadingView.stopLoadingAnimation()
         loadingView.removeFromSuperview()
-    }
-
-    func didSuccessLogin(_ token: TokenModel) {
-        let mainTapBarController = MainTabBarController()
-        mainTapBarController.modalPresentationStyle = .fullScreen
-
-        DispatchQueue.main.async { [weak self] in
-            self?.present(mainTapBarController, animated: true, completion: nil)
-            self?.loginVM.getUserInfo()
-        }
-    }
-
-    func didFailLogin(_ err: Error?) {
-        let alertController = UIAlertController(title: "로그인 실패 하였습니다", message: nil, preferredStyle: .alert)
-        let okBtn = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
-            self?.dismiss(animated: true, completion: nil)
-        }
-
-        alertController.addAction(okBtn)
-
-        DispatchQueue.main.async {
-            [weak self] in
-            self?.present(alertController, animated: true, completion: nil)
-        }
-
     }
 
 }

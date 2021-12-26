@@ -116,7 +116,9 @@ final class Network {
     }
 
     func loginRequest(loginInfo: LoginModel, completion: @escaping (Result<TokenModel?, Error>) -> Void) {
-        request(api: API.login, type: TokenModel.self, parameter: loginInfo, completion: completion)
+        request(api: API.login, type: TokenModel.self, parameter: loginInfo) { result in
+            completion(result)
+        }
     }
 
     func checkEmailDuplicationRequest(email: String, completion: @escaping (Result<DuplicationCheckResultModel?, Error>) -> Void) {
