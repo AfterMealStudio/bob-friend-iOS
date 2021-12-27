@@ -9,9 +9,12 @@ import UIKit
 
 class SearchBarView: UIView {
 
-    var text: String = "" {
-        didSet {
-            textField.text = text
+    var text: String {
+        get {
+            return textField.text ?? ""
+        }
+        set(value) {
+            textField.text = value
         }
     }
     var activeMode: ActiveMode = .displayMode {
@@ -76,7 +79,6 @@ class SearchBarView: UIView {
         }
 
         button.addTarget(self, action: #selector(didButtonClicked), for: .touchUpInside)
-        textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
 
         textField.delegate = self
     }
@@ -88,11 +90,6 @@ class SearchBarView: UIView {
     @objc
     private func didButtonClicked() {
         delegate?.didButtonClicked()
-    }
-
-    @objc
-    private func textFieldDidChange() {
-        text = textField.text ?? ""
     }
 
 }
