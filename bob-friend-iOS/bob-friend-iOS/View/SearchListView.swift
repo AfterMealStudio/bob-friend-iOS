@@ -13,8 +13,6 @@ class SearchListView: UICollectionView {
         super.init(frame: frame, collectionViewLayout: layout)
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .clear
-
-        return
     }
 
     required init?(coder: NSCoder) {
@@ -33,20 +31,20 @@ class SearchListCell: UICollectionViewCell {
     var longitude: Float = 0
     var latitude: Float = 0
 
-    let placeNameLabel: UILabel = {
+    private let placeNameLabel: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.font = UIFont.boldSystemFont(ofSize: 16)
         return $0
     }(UILabel())
 
-    let roadAddressLabel: UILabel = {
+    private let roadAddressLabel: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.font = UIFont.systemFont(ofSize: 14)
         $0.textColor = .darkGray
         return $0
     }(UILabel())
 
-    let addressLabel: UILabel = {
+    private let addressLabel: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.font = UIFont.systemFont(ofSize: 14)
         $0.textColor = .lightGray

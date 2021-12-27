@@ -78,8 +78,8 @@ extension MainMapVC: MainMapDelegate {
         self.searchResults = searchResults
     }
 
-    func occuredError() {
-        let alertController = UIAlertController(title: "검색 실패하였습니다.", message: nil, preferredStyle: .alert)
+    func occuredSearchError(errMessage: String) {
+        let alertController = UIAlertController(title: errMessage, message: nil, preferredStyle: .alert)
         let okBtn = UIAlertAction(title: "확인", style: .default)
         alertController.addAction(okBtn)
         DispatchQueue.main.async {
@@ -125,7 +125,6 @@ extension MainMapVC: UICollectionViewDelegate, UICollectionViewDataSource {
 
     }
 
-    // TODO: 맵을 이동하지 않았을 때 검색 결과를 통해 검색장소로 이동하면 현위치로 다시 돌아오는 이슈 발생
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let placeInfo = searchResults?.documents[indexPath.row] else { return }
         let longitude = Double(placeInfo.x) ?? 0
@@ -221,7 +220,7 @@ extension MainMapVC: SearchBarViewDelegate {
     func didBeginEditing() {}
 
     func didReturnButtonClicked() {
-        mainMapVM.requestPlaceSearch(keyword: searchBar.text) { _ in }
+        mainMapVM.searchPlace(keyword: searchBar.text)
     }
 
 }

@@ -10,6 +10,7 @@ import Foundation
 enum ResponedError: LocalizedError {
     case error
     case loginError
+    case searchError
 
     var errorDescription: String? {
         switch self {
@@ -17,6 +18,8 @@ enum ResponedError: LocalizedError {
             return "오류 발생"
         case .loginError:
             return "로그인에 실패하였습니다."
+        case .searchError:
+            return "검색에 실패하였습니다."
         }
     }
 

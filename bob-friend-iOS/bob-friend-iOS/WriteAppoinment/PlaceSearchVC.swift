@@ -79,7 +79,7 @@ extension PlaceSearchVC: SearchBarViewDelegate {
     func didBeginEditing() {}
 
     func didReturnButtonClicked() {
-        placeSearchVM.requestPlaceSearch(keyword: searchBar.text) { _ in }
+        placeSearchVM.searchPlace(keyword: searchBar.text)
     }
 
 }
@@ -136,8 +136,8 @@ extension PlaceSearchVC: MainMapDelegate {
         self.searchResults = searchResults
     }
 
-    func occuredError() {
-        let alertController = UIAlertController(title: "검색 실패하였습니다.", message: nil, preferredStyle: .alert)
+    func occuredSearchError(errMessage: String) {
+        let alertController = UIAlertController(title: errMessage, message: nil, preferredStyle: .alert)
         let okBtn = UIAlertAction(title: "확인", style: .default)
         alertController.addAction(okBtn)
         DispatchQueue.main.async {

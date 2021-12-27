@@ -10,29 +10,24 @@ import Alamofire
 
 class MainMapVM {
 
-    let network: Network = Network()
+    private let kakaoPlaceSearchRepository: KakaoPlaceSearchRepository = KakaoPlaceSearchRepositoryImpl()
+
     weak var delegate: MainMapDelegate?
 
-    func requestPlaceSearch(keyword: String, page: Int = 1, completion: @escaping (Result<KakaoKeywordSearchResultModel?, Error>) -> Void) {
-        network.kakaoKeywordSearchRequest(keyword: keyword, page: page) { [weak self] result in
+    func searchPlace(keyword: String, page: Int = 1) {
+        kakaoPlaceSearchRepository.searchPlace(keyword: keyword, page: page) { [weak self] result in
             switch result {
-            case .success(let data):
-                guard let data = data else {
-                    self?.delegate?.occuredError()
-                    return
-                }
-                self?.delegate?.mainMap(searchResults: data)
-            case . failure(_):
-                self?.delegate?.occuredError()
+            case .success(let searchResultData):
+                self?.delegate?.mainMap(searchResults: searchResultData)
+            case .failure(let error):
+                self?.delegate?.occuredSearchError(errMessage: error.localizedDescription)
             }
-
         }
     }
+
 }
 
 protocol MainMapDelegate: AnyObject {
-
     func mainMap(searchResults: KakaoKeywordSearchResultModel)
-    func occuredError()
-
+    func occuredSearchError(errMessage: String)
 }
