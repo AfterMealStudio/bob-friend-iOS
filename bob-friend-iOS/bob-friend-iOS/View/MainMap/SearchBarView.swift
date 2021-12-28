@@ -9,22 +9,21 @@ import UIKit
 
 class SearchBarView: UIView {
 
+    weak var delegate: SearchBarViewDelegate?
+
     var text: String {
-        get {
-            return textField.text ?? ""
-        }
-        set(value) {
-            textField.text = value
-        }
+        get { return textField.text ?? "" }
+        set(value) { textField.text = value }
     }
-    var activeMode: ActiveMode = .displayMode {
+
+    var displayMode: DisplayMode = .buttonHiddenMode {
         didSet {
-            switch activeMode {
-            case .displayMode:
+            switch displayMode {
+            case .buttonHiddenMode:
                 button.isHidden = true
                 textFieldContainerTrailingToViewConstraint?.isActive = true
                 textFieldContainerTrailingToButtonConstraint?.isActive = false
-            case .searchOptionMode:
+            case .buttonAppearedMode:
                 button.isHidden = false
                 textFieldContainerTrailingToViewConstraint?.isActive = false
                 textFieldContainerTrailingToButtonConstraint?.isActive = true
@@ -32,9 +31,9 @@ class SearchBarView: UIView {
         }
     }
 
-    enum ActiveMode {
-        case displayMode
-        case searchOptionMode
+    enum DisplayMode {
+        case buttonHiddenMode
+        case buttonAppearedMode
     }
 
     private let textFieldContainer: UIView = {
@@ -62,17 +61,17 @@ class SearchBarView: UIView {
     private var textFieldContainerTrailingToButtonConstraint: NSLayoutConstraint?
     private var textFieldContainerTrailingToViewConstraint: NSLayoutConstraint?
 
-    weak var delegate: SearchBarViewDelegate?
-
     init() {
         super.init(frame: .zero)
+
         layout()
-        switch activeMode {
-        case .displayMode:
+
+        switch displayMode {
+        case .buttonHiddenMode:
             button.isHidden = true
             textFieldContainerTrailingToViewConstraint?.isActive = true
             textFieldContainerTrailingToButtonConstraint?.isActive = false
-        case .searchOptionMode:
+        case .buttonAppearedMode:
             button.isHidden = false
             textFieldContainerTrailingToViewConstraint?.isActive = false
             textFieldContainerTrailingToButtonConstraint?.isActive = true
@@ -89,7 +88,7 @@ class SearchBarView: UIView {
 
     @objc
     private func didButtonClicked() {
-        delegate?.didButtonClicked()
+        delegate?.didButtonClicked?()
     }
 
 }
@@ -129,7 +128,6 @@ extension SearchBarView {
             button.heightAnchor.constraint(equalTo: textFieldContainer.heightAnchor),
             button.widthAnchor.constraint(equalTo: textFieldContainer.heightAnchor),
             button.centerYAnchor.constraint(equalTo: centerYAnchor),
-//            button.leadingAnchor.constraint(equalTo: textFieldContainer.trailingAnchor, constant: 10),
             button.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10)
         ])
     }
@@ -139,21 +137,21 @@ extension SearchBarView {
 // MARK: - textField Delegate
 extension SearchBarView: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        delegate?.didBeginEditing()
+        delegate?.didBeginEditing?()
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        delegate?.didReturnButtonClicked()
+        delegate?.didReturnKeyInput?()
         return true
     }
 }
 
 // MARK: - Delegate
 
-protocol SearchBarViewDelegate: AnyObject {
-    func didReturnButtonClicked()
-    func didBeginEditing()
-    func didButtonClicked()
+@objc protocol SearchBarViewDelegate: AnyObject {
+    @objc optional func didReturnKeyInput()
+    @objc optional func didBeginEditing()
+    @objc optional func didButtonClicked()
 }
 
 // MARK: - use Canvas

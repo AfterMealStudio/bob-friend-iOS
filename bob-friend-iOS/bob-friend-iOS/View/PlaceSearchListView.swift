@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SearchListView: UICollectionView {
+class PlaceSearchListView: UICollectionView {
 
     public override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
@@ -23,7 +23,7 @@ class SearchListView: UICollectionView {
 
 // MARK: - Cell
 
-class SearchListCell: UICollectionViewCell {
+class PlaceSearchListCell: UICollectionViewCell {
 
     var placeName: String = "" { didSet { placeNameLabel.text = placeName } }
     var roadAddress: String = "" { didSet { roadAddressLabel.text = roadAddress } }

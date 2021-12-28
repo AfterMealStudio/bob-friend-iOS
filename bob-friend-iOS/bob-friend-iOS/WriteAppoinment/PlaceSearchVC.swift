@@ -17,10 +17,10 @@ class PlaceSearchVC: UIViewController {
         return $0
     }(SearchBarView())
 
-    var searchListView: SearchListView = {
+    var searchListView: PlaceSearchListView = {
         $0.translatesAutoresizingMaskIntoConstraints = true
         return $0
-    }(SearchListView(frame: .zero, collectionViewLayout: UICollectionViewLayout()))
+    }(PlaceSearchListView(frame: .zero, collectionViewLayout: UICollectionViewLayout()))
 
     var searchResults: KakaoKeywordSearchResultModel? {
         didSet {
@@ -74,11 +74,8 @@ class PlaceSearchVC: UIViewController {
 
 // MARK: - SearchBarViewDelegate
 extension PlaceSearchVC: SearchBarViewDelegate {
-    func didButtonClicked() {}
 
-    func didBeginEditing() {}
-
-    func didReturnButtonClicked() {
+    func didReturnKeyInput() {
         placeSearchVM.searchPlace(keyword: searchBar.text)
     }
 
@@ -94,8 +91,8 @@ extension PlaceSearchVC: UICollectionViewDelegate, UICollectionViewDataSource {
         listlayout.scrollDirection = .vertical
         listlayout.sectionInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
 
-        searchListView = SearchListView(frame: .zero, collectionViewLayout: listlayout)
-        searchListView.register(SearchListCell.self, forCellWithReuseIdentifier: "SearchListCell")
+        searchListView = PlaceSearchListView(frame: .zero, collectionViewLayout: listlayout)
+        searchListView.register(PlaceSearchListCell.self, forCellWithReuseIdentifier: "SearchListCell")
 
         // TODO: 배경색을 여기보다 빨리 지정해주면(ex, 이 함수의 첫 문장 위치) 배경색이 지정되지 않는 것 같음. 이유 분석 필요.
         searchListView.backgroundColor = .white
@@ -107,7 +104,7 @@ extension PlaceSearchVC: UICollectionViewDelegate, UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchListCell", for: indexPath) as? SearchListCell else { return SearchListCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchListCell", for: indexPath) as? PlaceSearchListCell else { return PlaceSearchListCell() }
         guard let placeInfo = searchResults?.documents[indexPath.row] else { return cell }
         cell.placeName = placeInfo.place_name
         cell.roadAddress = placeInfo.road_address_name

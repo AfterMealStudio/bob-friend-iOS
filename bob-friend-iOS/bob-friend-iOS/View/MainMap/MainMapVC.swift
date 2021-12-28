@@ -15,7 +15,7 @@ class MainMapVC: UIViewController {
         return $0
     }(SearchBarView())
 
-    var searchListView: SearchListView = SearchListView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    var searchListView: PlaceSearchListView = PlaceSearchListView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
 
     let mapView: MTMapView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -99,8 +99,8 @@ extension MainMapVC {
         listlayout.scrollDirection = .vertical
         listlayout.sectionInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
 
-        searchListView = SearchListView(frame: .zero, collectionViewLayout: listlayout)
-        searchListView.register(SearchListCell.self, forCellWithReuseIdentifier: "SearchListCell")
+        searchListView = PlaceSearchListView(frame: .zero, collectionViewLayout: listlayout)
+        searchListView.register(PlaceSearchListCell.self, forCellWithReuseIdentifier: "SearchListCell")
 
         searchListView.isHidden = true
     }
@@ -113,7 +113,7 @@ extension MainMapVC: UICollectionViewDelegate, UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchListCell", for: indexPath) as? SearchListCell else { return SearchListCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchListCell", for: indexPath) as? PlaceSearchListCell else { return PlaceSearchListCell() }
         guard let placeInfo = searchResults?.documents[indexPath.row] else { return cell }
         cell.placeName = placeInfo.place_name
         cell.roadAddress = placeInfo.road_address_name
@@ -215,11 +215,8 @@ extension MainMapVC {
 
 // MARK: - SearchBarViewDelegate
 extension MainMapVC: SearchBarViewDelegate {
-    func didButtonClicked() {}
 
-    func didBeginEditing() {}
-
-    func didReturnButtonClicked() {
+    func didReturnKeyInput() {
         mainMapVM.searchPlace(keyword: searchBar.text)
     }
 

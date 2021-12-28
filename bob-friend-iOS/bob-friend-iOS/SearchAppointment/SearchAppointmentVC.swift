@@ -34,7 +34,7 @@ class SearchAppointmentVC: UIViewController {
 
     private let searchBar: SearchBarView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.activeMode = .searchOptionMode
+        $0.displayMode = .buttonAppearedMode
         return $0
     }(SearchBarView())
 
@@ -118,7 +118,7 @@ class SearchAppointmentVC: UIViewController {
         $0.setTitleColor(.white, for: .normal)
         $0.backgroundColor = UIColor(named: "MainColor1")
         $0.layer.cornerRadius = 5
-        $0.addTarget(self, action: #selector(searchButtonClicked), for: .touchUpInside)
+        $0.addTarget(self, action: #selector(searchBarButtonClicked), for: .touchUpInside)
         return $0
     }(UIButton())
 
@@ -386,7 +386,16 @@ extension SearchAppointmentVC {
     }
 
     @objc
-    private func searchButtonClicked() {
+    private func searchBarButtonClicked() {
+
+    }
+
+}
+
+// MARK: - SearchBar Delegate
+extension SearchAppointmentVC: SearchBarViewDelegate {
+
+    func didReturnKeyInput() {
         let searchWord = searchBar.text
         if searchWord.count == 0 { return }
 
@@ -398,23 +407,6 @@ extension SearchAppointmentVC {
         vc.searchBar.text = searchWord
         vc.onlyEnterable = checkOnlyEnterableButton.isSelected
         navigationController?.pushViewController(vc, animated: true)
-    }
-
-}
-
-// MARK: - SearchBar Delegate
-extension SearchAppointmentVC: SearchBarViewDelegate {
-
-    func didReturnButtonClicked() {
-        searchButtonClicked()
-    }
-
-    func didBeginEditing() {
-
-    }
-
-    func didButtonClicked() {
-
     }
 
 }

@@ -93,9 +93,6 @@ extension AppointmentListVC {
 
 // MARK: - SearchBarView Delegate
 extension AppointmentListVC: SearchBarViewDelegate {
-    func didReturnButtonClicked() {
-
-    }
 
     func didBeginEditing() {
         view.endEditing(true)
@@ -103,10 +100,6 @@ extension AppointmentListVC: SearchBarViewDelegate {
 
         let vc = SearchAppointmentVC()
         navigationController?.pushViewController(vc, animated: true)
-    }
-
-    func didButtonClicked() {
-
     }
 
 }
