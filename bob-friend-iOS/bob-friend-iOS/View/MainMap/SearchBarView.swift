@@ -17,18 +17,7 @@ class SearchBarView: UIView {
     }
 
     var displayMode: DisplayMode = .buttonHiddenMode {
-        didSet {
-            switch displayMode {
-            case .buttonHiddenMode:
-                button.isHidden = true
-                textFieldContainerTrailingToViewConstraint?.isActive = true
-                textFieldContainerTrailingToButtonConstraint?.isActive = false
-            case .buttonAppearedMode:
-                button.isHidden = false
-                textFieldContainerTrailingToViewConstraint?.isActive = false
-                textFieldContainerTrailingToButtonConstraint?.isActive = true
-            }
-        }
+        didSet { didSetDisplayMode() }
     }
 
     enum DisplayMode {
@@ -65,17 +54,7 @@ class SearchBarView: UIView {
         super.init(frame: .zero)
 
         layout()
-
-        switch displayMode {
-        case .buttonHiddenMode:
-            button.isHidden = true
-            textFieldContainerTrailingToViewConstraint?.isActive = true
-            textFieldContainerTrailingToButtonConstraint?.isActive = false
-        case .buttonAppearedMode:
-            button.isHidden = false
-            textFieldContainerTrailingToViewConstraint?.isActive = false
-            textFieldContainerTrailingToButtonConstraint?.isActive = true
-        }
+        didSetDisplayMode()
 
         button.addTarget(self, action: #selector(didButtonClicked), for: .touchUpInside)
 
@@ -89,6 +68,19 @@ class SearchBarView: UIView {
     @objc
     private func didButtonClicked() {
         delegate?.didButtonClicked?()
+    }
+
+    func didSetDisplayMode() {
+        switch displayMode {
+        case .buttonHiddenMode:
+            button.isHidden = true
+            textFieldContainerTrailingToViewConstraint?.isActive = true
+            textFieldContainerTrailingToButtonConstraint?.isActive = false
+        case .buttonAppearedMode:
+            button.isHidden = false
+            textFieldContainerTrailingToViewConstraint?.isActive = false
+            textFieldContainerTrailingToButtonConstraint?.isActive = true
+        }
     }
 
 }
