@@ -116,7 +116,7 @@ extension SearchResultAppointmentVC: SearchBarViewDelegate {
 }
 
 // MARK: - searchResultAppointmentVM Delegate
-extension SearchResultAppointmentVC: SearchResultAppointmentDelegate {
+extension SearchResultAppointmentVC: AppointmentListDelegate {
     func didGetAppointments(_ appointments: [AppointmentSimpleModel]) {
         self.appointments += appointments
     }

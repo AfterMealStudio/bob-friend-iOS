@@ -11,7 +11,7 @@ class SearchResultAppointmentVM {
 
     private let appointmentRepository: AppointmentRepository = AppointmentRepositoryImpl()
 
-    weak var delegate: SearchResultAppointmentDelegate?
+    weak var delegate: AppointmentListDelegate?
 
     var searchWord: String = ""
     var selectedTime: (String, String)?
@@ -43,10 +43,6 @@ class SearchResultAppointmentVM {
         isLast = false
     }
 
-}
-
-protocol SearchResultAppointmentDelegate: AnyObject {
-    func didGetAppointments(_ appointments: [AppointmentSimpleModel])
 }
 
 enum SearchCategory: String {
