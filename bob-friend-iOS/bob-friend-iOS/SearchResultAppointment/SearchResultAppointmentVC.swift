@@ -9,11 +9,6 @@ import UIKit
 
 class SearchResultAppointmentVC: UIViewController {
 
-    var searchWord: String = ""
-    var selectedTime: (String, String)?
-    var searchType: SearchCategory = .all
-    var onlyEnterable: Bool = false
-
     let searchBar: SearchBarView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
@@ -35,12 +30,26 @@ class SearchResultAppointmentVC: UIViewController {
     }
     var searchResultAppointmentVM: SearchResultAppointmentVM = SearchResultAppointmentVM()
 
+    public init(searchWord: String, selectedTime: (String, String)?, searchType: SearchCategory, onlyEnterable: Bool) {
+        super.init(nibName: nil, bundle: nil)
+
+        searchResultAppointmentVM.searchWord = searchWord
+        searchResultAppointmentVM.selectedTime = selectedTime
+        searchResultAppointmentVM.searchType = searchType
+        searchResultAppointmentVM.onlyEnterable = onlyEnterable
+
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // vm
         searchResultAppointmentVM.delegate = self
-        searchResultAppointmentVM.getAppointmentList(searchWord: searchWord, selectedTime: selectedTime, onlyEnterable: onlyEnterable, searchType: searchType)
+        searchResultAppointmentVM.getAppointmentList()
 
         // appointmentListTableView
         appointmentListTableView.delegate = self
@@ -63,7 +72,7 @@ class SearchResultAppointmentVC: UIViewController {
     func pullToRefresh() {
         appointments = []
         searchResultAppointmentVM.setToInit()
-        searchResultAppointmentVM.getAppointmentList(searchWord: searchWord, selectedTime: selectedTime, onlyEnterable: onlyEnterable, searchType: searchType)
+        searchResultAppointmentVM.getAppointmentList()
     }
 
 }
@@ -147,7 +156,7 @@ extension SearchResultAppointmentVC: UITableViewDelegate, UITableViewDataSource 
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.row == appointments.count - 1 {
-            searchResultAppointmentVM.getAppointmentList(searchWord: searchWord, selectedTime: selectedTime, onlyEnterable: onlyEnterable, searchType: searchType)
+            searchResultAppointmentVM.getAppointmentList()
         }
     }
 

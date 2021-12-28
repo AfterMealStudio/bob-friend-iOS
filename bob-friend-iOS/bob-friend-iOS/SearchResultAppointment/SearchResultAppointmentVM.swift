@@ -9,26 +9,31 @@ import Foundation
 
 class SearchResultAppointmentVM {
 
-    private let network: Network = Network()
+    private let appointmentRepository: AppointmentRepository = AppointmentRepositoryImpl()
+
     weak var delegate: SearchResultAppointmentDelegate?
+
+    var searchWord: String = ""
+    var selectedTime: (String, String)?
+    var searchType: SearchCategory = .all
+    var onlyEnterable: Bool = false
 
     private var nextPage = 0
     var isLast = false
 
-    func getAppointmentList(searchWord: String, selectedTime: (String, String)?, onlyEnterable: Bool, searchType: SearchCategory) {
+    func getAppointmentList() {
         if isLast { return }
-        network.getSearchAppointmentListRequest(searchWord: searchWord, selectedTime: selectedTime, onlyEnterable: onlyEnterable, category: searchType, page: nextPage) { [weak self] result in
+
+        appointmentRepository.getSearchAppointments(searchWord: searchWord, selectedTime: selectedTime, onlyEnterable: onlyEnterable, searchType: searchType, page: nextPage) { [weak self] result in
             switch result {
             case .success(let appointmentList):
-                guard let appointmentList = appointmentList else {
-                    return
-                }
                 self?.nextPage += 1
                 self?.isLast = appointmentList.last
                 self?.delegate?.didGetAppointments(appointmentList.content)
             case .failure:
                 break
             }
+
         }
 
     }

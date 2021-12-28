@@ -399,13 +399,12 @@ extension SearchAppointmentVC: SearchBarViewDelegate {
         let searchWord = searchBar.text
         if searchWord.count == 0 { return }
 
-        let vc = SearchResultAppointmentVC()
-        vc.searchWord = searchWord
         setSelectedTime()
-        vc.selectedTime = selectedTime
-        vc.searchType = searchType
+
+        let vc = SearchResultAppointmentVC(searchWord: searchWord, selectedTime: selectedTime, searchType: searchType, onlyEnterable: checkOnlyEnterableButton.isSelected)
+
         vc.searchBar.text = searchWord
-        vc.onlyEnterable = checkOnlyEnterableButton.isSelected
+
         navigationController?.pushViewController(vc, animated: true)
     }
 

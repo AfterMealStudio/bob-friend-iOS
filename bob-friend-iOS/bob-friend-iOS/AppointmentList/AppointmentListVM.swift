@@ -9,7 +9,8 @@ import Foundation
 
 class AppointmentListVM {
 
-    private let network: Network = Network()
+    private let appointmentRepository: AppointmentRepository = AppointmentRepositoryImpl()
+
     weak var delegate: AppointmentListDelegate?
 
     private var nextPage = 0
@@ -17,15 +18,13 @@ class AppointmentListVM {
 
     func getAppointmentList() {
         if isLast { return }
-        network.getAppointmentListRequest(page: nextPage) { [weak self] result in
+
+        appointmentRepository.getAllAppointments(page: nextPage) { [weak self] result in
             switch result {
-            case .success(let appointmentList):
-                guard let appointmentList = appointmentList else {
-                    return
-                }
+            case .success(let appointments):
                 self?.nextPage += 1
-                self?.isLast = appointmentList.last
-                self?.delegate?.didGetAppointments(appointmentList.content)
+                self?.isLast = appointments.last
+                self?.delegate?.didGetAppointments(appointments.content)
             case .failure:
                 break
             }

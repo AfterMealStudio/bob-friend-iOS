@@ -40,6 +40,7 @@
 		0BA000E827788058006A7DA7 /* UserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA000E727788058006A7DA7 /* UserRepository.swift */; };
 		0BA000EB27788088006A7DA7 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA000EA27788088006A7DA7 /* Error.swift */; };
 		0BA000F22778BD92006A7DA7 /* KakaoPlaceSearchRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA000F12778BD92006A7DA7 /* KakaoPlaceSearchRepository.swift */; };
+		0BA000F4277AC1F6006A7DA7 /* AppointmentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA000F3277AC1F6006A7DA7 /* AppointmentRepository.swift */; };
 		0BA2016F26FF93EE0072A2B6 /* SignUpTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA2016E26FF93EE0072A2B6 /* SignUpTextField.swift */; };
 		0BA716B227256BCC00A36A04 /* AppointmentListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA716B127256BCC00A36A04 /* AppointmentListVC.swift */; };
 		0BA716B9272632D800A36A04 /* AppointmentListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA716B8272632D800A36A04 /* AppointmentListTableViewCell.swift */; };
@@ -403,6 +404,7 @@
 		0BA000E727788058006A7DA7 /* UserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRepository.swift; sourceTree = "<group>"; };
 		0BA000EA27788088006A7DA7 /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		0BA000F12778BD92006A7DA7 /* KakaoPlaceSearchRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoPlaceSearchRepository.swift; sourceTree = "<group>"; };
+		0BA000F3277AC1F6006A7DA7 /* AppointmentRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentRepository.swift; sourceTree = "<group>"; };
 		0BA2016E26FF93EE0072A2B6 /* SignUpTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpTextField.swift; sourceTree = "<group>"; };
 		0BA716B127256BCC00A36A04 /* AppointmentListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentListVC.swift; sourceTree = "<group>"; };
 		0BA716B8272632D800A36A04 /* AppointmentListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentListTableViewCell.swift; sourceTree = "<group>"; };
@@ -921,6 +923,7 @@
 				0BA000E32774989F006A7DA7 /* TokenRepository.swift */,
 				0BA000E727788058006A7DA7 /* UserRepository.swift */,
 				0BA000F12778BD92006A7DA7 /* KakaoPlaceSearchRepository.swift */,
+				0BA000F3277AC1F6006A7DA7 /* AppointmentRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -1948,6 +1951,7 @@
 				0B1EB31D273525EF008BAE70 /* UIColor+Hex.swift in Sources */,
 				0BD421282700601C003E8734 /* SignUpGenderSelectView.swift in Sources */,
 				0BA000C5276C3158006A7DA7 /* LoadingView.swift in Sources */,
+				0BA000F4277AC1F6006A7DA7 /* AppointmentRepository.swift in Sources */,
 				0B9EC9F1275B5F8000A222A8 /* SearchResultAppointmentVM.swift in Sources */,
 				0B626A192758DCBF009E7E2D /* SearchResultAppointmentVC.swift in Sources */,
 				0B9B0609273A80EB00689E92 /* CommentWritingView.swift in Sources */,
