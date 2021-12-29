@@ -9,11 +9,11 @@ import Foundation
 
 class AppointmentListVM {
 
-    private let appointmentRepository: AppointmentRepository = AppointmentRepositoryImpl()
+    let appointmentRepository: AppointmentRepository = AppointmentRepositoryImpl()
 
     weak var delegate: AppointmentListDelegate?
 
-    private var nextPage = 0
+    var nextPage = 0
     var isLast = false
 
     func getAppointmentList() {
@@ -22,14 +22,18 @@ class AppointmentListVM {
         appointmentRepository.getAllAppointments(page: nextPage) { [weak self] result in
             switch result {
             case .success(let appointments):
-                self?.nextPage += 1
-                self?.isLast = appointments.last
-                self?.delegate?.didGetAppointments(appointments.content)
+                self?.didGetAppointments(appointments: appointments)
             case .failure:
                 break
             }
         }
 
+    }
+
+    func didGetAppointments(appointments: AppointmentListModel) {
+        nextPage += 1
+        isLast = appointments.last
+        delegate?.didGetAppointments(appointments.content)
     }
 
     func setToInit() {

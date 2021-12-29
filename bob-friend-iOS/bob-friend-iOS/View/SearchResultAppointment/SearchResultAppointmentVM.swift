@@ -7,40 +7,25 @@
 
 import Foundation
 
-class SearchResultAppointmentVM {
-
-    private let appointmentRepository: AppointmentRepository = AppointmentRepositoryImpl()
-
-    weak var delegate: AppointmentListDelegate?
+class SearchResultAppointmentVM: AppointmentListVM {
 
     var searchWord: String = ""
     var selectedTime: (String, String)?
     var searchType: SearchCategory = .all
     var onlyEnterable: Bool = false
 
-    private var nextPage = 0
-    var isLast = false
-
-    func getAppointmentList() {
+    override func getAppointmentList() {
         if isLast { return }
 
         appointmentRepository.getSearchAppointments(searchWord: searchWord, selectedTime: selectedTime, onlyEnterable: onlyEnterable, searchType: searchType, page: nextPage) { [weak self] result in
             switch result {
-            case .success(let appointmentList):
-                self?.nextPage += 1
-                self?.isLast = appointmentList.last
-                self?.delegate?.didGetAppointments(appointmentList.content)
+            case .success(let appointments):
+                self?.didGetAppointments(appointments: appointments)
             case .failure:
                 break
             }
 
         }
-
-    }
-
-    func setToInit() {
-        nextPage = 0
-        isLast = false
     }
 
 }
