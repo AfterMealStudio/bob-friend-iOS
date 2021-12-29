@@ -19,11 +19,6 @@ struct AppointmentSimpleModel: Decodable {
 //    let sexRestriction
 //    let appointmentTime: String?
     let createdAt: String
-
-    struct User: Decodable {
-        let nickname: String
-    }
-
 }
 
 struct AppointmentModel: Decodable {
@@ -46,13 +41,6 @@ struct AppointmentModel: Decodable {
     let ageRestrictionEnd: Int?
     let appointmentTime: String?
     let createdAt: String
-
-    struct User: Decodable {
-        let id: Int
-        let nickname: String
-        let rating: Double
-    }
-
 }
 
 struct CommentModel: Decodable {
@@ -61,11 +49,6 @@ struct CommentModel: Decodable {
     let content: String?
     let replies: [Reply]
     let createdAt: String
-
-    struct User: Decodable {
-        let id: Int
-        let nickname: String
-    }
 
     struct Reply: Decodable {
         let id: Int

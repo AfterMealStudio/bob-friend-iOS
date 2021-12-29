@@ -14,8 +14,4 @@ struct EnrollCommentModel: Encodable {
 struct EnrollCommentResponseModel: Decodable {
     let id: Int
     let author: User
-
-    struct User: Decodable {
-        let nickname: String
-    }
 }

@@ -406,7 +406,7 @@ extension AppointmentVC: CommentTableViewCellDelegate {
 
 // MARK: - AppointmentDelegate
 extension AppointmentVC: AppointmentDelegate {
-    func startLoading() {
+    func didStartLoading() {
         view.addSubview(loadingView)
         NSLayoutConstraint.activate([
             loadingView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -417,7 +417,7 @@ extension AppointmentVC: AppointmentDelegate {
         loadingView.startLoadingAnimation()
     }
 
-    func stopLoading() {
+    func didStopLoading() {
         loadingView.stopLoadingAnimation()
         loadingView.removeFromSuperview()
     }

@@ -27,14 +27,14 @@ class AppointmentVM {
 
                 let refinedComment: CommentsAndRepliesModel
                 if let author = comment.author, let content = comment.content {
-                    refinedComment = CommentsAndRepliesModel(id: comment.id, author: CommentsAndRepliesModel.User(id: author.id, nickname: author.nickname), content: content, parentId: nil, createdAt: comment.createdAt)
+                    refinedComment = CommentsAndRepliesModel(id: comment.id, author: author, content: content, parentId: nil, createdAt: comment.createdAt)
                 } else {
-                    refinedComment = CommentsAndRepliesModel(id: comment.id, author: CommentsAndRepliesModel.User(id: -1, nickname: "(알 수 없음)"), content: "삭제 된 댓글입니다.", parentId: nil, createdAt: comment.createdAt)
+                    refinedComment = CommentsAndRepliesModel(id: comment.id, author: User(id: -1, nickname: "(알 수 없음)", rating: 0), content: "삭제 된 댓글입니다.", parentId: nil, createdAt: comment.createdAt)
                 }
 
                 commentsAndReplies.append(refinedComment)
                 for reply in comment.replies {
-                    let refinedReply = CommentsAndRepliesModel(id: reply.id, author: CommentsAndRepliesModel.User(id: reply.author.id, nickname: reply.author.nickname), content: reply.content, parentId: comment.id, createdAt: reply.createdAt)
+                    let refinedReply = CommentsAndRepliesModel(id: reply.id, author: reply.author, content: reply.content, parentId: comment.id, createdAt: reply.createdAt)
                     commentsAndReplies.append(refinedReply)
                 }
             }
@@ -92,9 +92,9 @@ class AppointmentVM {
     func enrollComment(appointmentID: Int, content: String) {
         let enrollCommentModel: EnrollCommentModel = EnrollCommentModel(content: content)
 
-        delegate?.startLoading()
+        delegate?.didStartLoading()
         network.enrollCommentRequest(appointmentID: appointmentID, comment: enrollCommentModel) { [weak self] result in
-            self?.delegate?.stopLoading()
+            self?.delegate?.didStopLoading()
             switch result {
             case .success:
                 self?.delegate?.didEnrollComment()
@@ -107,9 +107,9 @@ class AppointmentVM {
     func enrollReply(appointmentID: Int, commentID: Int, content: String) {
         let enrollCommentModel: EnrollCommentModel = EnrollCommentModel(content: content)
 
-        delegate?.startLoading()
+        delegate?.didStartLoading()
         network.enrollReplyRequest(appointmentID: appointmentID, commentID: commentID, comment: enrollCommentModel) { [weak self] result in
-            self?.delegate?.stopLoading()
+            self?.delegate?.didStopLoading()
             switch result {
             case .success:
                 self?.delegate?.didEnrollComment()
@@ -201,20 +201,12 @@ extension AppointmentVM {
         let content: String
         let parentId: Int?
         let createdAt: String
-
-        struct User {
-            let id: Int
-            let nickname: String
-        }
     }
 
 }
 
 // MARK: - AppointmentDelegate protocol
-protocol AppointmentDelegate: AnyObject {
-    func startLoading()
-    func stopLoading()
-
+protocol AppointmentDelegate: AnyObject, LoadingAnimation {
     func didSetCommentsAndRepliesData()
     func didEnrollComment()
     func didReportAppointment()

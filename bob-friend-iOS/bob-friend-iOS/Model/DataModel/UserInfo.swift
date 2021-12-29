@@ -7,6 +7,12 @@
 
 import Foundation
 
+struct User: Decodable {
+    let id: Int
+    let nickname: String
+    let rating: Double
+}
+
 struct UserInfoModel: Decodable {
     let id: Int
     let email: String
