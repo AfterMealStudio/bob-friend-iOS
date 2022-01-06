@@ -66,11 +66,14 @@ extension MyPageVC {
         myPageTableView.delegate = self
         myPageTableView.dataSource = self
 
+        myPageTableView.separatorStyle = .none
+
         registTableView()
     }
 
     private func registTableView() {
         myPageTableView.register(ProfileHeaderView.self, forHeaderFooterViewReuseIdentifier: "ProfileHeader")
+        myPageTableView.register(MyPageTableViewCell.self, forCellReuseIdentifier: "MyPageTableViewCell")
     }
 
 }
@@ -78,18 +81,27 @@ extension MyPageVC {
 // MARK: - TableView Delegate
 extension MyPageVC: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 4
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        default:
-            return 20
-        }
+        return Section(rawValue: section)?.itemCount ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "MyPageTableViewCell") as? MyPageTableViewCell else { return UITableViewCell() }
+
+        cell.title = Section(rawValue: indexPath.section)?.items[indexPath.row]
+
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedIndex = tableView.indexPathForSelectedRow
+        if let selectedIndex = selectedIndex, let selectedRow = tableView.cellForRow(at: selectedIndex) {
+            selectedRow.isSelected = false
+        }
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -100,6 +112,10 @@ extension MyPageVC: UITableViewDelegate, UITableViewDataSource {
         default:
             return nil
         }
+    }
+
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return Section(rawValue: section)?.sectionTitle
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -139,6 +155,52 @@ extension MyPageVC: MyPageDelegate {
         profileHeader.profileView.gender = userInfo.sex
         profileHeader.profileView.score = userInfo.rating
 
+    }
+
+}
+
+// MARK: - Section INFO
+extension MyPageVC {
+
+    enum Section: Int {
+        case noItems = 0
+        case appointment = 1
+        case account = 2
+        case service = 3
+
+        var sectionTitle: String? {
+            switch self {
+            case .noItems: return nil
+            case .appointment: return "약속"
+            case .account: return "계정"
+            case .service: return "기타"
+            }
+        }
+
+        var items: [String] {
+            switch self {
+            case .noItems:
+                return []
+            case .appointment:
+                return ["내가 만든 약속",
+                        "참가한 약속",
+                        "댓글 단 약속"]
+            case .account:
+                return ["회원 정보 수정",
+                        "정보 동의 설정",
+                        "알림 설정",
+                        "로그아웃",
+                        "회원탈퇴"]
+            case .service:
+                return ["오픈소스 라이선스",
+                        "서비스 이용약관",
+                        "개인정보 처리방침",
+                        "문의하기",
+                        "개발자 정보"]
+            }
+        }
+
+        var itemCount: Int { return self.items.count }
     }
 
 }
