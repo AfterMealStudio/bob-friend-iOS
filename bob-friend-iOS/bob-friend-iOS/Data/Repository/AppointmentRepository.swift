@@ -8,15 +8,25 @@
 import Foundation
 
 protocol AppointmentRepository {
-    func getAllAppointments(page: Int, completion: ((Result<AppointmentListModel, Error>) -> Void)?)
+
+    func getAllAppointments(page: Int, type: AppointmentGetRequestType, completion: ((Result<AppointmentListModel, Error>) -> Void)?)
     func getSearchAppointments(searchWord: String, selectedTime: (String, String)?, onlyEnterable: Bool, searchType: SearchCategory, page: Int, completion: ((Result<AppointmentListModel, Error>) -> Void)?)
 }
 
+enum AppointmentGetRequestType: String {
+    case owned
+    case joined
+    case available
+    case all
+    case specific
+}
+
 class AppointmentRepositoryImpl: AppointmentRepository {
+
     let network: Network = Network()
 
-    func getAllAppointments(page: Int = 0, completion: ((Result<AppointmentListModel, Error>) -> Void)?) {
-        network.getAppointmentListRequest(page: page) { result in
+    func getAllAppointments(page: Int = 0, type: AppointmentGetRequestType = .all, completion: ((Result<AppointmentListModel, Error>) -> Void)?) {
+        network.getAppointmentListRequest(page: page, type: type) { result in
             guard let completion = completion else { return }
 
             switch result {

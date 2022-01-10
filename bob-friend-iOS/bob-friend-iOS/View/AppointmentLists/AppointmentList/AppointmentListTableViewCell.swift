@@ -87,14 +87,18 @@ extension AppointmentListTableViewCell {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 10),
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 15)
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 15),
+
+            titleLabel.heightAnchor.constraint(equalToConstant: 20)
         ])
 
         addSubview(userLabel)
         NSLayoutConstraint.activate([
             userLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 2),
             userLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15),
-            userLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 15)
+            userLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 15),
+
+            userLabel.heightAnchor.constraint(equalToConstant: 18)
         ])
 
         addSubview(peopleIcon)

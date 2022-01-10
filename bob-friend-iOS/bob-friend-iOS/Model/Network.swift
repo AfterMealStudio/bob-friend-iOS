@@ -142,8 +142,8 @@ final class Network {
         request(api: .kakaoKeywordSearch, type: KakaoKeywordSearchResultModel.self, parameters: parameters, headers: headers, completion: completion)
     }
 
-    func getAppointmentListRequest(page: Int = 0, completion: @escaping(Result<AppointmentListModel?, Error>) -> Void) {
-        let parameters: Parameters = ["page": page]
+    func getAppointmentListRequest(page: Int = 0, type: AppointmentGetRequestType, completion: @escaping(Result<AppointmentListModel?, Error>) -> Void) {
+        let parameters: Parameters = ["page": page, "type": type]
         let headers = HTTPHeaders(["Authorization": Network.token])
         request(api: .appointmentList, type: AppointmentListModel.self, parameters: parameters, headers: headers, completion: completion)
     }

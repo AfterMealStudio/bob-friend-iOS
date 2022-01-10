@@ -7,22 +7,34 @@
 
 import UIKit
 
-class OwnedAppointmentListVC: UIViewController {
+class OwnedAppointmentListVC: AppointmentListVC {
+
+    override init() {
+        super.init()
+        searchBar = nil
+        appointmentListVM = OwnedAppointmentListVM()
+
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
 
-    /*
-    // MARK: - Navigation
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        navigationController?.navigationBar.isHidden = false
+
+        navigationItem.title = "내가 만든 약속"
+
+        let navigationAppearance = UINavigationBarAppearance()
+        navigationAppearance.backgroundColor = UIColor(named: "MainColor1")
+        navigationAppearance.titleTextAttributes =  [.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.standardAppearance = navigationAppearance
     }
-    */
 
 }

@@ -403,7 +403,7 @@ extension SearchAppointmentVC: SearchBarViewDelegate {
 
         let vc = SearchResultAppointmentVC(searchWord: searchWord, selectedTime: selectedTime, searchType: searchType, onlyEnterable: checkOnlyEnterableButton.isSelected)
 
-        vc.searchBar.text = searchWord
+        vc.searchBar?.text = searchWord
 
         navigationController?.pushViewController(vc, animated: true)
     }

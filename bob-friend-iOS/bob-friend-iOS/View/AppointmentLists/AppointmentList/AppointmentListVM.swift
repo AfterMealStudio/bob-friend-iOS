@@ -19,7 +19,7 @@ class AppointmentListVM {
     func getAppointmentList() {
         if isLast { return }
 
-        appointmentRepository.getAllAppointments(page: nextPage) { [weak self] result in
+        appointmentRepository.getAllAppointments(page: nextPage, type: .all) { [weak self] result in
             switch result {
             case .success(let appointments):
                 self?.didGetAppointments(appointments: appointments)

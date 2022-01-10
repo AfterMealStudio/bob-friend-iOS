@@ -9,7 +9,7 @@ import UIKit
 
 class AppointmentListVC: UIViewController {
 
-    let searchBar: SearchBarView = {
+    var searchBar: SearchBarView? = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
     }(SearchBarView())
@@ -53,7 +53,7 @@ class AppointmentListVC: UIViewController {
         appointmentListTableView.refreshControl = refreshControl
         appointmentListTableView.refreshControl?.addTarget(self, action: #selector(pullToRefresh), for: .valueChanged)
 
-        searchBar.delegate = self
+        searchBar?.delegate = self
 
         layout()
     }
@@ -81,16 +81,17 @@ extension AppointmentListVC {
         view.backgroundColor = UIColor(named: "MainColor1")
         let safeArea = view.safeAreaLayoutGuide
 
-        view.addSubview(searchBar)
-        NSLayoutConstraint.activate([
-            searchBar.topAnchor.constraint(equalTo: safeArea.topAnchor),
-            searchBar.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
-            searchBar.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor)
-        ])
+        if let searchBar = searchBar {
+            view.addSubview(searchBar)
+        }
+
+        searchBar?.topAnchor.constraint(equalTo: safeArea.topAnchor).isActive = true
+        searchBar?.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor).isActive = true
+        searchBar?.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor).isActive = true
 
         view.addSubview(appointmentListTableView)
         NSLayoutConstraint.activate([
-            appointmentListTableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
+            appointmentListTableView.topAnchor.constraint(equalTo: searchBar?.bottomAnchor ?? safeArea.topAnchor),
             appointmentListTableView.leftAnchor.constraint(equalTo: safeArea.leftAnchor),
             appointmentListTableView.rightAnchor.constraint(equalTo: safeArea.rightAnchor),
             appointmentListTableView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor)
@@ -105,7 +106,7 @@ extension AppointmentListVC: SearchBarViewDelegate {
 
     func didBeginEditing() {
         view.endEditing(true)
-        searchBar.text = ""
+        searchBar?.text = ""
 
         let vc = SearchAppointmentVC()
         navigationController?.pushViewController(vc, animated: true)

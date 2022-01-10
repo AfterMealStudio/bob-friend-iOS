@@ -45,6 +45,8 @@
 		0BA2016F26FF93EE0072A2B6 /* SignUpTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA2016E26FF93EE0072A2B6 /* SignUpTextField.swift */; };
 		0BA2F3BA278BF3C40048A49A /* OwnedAppointmentListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA2F3B9278BF3C40048A49A /* OwnedAppointmentListVC.swift */; };
 		0BA2F3BD278BF4660048A49A /* JoinedAppointmentListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA2F3BC278BF4660048A49A /* JoinedAppointmentListVC.swift */; };
+		0BA2F3BF278BF8730048A49A /* JoinedAppointmentListVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA2F3BE278BF8730048A49A /* JoinedAppointmentListVM.swift */; };
+		0BA2F3C1278BFB550048A49A /* OwnedAppointmentListVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA2F3C0278BFB550048A49A /* OwnedAppointmentListVM.swift */; };
 		0BA716B227256BCC00A36A04 /* AppointmentListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA716B127256BCC00A36A04 /* AppointmentListVC.swift */; };
 		0BA716B9272632D800A36A04 /* AppointmentListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA716B8272632D800A36A04 /* AppointmentListTableViewCell.swift */; };
 		0BA716BB27290CA800A36A04 /* AppointmentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA716BA27290CA800A36A04 /* AppointmentModel.swift */; };
@@ -412,6 +414,8 @@
 		0BA2016E26FF93EE0072A2B6 /* SignUpTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpTextField.swift; sourceTree = "<group>"; };
 		0BA2F3B9278BF3C40048A49A /* OwnedAppointmentListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OwnedAppointmentListVC.swift; sourceTree = "<group>"; };
 		0BA2F3BC278BF4660048A49A /* JoinedAppointmentListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinedAppointmentListVC.swift; sourceTree = "<group>"; };
+		0BA2F3BE278BF8730048A49A /* JoinedAppointmentListVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinedAppointmentListVM.swift; sourceTree = "<group>"; };
+		0BA2F3C0278BFB550048A49A /* OwnedAppointmentListVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OwnedAppointmentListVM.swift; sourceTree = "<group>"; };
 		0BA716B127256BCC00A36A04 /* AppointmentListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentListVC.swift; sourceTree = "<group>"; };
 		0BA716B8272632D800A36A04 /* AppointmentListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentListTableViewCell.swift; sourceTree = "<group>"; };
 		0BA716BA27290CA800A36A04 /* AppointmentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentModel.swift; sourceTree = "<group>"; };
@@ -1005,6 +1009,7 @@
 			isa = PBXGroup;
 			children = (
 				0BA2F3B9278BF3C40048A49A /* OwnedAppointmentListVC.swift */,
+				0BA2F3C0278BFB550048A49A /* OwnedAppointmentListVM.swift */,
 			);
 			path = OwnedAppointmentList;
 			sourceTree = "<group>";
@@ -1013,6 +1018,7 @@
 			isa = PBXGroup;
 			children = (
 				0BA2F3BC278BF4660048A49A /* JoinedAppointmentListVC.swift */,
+				0BA2F3BE278BF8730048A49A /* JoinedAppointmentListVM.swift */,
 			);
 			path = JoinedAppointmentList;
 			sourceTree = "<group>";
@@ -2009,8 +2015,10 @@
 				0BB9877726DA30C200E0CC12 /* LoginVM.swift in Sources */,
 				0BB9877C26DA571D00E0CC12 /* LoginModel.swift in Sources */,
 				0B170B9926F3068500C25EA1 /* SignUpModel.swift in Sources */,
+				0BA2F3BF278BF8730048A49A /* JoinedAppointmentListVM.swift in Sources */,
 				0B6B8A09274CB8A6004BF879 /* AppointmentEnrollModel.swift in Sources */,
 				0BA000CB27744EF5006A7DA7 /* LoginRepository.swift in Sources */,
+				0BA2F3C1278BFB550048A49A /* OwnedAppointmentListVM.swift in Sources */,
 				0BA2F3BD278BF4660048A49A /* JoinedAppointmentListVC.swift in Sources */,
 				0B6E0CBF27427FBC006CC18D /* UserInfo.swift in Sources */,
 				0BAF7CB02768899C002406D2 /* MyPageVC.swift in Sources */,
