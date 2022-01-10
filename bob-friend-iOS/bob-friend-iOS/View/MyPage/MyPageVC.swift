@@ -85,19 +85,22 @@ extension MyPageVC: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Section(rawValue: section)?.itemCount ?? 0
+        return myPageVM.sections[section].rowAmount
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "MyPageTableViewCell") as? MyPageTableViewCell else { return UITableViewCell() }
 
-        cell.title = Section(rawValue: indexPath.section)?.items[indexPath.row]
+        cell.title = myPageVM.sections[indexPath.section].rows[indexPath.row].0
 
         return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+        myPageVM.sections[indexPath.section].selectedEvent(row: indexPath.row)
+
         let selectedIndex = tableView.indexPathForSelectedRow
         if let selectedIndex = selectedIndex, let selectedRow = tableView.cellForRow(at: selectedIndex) {
             selectedRow.isSelected = false
@@ -115,7 +118,7 @@ extension MyPageVC: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return Section(rawValue: section)?.sectionTitle
+        return myPageVM.sections[section].sectionTitle
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -157,50 +160,59 @@ extension MyPageVC: MyPageDelegate {
 
     }
 
-}
+    func toOwnedAppointments() {
+        let vc = OwnedAppointmentListVC()
+        navigationController?.pushViewController(vc, animated: true)
+    }
 
-// MARK: - Section INFO
-extension MyPageVC {
+    func toJoinedAppointments() {
+        let vc = JoinedAppointmentListVC()
+        navigationController?.pushViewController(vc, animated: true)
+    }
 
-    enum Section: Int {
-        case noItems = 0
-        case appointment = 1
-        case account = 2
-        case service = 3
+    func toEditUserInfo() {
+        let vc = UIViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
 
-        var sectionTitle: String? {
-            switch self {
-            case .noItems: return nil
-            case .appointment: return "약속"
-            case .account: return "계정"
-            case .service: return "기타"
-            }
-        }
+    func toSetAgreement() {
+        let vc = UIViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
 
-        var items: [String] {
-            switch self {
-            case .noItems:
-                return []
-            case .appointment:
-                return ["내가 만든 약속",
-                        "참가한 약속",
-                        "댓글 단 약속"]
-            case .account:
-                return ["회원 정보 수정",
-                        "정보 동의 설정",
-                        "알림 설정",
-                        "로그아웃",
-                        "회원탈퇴"]
-            case .service:
-                return ["오픈소스 라이선스",
-                        "서비스 이용약관",
-                        "개인정보 처리방침",
-                        "문의하기",
-                        "개발자 정보"]
-            }
-        }
+    func toSetAlert() {
+        let vc = UIViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
 
-        var itemCount: Int { return self.items.count }
+    func toLogout() {
+        let vc = UIViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
+
+    func toMembershipWithdrawal() {
+        let vc = UIViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
+
+    func toOpenSourceLicense() {
+        let vc = UIViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
+
+    func toTermsAndConditions() {
+        let vc = UIViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
+
+    func toPrivacyPolicy() {
+        let vc = UIViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
+
+    func toContactUs() {
+        let vc = UIViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
 
 }
