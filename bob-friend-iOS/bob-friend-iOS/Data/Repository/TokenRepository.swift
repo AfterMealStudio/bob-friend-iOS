@@ -14,11 +14,12 @@ protocol TokenRepository {
 
 class TokenRepositoryImpl: TokenRepository {
     func getToken() -> String? {
-        return Network.token
+        return Network.accessToken
     }
 
     func saveToken(token: TokenModel) {
-        Network.token = token.accessToken
+        Network.accessToken = token.accessToken
+        Network.refreshToken = token.refreshToken
     }
 
 }

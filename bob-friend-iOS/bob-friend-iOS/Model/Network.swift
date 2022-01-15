@@ -16,9 +16,11 @@ final class Network {
         self.session = session
     }
 
-    static var token: String = ""
+    static var accessToken: String = ""
+    static var refreshToken: String = ""
 
     private enum API {
+        case tokenRefresh
         case login
         case checkEmailDuplication(email: String)
         case checkNicknameDuplication(nickname: String)
@@ -45,6 +47,8 @@ final class Network {
             let kakaoKeywordSearchUrl = "https://dapi.kakao.com/v2/local/search/keyword.json"
 
             switch self {
+            case .tokenRefresh:
+                return baseUrl + "api/issue"
             case .login:
                 return baseUrl + "api/signin"
             case .checkEmailDuplication(let email):
@@ -90,6 +94,7 @@ final class Network {
 
         var method: HTTPMethod {
             switch self {
+            case .tokenRefresh: return .post
             case .login: return .post
             case .checkEmailDuplication(email: _): return .get
             case .checkNicknameDuplication(nickname: _): return .get
@@ -113,6 +118,27 @@ final class Network {
             }
         }
 
+    }
+
+    func tokenRefreshRequest(completion: @escaping () -> Void) {
+        let tokenInfo = TokenModel(accessToken: Network.accessToken, refreshToken: Network.refreshToken)
+        request(api: .tokenRefresh, type: TokenModel.self, parameter: tokenInfo, completion: { response in
+
+            switch response {
+            case .success(let data):
+
+                guard let token = data else { return }
+
+                let tokenRepository = TokenRepositoryImpl()
+                tokenRepository.saveToken(token: token)
+                completion()
+
+            case .failure:
+                return
+
+            }
+
+        })
     }
 
     func loginRequest(loginInfo: LoginModel, completion: @escaping (Result<TokenModel?, Error>) -> Void) {
@@ -139,13 +165,12 @@ final class Network {
         let parameters: Parameters = ["query": keyword, "page": page, "size": 15]
         let headers = HTTPHeaders(["Authorization": "KakaoAK \(kakaoRestAPIKey)"])
 
-        request(api: .kakaoKeywordSearch, type: KakaoKeywordSearchResultModel.self, parameters: parameters, headers: headers, completion: completion)
+        request(api: .kakaoKeywordSearch, type: KakaoKeywordSearchResultModel.self, parameter: parameters, headers: headers, completion: completion)
     }
 
     func getAppointmentListRequest(page: Int = 0, type: AppointmentGetRequestType, completion: @escaping(Result<AppointmentListModel?, Error>) -> Void) {
         let parameters: Parameters = ["page": page, "type": type]
-        let headers = HTTPHeaders(["Authorization": Network.token])
-        request(api: .appointmentList, type: AppointmentListModel.self, parameters: parameters, headers: headers, completion: completion)
+        requestWithAuth(api: .appointmentList, type: AppointmentListModel.self, parameter: parameters, completion: completion)
     }
 
     func getSearchAppointmentListRequest(searchWord: String, selectedTime: (String, String)?, onlyEnterable: Bool, category: SearchCategory, page: Int = 0, completion: @escaping(Result<AppointmentListModel?, Error>) -> Void) {
@@ -157,75 +182,61 @@ final class Network {
         if onlyEnterable {
             parameters.updateValue("available", forKey: "type")
         }
-        let headers = HTTPHeaders(["Authorization": Network.token])
-        request(api: .searchAppointmentList, type: AppointmentListModel.self, parameters: parameters, headers: headers, completion: completion)
+        requestWithAuth(api: .searchAppointmentList, type: AppointmentListModel.self, parameter: parameters, completion: completion)
     }
 
     func getAppointment(_ appointmentID: Int, completion: @escaping(Result<AppointmentModel?, Error>) -> Void) {
-        let headers = HTTPHeaders(["Authorization": Network.token])
-        request(api: .appointment(id: appointmentID), type: AppointmentModel.self, headers: headers) { result in
+        requestWithAuth(api: .appointment(id: appointmentID), type: AppointmentModel.self) { result in
             completion(result)
         }
     }
 
     func enrollCommentRequest(appointmentID: Int, comment: EnrollCommentModel, completion: @escaping(Result<EnrollCommentResponseModel?, Error>) -> Void) {
-        let headers = HTTPHeaders(["Authorization": Network.token])
-        request(api: API.enrollComment(appointmentID: appointmentID), type: EnrollCommentResponseModel.self, parameter: comment, headers: headers, completion: completion)
+        requestWithAuth(api: API.enrollComment(appointmentID: appointmentID), type: EnrollCommentResponseModel.self, parameter: comment, completion: completion)
     }
 
     func enrollReplyRequest(appointmentID: Int, commentID: Int, comment: EnrollCommentModel, completion: @escaping(Result<EnrollCommentResponseModel?, Error>) -> Void) {
-        let headers = HTTPHeaders(["Authorization": Network.token])
-        request(api: API.enrollReply(appointmentID: appointmentID, commentID: commentID), type: EnrollCommentResponseModel.self, parameter: comment, headers: headers, completion: completion)
+        requestWithAuth(api: API.enrollReply(appointmentID: appointmentID, commentID: commentID), type: EnrollCommentResponseModel.self, parameter: comment, completion: completion)
     }
 
     func getUserInfoRequest(completion: @escaping(Result<UserInfoModel?, Error>) -> Void) {
-        let headers = HTTPHeaders(["Authorization": Network.token])
-        request(api: .userInfo, type: UserInfoModel.self, headers: headers, completion: completion)
+        requestWithAuth(api: .userInfo, type: UserInfoModel.self, completion: completion)
     }
 
     func reportAppointmentRequest(appointmentID: Int, completion: @escaping(Result<Void?, Error>) -> Void) {
-        let headers = HTTPHeaders(["Authorization": Network.token])
-        request(api: .reportAppointment(appointmentID: appointmentID), headers: headers, completion: completion)
+        requestWithAuth(api: .reportAppointment(appointmentID: appointmentID), completion: completion)
     }
 
     func deleteAppointmentRequest(appointmentID: Int, completion: @escaping(Result<Void?, Error>) -> Void) {
-        let headers = HTTPHeaders(["Authorization": Network.token])
-        request(api: .deleteAppointment(appointmentID: appointmentID), headers: headers, completion: completion)
+        requestWithAuth(api: .deleteAppointment(appointmentID: appointmentID), completion: completion)
     }
 
     func reportCommentRequest(appointmentID: Int, commentID: Int, completion: @escaping(Result<Void?, Error>) -> Void) {
-        let headers = HTTPHeaders(["Authorization": Network.token])
-        request(api: .reportComment(appointmentID: appointmentID, commentID: commentID), headers: headers, completion: completion)
+        requestWithAuth(api: .reportComment(appointmentID: appointmentID, commentID: commentID), completion: completion)
     }
 
     func reportReplyRequest(appointmentID: Int, commentID: Int, replyID: Int, completion: @escaping(Result<Void?, Error>) -> Void) {
-        let headers = HTTPHeaders(["Authorization": Network.token])
-        request(api: .reportReply(appointmentID: appointmentID, commentID: commentID, replyID: replyID), headers: headers, completion: completion)
+        requestWithAuth(api: .reportReply(appointmentID: appointmentID, commentID: commentID, replyID: replyID), completion: completion)
     }
 
     func deleteCommentRequest(appointmentID: Int, commentID: Int, completion: @escaping(Result<Void?, Error>) -> Void) {
-        let headers = HTTPHeaders(["Authorization": Network.token])
-        request(api: .deleteComment(appointmentID: appointmentID, commentID: commentID), headers: headers, completion: completion)
+        requestWithAuth(api: .deleteComment(appointmentID: appointmentID, commentID: commentID), completion: completion)
     }
 
     func deleteReplyRequest(appointmentID: Int, commentID: Int, replyID: Int, completion: @escaping(Result<Void?, Error>) -> Void) {
-        let headers = HTTPHeaders(["Authorization": Network.token])
-        request(api: .deleteReply(appointmentID: appointmentID, commentID: commentID, replyID: replyID), headers: headers, completion: completion)
+        requestWithAuth(api: .deleteReply(appointmentID: appointmentID, commentID: commentID, replyID: replyID), completion: completion)
     }
 
     func closeAppointmentRequest(appointmentID: Int, completion: @escaping(Result<Void?, Error>) -> Void) {
-        let headers = HTTPHeaders(["Authorization": Network.token])
-        request(api: .closeAppointment(appointmentID: appointmentID), headers: headers, completion: completion)
+        requestWithAuth(api: .closeAppointment(appointmentID: appointmentID), completion: completion)
     }
 
     func joinOrCancelAppointmentRequest(appointmentID: Int, completion: @escaping(Result<AppointmentModel?, Error>) -> Void) {
-        let headers = HTTPHeaders(["Authorization": Network.token])
-        request(api: .joinOrCancelAppointment(appointmentID: appointmentID), type: AppointmentModel.self, headers: headers, completion: completion)
+        requestWithAuth(api: .joinOrCancelAppointment(appointmentID: appointmentID), type: AppointmentModel.self, completion: completion)
     }
 
     func enrollAppointment(appointment: AppointmentEnrollModel, completion: @escaping(Result<AppointmentModel?, Error>) -> Void) {
-        let headers = HTTPHeaders(["Authorization": Network.token])
-        request(api: .enrollAppointment, type: AppointmentModel.self, parameter: appointment, headers: headers, completion: completion)
+        requestWithAuth(api: .enrollAppointment, type: AppointmentModel.self, parameter: appointment, completion: completion)
     }
 
 }
@@ -247,9 +258,9 @@ extension Network {
 
     }
 
-    private func request<D: Decodable>(api: API, type: D.Type, parameters: Parameters? = nil, encoder: ParameterEncoder = URLEncodedFormParameterEncoder.default, headers: HTTPHeaders? = nil, completion: @escaping (Result<D?, Error>) -> Void) {
+    private func request<D: Decodable>(api: API, type: D.Type, parameter: Parameters? = nil, encoder: ParameterEncoder = URLEncodedFormParameterEncoder.default, headers: HTTPHeaders? = nil, completion: @escaping (Result<D?, Error>) -> Void) {
 
-        session?.request(api.path, method: api.method, parameters: parameters, headers: headers).response { [weak self] response in
+        session?.request(api.path, method: api.method, parameters: parameter, headers: headers).response { [weak self] response in
             print(response.debugDescription)
             switch response.result {
             case .success(let data):
@@ -262,10 +273,93 @@ extension Network {
 
     }
 
-    private func request(api: API, parameters: Parameters? = nil, encoder: ParameterEncoder = URLEncodedFormParameterEncoder.default, headers: HTTPHeaders? = nil, completion: @escaping (Result<Void?, Error>) -> Void) {
+    private func request(api: API, parameter: Parameters? = nil, encoder: ParameterEncoder = URLEncodedFormParameterEncoder.default, headers: HTTPHeaders? = nil, completion: @escaping (Result<Void?, Error>) -> Void) {
 
-        session?.request(api.path, method: api.method, parameters: parameters, headers: headers).response { response in
+        session?.request(api.path, method: api.method, parameters: parameter, headers: headers).response { response in
             print(response.debugDescription)
+            switch response.result {
+            case .success:
+                completion(.success(Void()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+
+    }
+
+    private func requestWithAuth<E: Encodable, D: Decodable>(api: API, type: D.Type, parameter: E, encoder: ParameterEncoder = JSONParameterEncoder(), headers: HTTPHeaders? = nil, completion: @escaping (Result<D?, Error>) -> Void) {
+
+        var headers = headers
+        if headers == nil { headers = HTTPHeaders() }
+        let accessToken = HTTPHeader(name: "Authorization", value: Network.accessToken)
+        headers?.add(accessToken)
+
+        session?.request(api.path, method: api.method, parameters: parameter, encoder: encoder, headers: headers).response { [weak self] response in
+            print(response.debugDescription)
+
+            if response.response?.statusCode == 403 {
+                self?.tokenRefreshRequest {
+                    self?.requestWithAuth(api: api, type: type, parameter: parameter, encoder: encoder, headers: headers, completion: completion)
+                }
+                return
+            }
+
+            switch response.result {
+            case .success(let data):
+                let jsonData = self?.decodeJSONData(data: data, type: type)
+                completion(.success(jsonData))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+
+    }
+
+    private func requestWithAuth<D: Decodable>(api: API, type: D.Type, parameter: Parameters? = nil, encoder: ParameterEncoder = URLEncodedFormParameterEncoder.default, headers: HTTPHeaders? = nil, completion: @escaping (Result<D?, Error>) -> Void) {
+
+        var headers = headers
+        if headers == nil { headers = HTTPHeaders() }
+        let accessToken = HTTPHeader(name: "Authorization", value: Network.accessToken)
+        headers?.add(accessToken)
+
+        session?.request(api.path, method: api.method, parameters: parameter, headers: headers).response { [weak self] response in
+            print(response.debugDescription)
+
+            if response.response?.statusCode == 403 {
+                self?.tokenRefreshRequest {
+                    self?.requestWithAuth(api: api, type: type, parameter: parameter, encoder: encoder, headers: headers, completion: completion)
+                }
+                return
+            }
+
+            switch response.result {
+            case .success(let data):
+                let jsonData = self?.decodeJSONData(data: data, type: type)
+                completion(.success(jsonData))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+
+    }
+
+    private func requestWithAuth(api: API, parameter: Parameters? = nil, encoder: ParameterEncoder = URLEncodedFormParameterEncoder.default, headers: HTTPHeaders? = nil, completion: @escaping (Result<Void?, Error>) -> Void) {
+
+        var headers = headers
+        if headers == nil { headers = HTTPHeaders() }
+        let accessToken = HTTPHeader(name: "Authorization", value: Network.accessToken)
+        headers?.add(accessToken)
+
+        session?.request(api.path, method: api.method, parameters: parameter, headers: headers).response { [weak self] response in
+            print(response.debugDescription)
+
+            if response.response?.statusCode == 403 {
+                self?.tokenRefreshRequest {
+                    self?.requestWithAuth(api: api, parameter: parameter, encoder: encoder, headers: headers, completion: completion)
+                }
+                return
+            }
+
             switch response.result {
             case .success:
                 completion(.success(Void()))
