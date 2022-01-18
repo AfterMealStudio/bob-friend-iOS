@@ -9,6 +9,8 @@ target 'bob-friend-iOS' do
   
   pod 'Alamofire', '~> 5.1'
   pod 'SwiftLint'
+  pod 'NMapsMap', '3.10.0'
+
 
   target 'bob-friend-iOSTests' do
     inherit! :search_paths

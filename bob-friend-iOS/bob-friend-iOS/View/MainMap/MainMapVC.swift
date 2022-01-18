@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreLocation
+import NMapsMap
 
 class MainMapVC: UIViewController {
 
@@ -17,10 +18,10 @@ class MainMapVC: UIViewController {
 
     var searchListView: PlaceSearchListView = PlaceSearchListView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
 
-    let mapView: MTMapView = {
+    let mapView: NMFMapView  = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         return $0
-    }(MTMapView())
+    }(NMFMapView())
 
     let currentLocationButton: UIButton = {
         $0.translatesAutoresizingMaskIntoConstraints = false
@@ -60,7 +61,7 @@ class MainMapVC: UIViewController {
         searchListView.dataSource = self
 
         // mapView
-        mapView.delegate = self
+        mapView.touchDelegate = self
         setMap()
 
         // currentLocationButton
@@ -129,9 +130,17 @@ extension MainMapVC: UICollectionViewDelegate, UICollectionViewDataSource {
         guard let placeInfo = searchResults?.documents[indexPath.row] else { return }
         let longitude = Double(placeInfo.x) ?? 0
         let latitude = Double(placeInfo.y) ?? 0
-        let point = MTMapPoint(geoCoord: MTMapPointGeo(latitude: latitude, longitude: longitude))
-        unlockMapTrackingMode()
-        mapView.setMapCenter(point, animated: true)
+
+        moveMapToLatLng(lat: latitude, lng: longitude)
+    }
+
+}
+
+// MARK: - Map Event
+extension MainMapVC {
+    func moveMapToLatLng(lat: Double, lng: Double) {
+        let cameraUpdatePoint = NMFCameraUpdate(scrollTo: NMGLatLng(lat: lat, lng: lng))
+        mapView.moveCamera(cameraUpdatePoint)
     }
 
 }
@@ -139,22 +148,18 @@ extension MainMapVC: UICollectionViewDelegate, UICollectionViewDataSource {
 // MARK: - Map Setting
 extension MainMapVC: CLLocationManagerDelegate {
     func setMap() {
+
         locationManager = CLLocationManager()
         locationManager.delegate = self
 
         locationManager.requestWhenInUseAuthorization()
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
 
-        mapView.showCurrentLocationMarker = true
-        mapView.currentLocationTrackingMode = .onWithoutHeading
-
         locationManager.startUpdatingLocation()
+        mapView.positionMode = .direction
 
     }
 
-    func unlockMapTrackingMode() {
-        mapView.currentLocationTrackingMode = .onWithoutHeadingWithoutMapMoving
-    }
 }
 
 // MARK: - ButtonSetting
@@ -165,7 +170,8 @@ extension MainMapVC {
 
     @objc
     func currentButtonClicked() {
-        mapView.setMapCenter(updateCurrentLocation, animated: true)
+        mapView.positionMode = .direction
+        mapView.positionMode = .normal
     }
 }
 
@@ -222,23 +228,19 @@ extension MainMapVC: SearchBarViewDelegate {
 
 }
 
-// MARK: - MTMapViewDelegate
-extension MainMapVC: MTMapViewDelegate {
-
-    func mapView(_ mapView: MTMapView!, updateCurrentLocation location: MTMapPoint!, withAccuracy accuracy: MTMapLocationAccuracy) {
-        updateCurrentLocation = location
-    }
-
-    func mapView(_ mapView: MTMapView!, singleTapOn mapPoint: MTMapPoint!) {
+// MARK: - NMFMapView Touch Delegate
+extension MainMapVC: NMFMapViewTouchDelegate {
+    func mapView(_ mapView: NMFMapView, didTapMap latlng: NMGLatLng, point: CGPoint) {
         searchListView.isHidden = true
         view.endEditing(true)
     }
 
-    func mapView(_ mapView: MTMapView!, dragEndedOn mapPoint: MTMapPoint!) {
+    func mapView(_ mapView: NMFMapView, didTap symbol: NMFSymbol) -> Bool {
         searchListView.isHidden = true
         view.endEditing(true)
-    }
 
+        return false
+    }
 }
 
 // MARK: - Keyboard
