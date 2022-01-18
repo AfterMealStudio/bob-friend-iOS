@@ -34,6 +34,13 @@ class MyPageVM {
         }
     }
 
+    func logout() {
+        Network.refreshToken = ""
+        Network.accessToken = ""
+
+        UserInfo.myInfo = nil
+    }
+
 }
 
 // MARK: - Sections

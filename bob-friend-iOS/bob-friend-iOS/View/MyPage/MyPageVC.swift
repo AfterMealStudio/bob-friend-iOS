@@ -186,8 +186,8 @@ extension MyPageVC: MyPageDelegate {
     }
 
     func toLogout() {
-        let vc = UIViewController()
-        navigationController?.pushViewController(vc, animated: true)
+        myPageVM.logout()
+        tabBarController?.dismiss(animated: true, completion: nil)
     }
 
     func toMembershipWithdrawal() {
