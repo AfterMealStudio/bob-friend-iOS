@@ -41,6 +41,7 @@ final class Network {
         case closeAppointment(appointmentID: Int)
         case joinOrCancelAppointment(appointmentID: Int)
         case enrollAppointment
+        case withdrawalMembership
 
         var path: String {
             let baseUrl: String = "http://117.17.102.143:8080/"
@@ -50,7 +51,7 @@ final class Network {
             case .tokenRefresh:
                 return baseUrl + "api/issue"
             case .login:
-                return baseUrl + "api/signin"
+                return baseUrl + "api/auth/signin"
             case .checkEmailDuplication(let email):
                 return baseUrl + "api/email/\(email)"
             case .checkNicknameDuplication(let nickname):
@@ -89,6 +90,8 @@ final class Network {
                 return baseUrl + "recruitments/\(appointmentID)"
             case .enrollAppointment:
                 return baseUrl + "recruitments"
+            case .withdrawalMembership:
+                return baseUrl + "api/user"
             }
         }
 
@@ -115,6 +118,7 @@ final class Network {
             case .closeAppointment(appointmentID: _): return .patch
             case .joinOrCancelAppointment(appointmentID: _): return .patch
             case .enrollAppointment: return .post
+            case .withdrawalMembership: return .delete
             }
         }
 
@@ -239,6 +243,13 @@ final class Network {
         requestWithAuth(api: .enrollAppointment, type: AppointmentModel.self, parameter: appointment, completion: completion)
     }
 
+    func withdrawalMembership(password: String, completion: @escaping(Result<Void?, Error>) -> Void) {
+        let data = WithdrawalMembershipModel(password: password)
+        requestWithAuth(api: .withdrawalMembership, parameter: data) { _ in
+
+        }
+    }
+
 }
 
 extension Network {
@@ -280,6 +291,36 @@ extension Network {
             switch response.result {
             case .success:
                 completion(.success(Void()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+
+    }
+
+    private func requestWithAuth<E: Encodable>(api: API, parameter: E, encoder: ParameterEncoder = JSONParameterEncoder(), headers: HTTPHeaders? = nil, completion: @escaping (Result<Void?, Error>) -> Void) {
+
+        var headers = headers
+        if headers == nil { headers = HTTPHeaders() }
+        let accessToken = HTTPHeader(name: "Authorization", value: Network.accessToken)
+        headers?.add(accessToken)
+
+        session?.request(api.path, method: api.method, parameters: parameter, encoder: encoder, headers: headers).response { [weak self] response in
+            print(response.debugDescription)
+
+            if response.response?.statusCode == 403 {
+                self?.tokenRefreshRequest {
+                    self?.requestWithAuth(api: api, parameter: parameter, encoder: encoder, headers: headers, completion: completion)
+                }
+                return
+            }
+
+            switch response.result {
+            case .success:
+                if let statusCode = response.response?.statusCode, statusCode >= 200 && statusCode < 300 {
+                    completion(.success(Void()))
+                }
+                completion(.failure(ResponedError.error))
             case .failure(let error):
                 completion(.failure(error))
             }

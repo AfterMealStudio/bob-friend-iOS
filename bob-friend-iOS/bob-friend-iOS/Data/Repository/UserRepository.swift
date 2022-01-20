@@ -10,6 +10,7 @@ import Foundation
 protocol UserRepository {
     func getUserInfo(_ accessToken: String, completion: ((Result<UserInfoModel, Error>) -> Void)?)
     func setMyInfoAtDevice(_ userInfo: UserInfoModel)
+    func withdrawalMembership(password: String, completion: ((Result<Void, Error>) -> Void)?)
 }
 
 class UserRepositoryImpl: UserRepository {
@@ -37,4 +38,29 @@ class UserRepositoryImpl: UserRepository {
         UserInfo.myInfo = userInfo
     }
 
+    func withdrawalMembership(password: String, completion: ((Result<Void, Error>) -> Void)?) {
+
+        network.withdrawalMembership(password: password) { result in
+
+            guard let completion = completion else { return }
+
+            switch result {
+            case .success(let data):
+                if let data = data {
+                    completion(.success(data))
+                    return
+                }
+                completion(.failure(ResponedError.error))
+            case .failure(let error):
+                completion(.failure(error))
+                return
+            }
+
+        }
+    }
+
+}
+
+struct WithdrawalMembershipModel: Encodable {
+    let password: String
 }

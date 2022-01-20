@@ -38,6 +38,16 @@ class MyPageVC: UIViewController {
         myPageVM.getMyProfile()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = false
+        navigationItem.title = "마이페이지"
+
+        let navigationAppearance = UINavigationBarAppearance()
+        navigationAppearance.backgroundColor = UIColor(named: "MainColor1")
+        navigationAppearance.titleTextAttributes =  [.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.standardAppearance = navigationAppearance
+    }
+
 }
 
 // MARK: - layout
@@ -191,8 +201,21 @@ extension MyPageVC: MyPageDelegate {
     }
 
     func toMembershipWithdrawal() {
-        let vc = UIViewController()
+
+        let vc = MembershipWithdrawalVC()
         navigationController?.pushViewController(vc, animated: true)
+//
+//        let alertController = UIAlertController(title: "회원 탈퇴", message: "탈퇴하시겠습니까?", preferredStyle: .alert)
+//        let cancel = UIAlertAction(title: "취소", style: .cancel, handler: nil)
+//        let okButon = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
+//            self?.myPageVM.withdrawalMembership { [weak self] in
+//                self?.tabBarController?.dismiss(animated: true, completion: nil)
+//            }
+//        }
+//
+//        alertController.addAction(cancel)
+//        alertController.addAction(okButon)
+//        present(alertController, animated: true)
     }
 
     func toOpenSourceLicense() {

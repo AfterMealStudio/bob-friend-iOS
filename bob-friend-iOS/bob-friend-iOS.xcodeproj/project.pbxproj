@@ -52,6 +52,8 @@
 		0BA716BB27290CA800A36A04 /* AppointmentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA716BA27290CA800A36A04 /* AppointmentModel.swift */; };
 		0BA716BD27291E1500A36A04 /* AppointmentListVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA716BC27291E1500A36A04 /* AppointmentListVM.swift */; };
 		0BA716C02729414600A36A04 /* AppointmentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA716BF2729414600A36A04 /* AppointmentVC.swift */; };
+		0BA9A8F92796AF3B00698E1B /* MembershipWithdrawalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA9A8F82796AF3B00698E1B /* MembershipWithdrawalVC.swift */; };
+		0BA9A8FB2796B57700698E1B /* MembershipWithdrawalVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA9A8FA2796B57700698E1B /* MembershipWithdrawalVM.swift */; };
 		0BAF7CB02768899C002406D2 /* MyPageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BAF7CAF2768899C002406D2 /* MyPageVC.swift */; };
 		0BB9877726DA30C200E0CC12 /* LoginVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB9877626DA30C200E0CC12 /* LoginVM.swift */; };
 		0BB9877C26DA571D00E0CC12 /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB9877B26DA571D00E0CC12 /* LoginModel.swift */; };
@@ -421,6 +423,8 @@
 		0BA716BA27290CA800A36A04 /* AppointmentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentModel.swift; sourceTree = "<group>"; };
 		0BA716BC27291E1500A36A04 /* AppointmentListVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentListVM.swift; sourceTree = "<group>"; };
 		0BA716BF2729414600A36A04 /* AppointmentVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentVC.swift; sourceTree = "<group>"; };
+		0BA9A8F82796AF3B00698E1B /* MembershipWithdrawalVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MembershipWithdrawalVC.swift; sourceTree = "<group>"; };
+		0BA9A8FA2796B57700698E1B /* MembershipWithdrawalVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MembershipWithdrawalVM.swift; sourceTree = "<group>"; };
 		0BAF7CAF2768899C002406D2 /* MyPageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageVC.swift; sourceTree = "<group>"; };
 		0BB9877626DA30C200E0CC12 /* LoginVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVM.swift; sourceTree = "<group>"; };
 		0BB9877B26DA571D00E0CC12 /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
@@ -1045,9 +1049,19 @@
 			path = Appointment;
 			sourceTree = "<group>";
 		};
+		0BA9A8F72796AEA800698E1B /* MembershipWithdrawal */ = {
+			isa = PBXGroup;
+			children = (
+				0BA9A8F82796AF3B00698E1B /* MembershipWithdrawalVC.swift */,
+				0BA9A8FA2796B57700698E1B /* MembershipWithdrawalVM.swift */,
+			);
+			path = MembershipWithdrawal;
+			sourceTree = "<group>";
+		};
 		0BAF7CAE2768896E002406D2 /* MyPage */ = {
 			isa = PBXGroup;
 			children = (
+				0BA9A8F72796AEA800698E1B /* MembershipWithdrawal */,
 				0BAF7CAF2768899C002406D2 /* MyPageVC.swift */,
 				0BE57DCC276AC6D400309F81 /* ProfileView.swift */,
 				0BE57DCE276AE7BF00309F81 /* MyPageVM.swift */,
@@ -2005,6 +2019,7 @@
 				0B29798826DA18A9002AD75A /* Network.swift in Sources */,
 				0BA716B9272632D800A36A04 /* AppointmentListTableViewCell.swift in Sources */,
 				0B6B8A0D274D2B4A004BF879 /* PlaceSearchVC.swift in Sources */,
+				0BA9A8FB2796B57700698E1B /* MembershipWithdrawalVM.swift in Sources */,
 				0BA716BD27291E1500A36A04 /* AppointmentListVM.swift in Sources */,
 				0B876D73270A0F4A00925881 /* SearchBarView.swift in Sources */,
 				0BA2F3BA278BF3C40048A49A /* OwnedAppointmentListVC.swift in Sources */,
@@ -2024,6 +2039,7 @@
 				0BAF7CB02768899C002406D2 /* MyPageVC.swift in Sources */,
 				0B88509927534EA20043354E /* SearchAppointmentVC.swift in Sources */,
 				0B29793526D62F04002AD75A /* LoginVC.swift in Sources */,
+				0BA9A8F92796AF3B00698E1B /* MembershipWithdrawalVC.swift in Sources */,
 				0B876D712709B5D100925881 /* MainMapVC.swift in Sources */,
 				0BE57DCD276AC6D400309F81 /* ProfileView.swift in Sources */,
 				0BA000EB27788088006A7DA7 /* Error.swift in Sources */,

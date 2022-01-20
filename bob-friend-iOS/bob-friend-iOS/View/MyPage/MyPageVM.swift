@@ -12,6 +12,8 @@ class MyPageVM {
     weak var delegate: MyPageDelegate?
     let network: Network = Network()
 
+    let userRepository: UserRepository = UserRepositoryImpl()
+
     var sections: [SectionRowData] = []
 
     init() {
@@ -20,18 +22,20 @@ class MyPageVM {
 
     func getMyProfile() {
         delegate?.startLoading()
-        network.getUserInfoRequest { [weak self] result in
+        userRepository.getUserInfo("") { [weak self] result in
             self?.delegate?.stopLoading()
             switch result {
             case .success(let userInfo):
-                if let userInfo = userInfo {
-                    self?.delegate?.didGetUserInfo(userInfo: userInfo)
-                }
+                self?.delegate?.didGetUserInfo(userInfo: userInfo)
             case .failure:
                 break
             }
 
         }
+    }
+
+    func withdrawalMembership(completion: @escaping(() -> Void)) {
+
     }
 
     func logout() {
