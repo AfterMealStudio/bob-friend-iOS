@@ -49,7 +49,7 @@ final class Network {
 
             switch self {
             case .tokenRefresh:
-                return baseUrl + "api/issue"
+                return baseUrl + "api/auth/issue"
             case .login:
                 return baseUrl + "api/auth/signin"
             case .checkEmailDuplication(let email):
@@ -57,15 +57,15 @@ final class Network {
             case .checkNicknameDuplication(let nickname):
                 return baseUrl + "api/nickname/\(nickname)"
             case .signup:
-                return baseUrl + "api/signup"
+                return baseUrl + "api/auth/signup"
             case .kakaoKeywordSearch:
                 return kakaoKeywordSearchUrl
             case .appointmentList:
-                return baseUrl + "recruitments"
+                return baseUrl + "api/recruitments"
             case .searchAppointmentList:
-                return baseUrl + "recruitments/search"
+                return baseUrl + "api/recruitments/search"
             case .appointment(let id):
-                return baseUrl + "recruitments/\(id)"
+                return baseUrl + "api/recruitments/\(id)"
             case .enrollComment(appointmentID: let id):
                 return baseUrl + "recruitments/\(id)/comments"
             case .enrollReply(appointmentID: let appointmentID, commentID: let commentID):
@@ -73,9 +73,9 @@ final class Network {
             case .userInfo:
                 return baseUrl + "api/user"
             case .reportAppointment(appointmentID: let appointmentID):
-                return baseUrl + "recruitments/\(appointmentID)/report"
+                return baseUrl + "api/recruitments/\(appointmentID)/report"
             case .deleteAppointment(appointmentID: let appointmentID):
-                return baseUrl + "recruitments/\(appointmentID)"
+                return baseUrl + "api/recruitments/\(appointmentID)"
             case .reportComment(appointmentID: let appointmentID, commentID: let commentID):
                 return baseUrl + "recruitments/\(appointmentID)/comments/\(commentID)/report"
             case .reportReply(appointmentID: let appointmentID, commentID: let commentID, replyID: let replyID):
@@ -85,11 +85,11 @@ final class Network {
             case .deleteReply(appointmentID: let appointmentID, commentID: let commentID, replyID: let replyID):
                 return baseUrl + "recruitments/\(appointmentID)/comments/\(commentID)/replies/\(replyID)"
             case .closeAppointment(appointmentID: let appointmentID):
-                return baseUrl + "recruitments/\(appointmentID)/close"
+                return baseUrl + "api/recruitments/\(appointmentID)/close"
             case .joinOrCancelAppointment(appointmentID: let appointmentID):
-                return baseUrl + "recruitments/\(appointmentID)"
+                return baseUrl + "api/recruitments/\(appointmentID)"
             case .enrollAppointment:
-                return baseUrl + "recruitments"
+                return baseUrl + "api/recruitments"
             case .withdrawalMembership:
                 return baseUrl + "api/user"
             }
@@ -308,7 +308,7 @@ extension Network {
         session?.request(api.path, method: api.method, parameters: parameter, encoder: encoder, headers: headers).response { [weak self] response in
             print(response.debugDescription)
 
-            if response.response?.statusCode == 403 {
+            if response.response?.statusCode == 401 {
                 self?.tokenRefreshRequest {
                     self?.requestWithAuth(api: api, parameter: parameter, encoder: encoder, headers: headers, completion: completion)
                 }
@@ -338,7 +338,7 @@ extension Network {
         session?.request(api.path, method: api.method, parameters: parameter, encoder: encoder, headers: headers).response { [weak self] response in
             print(response.debugDescription)
 
-            if response.response?.statusCode == 403 {
+            if response.response?.statusCode == 401 {
                 self?.tokenRefreshRequest {
                     self?.requestWithAuth(api: api, type: type, parameter: parameter, encoder: encoder, headers: headers, completion: completion)
                 }
@@ -366,7 +366,7 @@ extension Network {
         session?.request(api.path, method: api.method, parameters: parameter, headers: headers).response { [weak self] response in
             print(response.debugDescription)
 
-            if response.response?.statusCode == 403 {
+            if response.response?.statusCode == 401 {
                 self?.tokenRefreshRequest {
                     self?.requestWithAuth(api: api, type: type, parameter: parameter, encoder: encoder, headers: headers, completion: completion)
                 }
@@ -394,7 +394,7 @@ extension Network {
         session?.request(api.path, method: api.method, parameters: parameter, headers: headers).response { [weak self] response in
             print(response.debugDescription)
 
-            if response.response?.statusCode == 403 {
+            if response.response?.statusCode == 401 {
                 self?.tokenRefreshRequest {
                     self?.requestWithAuth(api: api, parameter: parameter, encoder: encoder, headers: headers, completion: completion)
                 }
