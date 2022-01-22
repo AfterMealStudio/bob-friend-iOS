@@ -19,114 +19,9 @@ final class Network {
     static var accessToken: String = ""
     static var refreshToken: String = ""
 
-    private enum API {
-        case tokenRefresh
-        case login
-        case checkEmailDuplication(email: String)
-        case checkNicknameDuplication(nickname: String)
-        case signup
-        case kakaoKeywordSearch
-        case appointmentList
-        case searchAppointmentList
-        case appointment(id: Int)
-        case enrollComment(appointmentID: Int)
-        case enrollReply(appointmentID: Int, commentID: Int)
-        case userInfo
-        case reportAppointment(appointmentID: Int)
-        case deleteAppointment(appointmentID: Int)
-        case reportComment(appointmentID: Int, commentID: Int)
-        case reportReply(appointmentID: Int, commentID: Int, replyID: Int)
-        case deleteComment(appointmentID: Int, commentID: Int)
-        case deleteReply(appointmentID: Int, commentID: Int, replyID: Int)
-        case closeAppointment(appointmentID: Int)
-        case joinOrCancelAppointment(appointmentID: Int)
-        case enrollAppointment
-        case withdrawalMembership
-
-        var path: String {
-            let baseUrl: String = "http://117.17.102.143:8080/"
-            let kakaoKeywordSearchUrl = "https://dapi.kakao.com/v2/local/search/keyword.json"
-
-            switch self {
-            case .tokenRefresh:
-                return baseUrl + "api/auth/issue"
-            case .login:
-                return baseUrl + "api/auth/signin"
-            case .checkEmailDuplication(let email):
-                return baseUrl + "api/email/\(email)"
-            case .checkNicknameDuplication(let nickname):
-                return baseUrl + "api/nickname/\(nickname)"
-            case .signup:
-                return baseUrl + "api/auth/signup"
-            case .kakaoKeywordSearch:
-                return kakaoKeywordSearchUrl
-            case .appointmentList:
-                return baseUrl + "api/recruitments"
-            case .searchAppointmentList:
-                return baseUrl + "api/recruitments/search"
-            case .appointment(let id):
-                return baseUrl + "api/recruitments/\(id)"
-            case .enrollComment(appointmentID: let id):
-                return baseUrl + "recruitments/\(id)/comments"
-            case .enrollReply(appointmentID: let appointmentID, commentID: let commentID):
-                return baseUrl + "recruitments/\(appointmentID)/comments/\(commentID)/replies"
-            case .userInfo:
-                return baseUrl + "api/user"
-            case .reportAppointment(appointmentID: let appointmentID):
-                return baseUrl + "api/recruitments/\(appointmentID)/report"
-            case .deleteAppointment(appointmentID: let appointmentID):
-                return baseUrl + "api/recruitments/\(appointmentID)"
-            case .reportComment(appointmentID: let appointmentID, commentID: let commentID):
-                return baseUrl + "recruitments/\(appointmentID)/comments/\(commentID)/report"
-            case .reportReply(appointmentID: let appointmentID, commentID: let commentID, replyID: let replyID):
-                return baseUrl + "recruitments/\(appointmentID)/comments/\(commentID)/replies/\(replyID)/report"
-            case .deleteComment(appointmentID: let appointmentID, commentID: let commentID):
-                return baseUrl + "recruitments/\(appointmentID)/comments/\(commentID)"
-            case .deleteReply(appointmentID: let appointmentID, commentID: let commentID, replyID: let replyID):
-                return baseUrl + "recruitments/\(appointmentID)/comments/\(commentID)/replies/\(replyID)"
-            case .closeAppointment(appointmentID: let appointmentID):
-                return baseUrl + "api/recruitments/\(appointmentID)/close"
-            case .joinOrCancelAppointment(appointmentID: let appointmentID):
-                return baseUrl + "api/recruitments/\(appointmentID)"
-            case .enrollAppointment:
-                return baseUrl + "api/recruitments"
-            case .withdrawalMembership:
-                return baseUrl + "api/user"
-            }
-        }
-
-        var method: HTTPMethod {
-            switch self {
-            case .tokenRefresh: return .post
-            case .login: return .post
-            case .checkEmailDuplication(email: _): return .get
-            case .checkNicknameDuplication(nickname: _): return .get
-            case .signup: return .post
-            case .kakaoKeywordSearch: return .get
-            case .appointmentList: return .get
-            case .searchAppointmentList: return .get
-            case .appointment(id: _): return .get
-            case .enrollComment(appointmentID: _): return .post
-            case .enrollReply(appointmentID: _): return .post
-            case .userInfo: return .get
-            case .reportAppointment(appointmentID: _): return .patch
-            case .deleteAppointment(appointmentID: _): return .delete
-            case .reportComment(appointmentID: _, commentID: _): return .patch
-            case .reportReply(appointmentID: _, commentID: _, replyID: _): return .patch
-            case .deleteComment(appointmentID: _, commentID: _): return .delete
-            case .deleteReply(appointmentID: _, commentID: _, replyID: _): return .delete
-            case .closeAppointment(appointmentID: _): return .patch
-            case .joinOrCancelAppointment(appointmentID: _): return .patch
-            case .enrollAppointment: return .post
-            case .withdrawalMembership: return .delete
-            }
-        }
-
-    }
-
     func tokenRefreshRequest(completion: @escaping () -> Void) {
         let tokenInfo = TokenModel(accessToken: Network.accessToken, refreshToken: Network.refreshToken)
-        request(api: .tokenRefresh, type: TokenModel.self, parameter: tokenInfo, completion: { response in
+        request(api: AuthAPI.reissueToken, type: TokenModel.self, parameter: tokenInfo, completion: { response in
 
             switch response {
             case .success(let data):
@@ -146,21 +41,21 @@ final class Network {
     }
 
     func loginRequest(loginInfo: LoginModel, completion: @escaping (Result<TokenModel?, Error>) -> Void) {
-        request(api: API.login, type: TokenModel.self, parameter: loginInfo) { result in
+        request(api: AuthAPI.signIn, type: TokenModel.self, parameter: loginInfo) { result in
             completion(result)
         }
     }
 
     func checkEmailDuplicationRequest(email: String, completion: @escaping (Result<DuplicationCheckResultModel?, Error>) -> Void) {
-        request(api: .checkEmailDuplication(email: email), type: DuplicationCheckResultModel.self, completion: completion)
+        request(api: UserAPI.checkEmailIsUsing(email: email), type: DuplicationCheckResultModel.self, completion: completion)
     }
 
     func checkNicknameDuplicationRequest(nickname: String, completion: @escaping (Result<DuplicationCheckResultModel?, Error>) -> Void) {
-        request(api: .checkNicknameDuplication(nickname: nickname), type: DuplicationCheckResultModel.self, completion: completion)
+        request(api: UserAPI.checkNicknameIsUsing(nickname: nickname), type: DuplicationCheckResultModel.self, completion: completion)
     }
 
     func signUpRequest(signUpInfo: SignUpModel, completion: @escaping (Result<SignUpResponseModel?, Error>) -> Void) {
-        request(api: .signup, type: SignUpResponseModel.self, parameter: signUpInfo, completion: completion)
+        request(api: AuthAPI.signUp, type: SignUpResponseModel.self, parameter: signUpInfo, completion: completion)
     }
 
     // TODO: 카카오 앱키 관리
@@ -169,12 +64,12 @@ final class Network {
         let parameters: Parameters = ["query": keyword, "page": page, "size": 15]
         let headers = HTTPHeaders(["Authorization": "KakaoAK \(kakaoRestAPIKey)"])
 
-        request(api: .kakaoKeywordSearch, type: KakaoKeywordSearchResultModel.self, parameter: parameters, headers: headers, completion: completion)
+        request(api: KakaoKeywordSearchAPI.search, type: KakaoKeywordSearchResultModel.self, parameter: parameters, headers: headers, completion: completion)
     }
 
     func getAppointmentListRequest(page: Int = 0, type: AppointmentGetRequestType, completion: @escaping(Result<AppointmentListModel?, Error>) -> Void) {
         let parameters: Parameters = ["page": page, "type": type]
-        requestWithAuth(api: .appointmentList, type: AppointmentListModel.self, parameter: parameters, completion: completion)
+        requestWithAuth(api: AppointmentAPI.getAppointments, type: AppointmentListModel.self, parameter: parameters, completion: completion)
     }
 
     func getSearchAppointmentListRequest(searchWord: String, selectedTime: (String, String)?, onlyEnterable: Bool, category: SearchCategory, page: Int = 0, completion: @escaping(Result<AppointmentListModel?, Error>) -> Void) {
@@ -186,66 +81,66 @@ final class Network {
         if onlyEnterable {
             parameters.updateValue("available", forKey: "type")
         }
-        requestWithAuth(api: .searchAppointmentList, type: AppointmentListModel.self, parameter: parameters, completion: completion)
+        requestWithAuth(api: AppointmentAPI.searchAppointments, type: AppointmentListModel.self, parameter: parameters, completion: completion)
     }
 
     func getAppointment(_ appointmentID: Int, completion: @escaping(Result<AppointmentModel?, Error>) -> Void) {
-        requestWithAuth(api: .appointment(id: appointmentID), type: AppointmentModel.self) { result in
+        requestWithAuth(api: AppointmentAPI.getAppointment(id: appointmentID), type: AppointmentModel.self) { result in
             completion(result)
         }
     }
 
     func enrollCommentRequest(appointmentID: Int, comment: EnrollCommentModel, completion: @escaping(Result<EnrollCommentResponseModel?, Error>) -> Void) {
-        requestWithAuth(api: API.enrollComment(appointmentID: appointmentID), type: EnrollCommentResponseModel.self, parameter: comment, completion: completion)
+        requestWithAuth(api: CommentAPI.createComment(appointmentID: appointmentID), type: EnrollCommentResponseModel.self, parameter: comment, completion: completion)
     }
 
     func enrollReplyRequest(appointmentID: Int, commentID: Int, comment: EnrollCommentModel, completion: @escaping(Result<EnrollCommentResponseModel?, Error>) -> Void) {
-        requestWithAuth(api: API.enrollReply(appointmentID: appointmentID, commentID: commentID), type: EnrollCommentResponseModel.self, parameter: comment, completion: completion)
+        requestWithAuth(api: CommentAPI.createRecomment(appointmentID: appointmentID, commentID: commentID), type: EnrollCommentResponseModel.self, parameter: comment, completion: completion)
     }
 
-    func getUserInfoRequest(completion: @escaping(Result<UserInfoModel?, Error>) -> Void) {
-        requestWithAuth(api: .userInfo, type: UserInfoModel.self, completion: completion)
+    func getMyUserInfoRequest(completion: @escaping(Result<UserInfoModel?, Error>) -> Void) {
+        requestWithAuth(api: UserAPI.getMyUserInfo, type: UserInfoModel.self, completion: completion)
     }
 
     func reportAppointmentRequest(appointmentID: Int, completion: @escaping(Result<Void?, Error>) -> Void) {
-        requestWithAuth(api: .reportAppointment(appointmentID: appointmentID), completion: completion)
+        requestWithAuth(api: AppointmentAPI.reportAppointment(id: appointmentID), completion: completion)
     }
 
     func deleteAppointmentRequest(appointmentID: Int, completion: @escaping(Result<Void?, Error>) -> Void) {
-        requestWithAuth(api: .deleteAppointment(appointmentID: appointmentID), completion: completion)
+        requestWithAuth(api: AppointmentAPI.deleteAppointment(id: appointmentID), completion: completion)
     }
 
     func reportCommentRequest(appointmentID: Int, commentID: Int, completion: @escaping(Result<Void?, Error>) -> Void) {
-        requestWithAuth(api: .reportComment(appointmentID: appointmentID, commentID: commentID), completion: completion)
+        requestWithAuth(api: CommentAPI.reportComments(appointmentID: appointmentID, commentID: commentID), completion: completion)
     }
 
     func reportReplyRequest(appointmentID: Int, commentID: Int, replyID: Int, completion: @escaping(Result<Void?, Error>) -> Void) {
-        requestWithAuth(api: .reportReply(appointmentID: appointmentID, commentID: commentID, replyID: replyID), completion: completion)
+        requestWithAuth(api: CommentAPI.reportRecomment(appointmentID: appointmentID, commentID: commentID, recommentID: replyID), completion: completion)
     }
 
     func deleteCommentRequest(appointmentID: Int, commentID: Int, completion: @escaping(Result<Void?, Error>) -> Void) {
-        requestWithAuth(api: .deleteComment(appointmentID: appointmentID, commentID: commentID), completion: completion)
+        requestWithAuth(api: CommentAPI.deleteComment(appointmentID: appointmentID, commentID: commentID), completion: completion)
     }
 
     func deleteReplyRequest(appointmentID: Int, commentID: Int, replyID: Int, completion: @escaping(Result<Void?, Error>) -> Void) {
-        requestWithAuth(api: .deleteReply(appointmentID: appointmentID, commentID: commentID, replyID: replyID), completion: completion)
+        requestWithAuth(api: CommentAPI.deleteRecomment(appointmentID: appointmentID, commentID: commentID, recommentID: replyID), completion: completion)
     }
 
     func closeAppointmentRequest(appointmentID: Int, completion: @escaping(Result<Void?, Error>) -> Void) {
-        requestWithAuth(api: .closeAppointment(appointmentID: appointmentID), completion: completion)
+        requestWithAuth(api: AppointmentAPI.closeAppointment(id: appointmentID), completion: completion)
     }
 
     func joinOrCancelAppointmentRequest(appointmentID: Int, completion: @escaping(Result<AppointmentModel?, Error>) -> Void) {
-        requestWithAuth(api: .joinOrCancelAppointment(appointmentID: appointmentID), type: AppointmentModel.self, completion: completion)
+        requestWithAuth(api: AppointmentAPI.joinAppointment(id: appointmentID), type: AppointmentModel.self, completion: completion)
     }
 
     func enrollAppointment(appointment: AppointmentEnrollModel, completion: @escaping(Result<AppointmentModel?, Error>) -> Void) {
-        requestWithAuth(api: .enrollAppointment, type: AppointmentModel.self, parameter: appointment, completion: completion)
+        requestWithAuth(api: AppointmentAPI.createAppointment, type: AppointmentModel.self, parameter: appointment, completion: completion)
     }
 
     func withdrawalMembership(password: String, completion: @escaping(Result<Void?, Error>) -> Void) {
         let data = WithdrawalMembershipModel(password: password)
-        requestWithAuth(api: .withdrawalMembership, parameter: data) { _ in
+        requestWithAuth(api: UserAPI.deleteUser, parameter: data) { _ in
 
         }
     }

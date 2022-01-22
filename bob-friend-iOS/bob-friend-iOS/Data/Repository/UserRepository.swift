@@ -17,7 +17,7 @@ class UserRepositoryImpl: UserRepository {
     let network: Network = Network()
 
     func getUserInfo(_ accessToken: String, completion: ((Result<UserInfoModel, Error>) -> Void)? = nil) {
-        network.getUserInfoRequest { result in
+        network.getMyUserInfoRequest { result in
             guard let completion = completion else { return }
 
             switch result {

@@ -54,6 +54,7 @@
 		0BA716C02729414600A36A04 /* AppointmentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA716BF2729414600A36A04 /* AppointmentVC.swift */; };
 		0BA9A8F92796AF3B00698E1B /* MembershipWithdrawalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA9A8F82796AF3B00698E1B /* MembershipWithdrawalVC.swift */; };
 		0BA9A8FB2796B57700698E1B /* MembershipWithdrawalVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA9A8FA2796B57700698E1B /* MembershipWithdrawalVM.swift */; };
+		0BA9A91527999B2600698E1B /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA9A91427999B2600698E1B /* API.swift */; };
 		0BAF7CB02768899C002406D2 /* MyPageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BAF7CAF2768899C002406D2 /* MyPageVC.swift */; };
 		0BB9877726DA30C200E0CC12 /* LoginVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB9877626DA30C200E0CC12 /* LoginVM.swift */; };
 		0BB9877C26DA571D00E0CC12 /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB9877B26DA571D00E0CC12 /* LoginModel.swift */; };
@@ -425,6 +426,7 @@
 		0BA716BF2729414600A36A04 /* AppointmentVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentVC.swift; sourceTree = "<group>"; };
 		0BA9A8F82796AF3B00698E1B /* MembershipWithdrawalVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MembershipWithdrawalVC.swift; sourceTree = "<group>"; };
 		0BA9A8FA2796B57700698E1B /* MembershipWithdrawalVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MembershipWithdrawalVM.swift; sourceTree = "<group>"; };
+		0BA9A91427999B2600698E1B /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		0BAF7CAF2768899C002406D2 /* MyPageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageVC.swift; sourceTree = "<group>"; };
 		0BB9877626DA30C200E0CC12 /* LoginVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVM.swift; sourceTree = "<group>"; };
 		0BB9877B26DA571D00E0CC12 /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
@@ -803,6 +805,7 @@
 		0B2978EF26D617B4002AD75A /* bob-friend-iOS */ = {
 			isa = PBXGroup;
 			children = (
+				0BA9A91327999B1800698E1B /* API */,
 				0BA000ED27788F17006A7DA7 /* View */,
 				0BA000E92778807D006A7DA7 /* Error */,
 				0BA000E127749888006A7DA7 /* Data */,
@@ -1056,6 +1059,14 @@
 				0BA9A8FA2796B57700698E1B /* MembershipWithdrawalVM.swift */,
 			);
 			path = MembershipWithdrawal;
+			sourceTree = "<group>";
+		};
+		0BA9A91327999B1800698E1B /* API */ = {
+			isa = PBXGroup;
+			children = (
+				0BA9A91427999B2600698E1B /* API.swift */,
+			);
+			path = API;
 			sourceTree = "<group>";
 		};
 		0BAF7CAE2768896E002406D2 /* MyPage */ = {
@@ -1999,6 +2010,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0BCFD0D32715A1660008C79F /* MainMapVM.swift in Sources */,
+				0BA9A91527999B2600698E1B /* API.swift in Sources */,
 				0BDDC26326EF46A0008C9363 /* SignUpVC.swift in Sources */,
 				0BCCDF312731533D0042C226 /* CommentTableViewCell.swift in Sources */,
 				0B1EB31D273525EF008BAE70 /* UIColor+Hex.swift in Sources */,
