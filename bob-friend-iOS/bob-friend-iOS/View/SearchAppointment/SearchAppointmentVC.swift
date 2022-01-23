@@ -51,15 +51,6 @@ class SearchAppointmentVC: UIViewController {
         return $0
     }(UISegmentedControl())
 
-    private let sortingTypeSelectButton: UIButton = {
-        $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.setImage(UIImage(systemName: "arrowtriangle.down.fill"), for: .normal)
-        $0.setTitle("임박한 순", for: .normal)
-        $0.setTitleColor(UIColor(named: "MainColor2"), for: .normal)
-        $0.tintColor = .black
-        return $0
-    }(UIButton())
-
     private let termSettingButton: UIButton = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.setTitle("기간 설정", for: .normal)
@@ -134,7 +125,6 @@ class SearchAppointmentVC: UIViewController {
         searchBar.delegate = self
 
         setSearchTypePickerView()
-        setSortingTypeSelectButton()
         layout()
     }
 
@@ -181,9 +171,6 @@ extension SearchAppointmentVC {
         // searchTypePicker
         optionStackView.addArrangedSubview(searchTypePickerView)
 
-        // select sort
-        configureSortingTypeSelectButtonLayout()
-
         // termOption
         configureTermOptionViewLayout()
 
@@ -204,22 +191,6 @@ extension SearchAppointmentVC {
             optionStackView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor, constant: 15),
             optionStackView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -15)
         ])
-    }
-
-    private func configureSortingTypeSelectButtonLayout() {
-        let view: UIView = {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            return $0
-        }(UIView())
-
-        view.addSubview(sortingTypeSelectButton)
-        NSLayoutConstraint.activate([
-            sortingTypeSelectButton.topAnchor.constraint(equalTo: view.topAnchor),
-            sortingTypeSelectButton.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            sortingTypeSelectButton.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
-
-        optionStackView.addArrangedSubview(view)
     }
 
     private func configureTermOptionViewLayout() {
@@ -349,18 +320,6 @@ extension SearchAppointmentVC {
 // MARK: - Button Events
 extension SearchAppointmentVC {
 
-    private func setSortingTypeSelectButton() {
-        let approached = UIAction(title: "임박한 순", image: UIImage(systemName: "star")) { [weak self] _ in
-            self?.sortingTypeSelectButton.setTitle("임박한 순", for: .normal)
-        }
-        let recentEnrolled = UIAction(title: "최신 등록 순", image: UIImage(systemName: "star")) { [weak self] _ in
-            self?.sortingTypeSelectButton.setTitle("최신 등록 순", for: .normal)
-        }
-
-        sortingTypeSelectButton.menu = UIMenu(title: "", image: nil, identifier: nil, options: .displayInline, children: [approached, recentEnrolled])
-        sortingTypeSelectButton.showsMenuAsPrimaryAction = true
-    }
-
     @objc
     private func termSettingButtonClicked() {
         isTimeSettingMode = !isTimeSettingMode
@@ -375,8 +334,6 @@ extension SearchAppointmentVC {
     private func initializingButtonClicked() {
         searchTypePickerView.selectedSegmentIndex = 0
         tagIndex = .zero
-
-        sortingTypeSelectButton.setTitle("임박한 순", for: .normal)
 
         if termSettingButton.isSelected { termSettingButtonClicked() }
         startTermPicker.setDate(Date(), animated: true)
