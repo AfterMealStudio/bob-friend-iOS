@@ -22,6 +22,9 @@ class PlaceSearchVC: UIViewController {
         return $0
     }(PlaceSearchListView(frame: .zero, collectionViewLayout: UICollectionViewLayout()))
 
+    private var searchListViewBottomConstraint: NSLayoutConstraint?
+    private var searchListViewBottomKeyboardConstraint: NSLayoutConstraint?
+
     var searchResults: KakaoKeywordSearchResultModel? {
         didSet {
             searchListView.reloadData()
@@ -43,6 +46,9 @@ class PlaceSearchVC: UIViewController {
         searchListView.delegate = self
         searchListView.dataSource = self
 
+        // keyboard
+        enrollKeyboardNotification()
+
         // layout
         layout()
 
@@ -51,6 +57,14 @@ class PlaceSearchVC: UIViewController {
     func layout() {
         view.backgroundColor = UIColor(named: "MainColor1")
         let safeArea = view.safeAreaLayoutGuide
+
+        searchListViewBottomConstraint = searchListView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor)
+        searchListViewBottomKeyboardConstraint = searchListView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+
+        searchListViewBottomConstraint?.priority = .defaultHigh
+        searchListViewBottomKeyboardConstraint?.priority = .defaultLow
+
+        guard let searchListViewBottomConstraint = searchListViewBottomConstraint, let searchListViewBottomKeyboardConstraint = searchListViewBottomKeyboardConstraint else { return }
 
         // searchBar
         view.addSubview(searchBar)
@@ -64,7 +78,8 @@ class PlaceSearchVC: UIViewController {
         view.addSubview(searchListView)
         NSLayoutConstraint.activate([
             searchListView.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
-            searchListView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
+            searchListViewBottomConstraint,
+            searchListViewBottomKeyboardConstraint,
             searchListView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
             searchListView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor)
         ])
@@ -131,6 +146,7 @@ extension PlaceSearchVC: UICollectionViewDelegate, UICollectionViewDataSource {
 extension PlaceSearchVC: MainMapDelegate {
     func mainMap(searchResults: KakaoKeywordSearchResultModel) {
         self.searchResults = searchResults
+        removeKeyboard()
     }
 
     func occuredSearchError(errMessage: String) {
@@ -148,4 +164,52 @@ extension PlaceSearchVC: MainMapDelegate {
 // MARK: - Delegate Protocol
 protocol PlaceSearchDelegate: AnyObject {
     func didSelectPlace(restaurantName: String, restaurantAddress: String, longitude: Double, latitude: Double)
+}
+
+// MARK: - Keyboard
+extension PlaceSearchVC {
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        removeKeyboard()
+    }
+
+    private func enrollKeyboardNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
+    @objc
+    private func keyboardWillShow(_ sender: Notification) {
+
+        if let searchListViewBottomKeyboardConstraint = searchListViewBottomKeyboardConstraint, searchListViewBottomKeyboardConstraint.constant == 0 {
+            guard let userInfo = sender.userInfo,
+                  let keyboardFrame: NSValue = userInfo[ UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            let keyboardHeight = keyboardRectangle.height
+
+            searchListViewBottomKeyboardConstraint.constant = -keyboardHeight
+        }
+
+        searchListViewBottomConstraint?.priority = .defaultLow
+        searchListViewBottomKeyboardConstraint?.priority = .defaultHigh
+
+    }
+
+    @objc
+    private func keyboardWillHide(_ sender: Notification) {
+
+        if let searchListViewBottomKeyboardConstraint = searchListViewBottomKeyboardConstraint, searchListViewBottomKeyboardConstraint.constant != 0 {
+            searchListViewBottomKeyboardConstraint.constant = 0
+        }
+
+        searchListViewBottomConstraint?.priority = .defaultHigh
+        searchListViewBottomKeyboardConstraint?.priority = .defaultLow
+
+    }
+
+    private func removeKeyboard() {
+        view.endEditing(true)
+    }
+
 }
