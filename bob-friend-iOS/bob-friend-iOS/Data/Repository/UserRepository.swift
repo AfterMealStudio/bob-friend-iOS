@@ -8,7 +8,7 @@
 import Foundation
 
 protocol UserRepository {
-    func getUserInfo(_ accessToken: String, completion: ((Result<UserInfoModel, Error>) -> Void)?)
+    func getMyUserInfo(_ accessToken: String, completion: ((Result<UserInfoModel, Error>) -> Void)?)
     func setMyInfoAtDevice(_ userInfo: UserInfoModel)
     func withdrawalMembership(password: String, completion: ((Result<Void, Error>) -> Void)?)
 }
@@ -16,7 +16,7 @@ protocol UserRepository {
 class UserRepositoryImpl: UserRepository {
     let network: Network = Network()
 
-    func getUserInfo(_ accessToken: String, completion: ((Result<UserInfoModel, Error>) -> Void)? = nil) {
+    func getMyUserInfo(_ accessToken: String, completion: ((Result<UserInfoModel, Error>) -> Void)? = nil) {
         network.getMyUserInfoRequest { result in
             guard let completion = completion else { return }
 

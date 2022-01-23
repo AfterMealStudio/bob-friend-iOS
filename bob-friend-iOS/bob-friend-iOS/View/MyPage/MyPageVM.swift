@@ -22,7 +22,7 @@ class MyPageVM {
 
     func getMyProfile() {
         delegate?.startLoading()
-        userRepository.getUserInfo("") { [weak self] result in
+        userRepository.getMyUserInfo("") { [weak self] result in
             self?.delegate?.stopLoading()
             switch result {
             case .success(let userInfo):

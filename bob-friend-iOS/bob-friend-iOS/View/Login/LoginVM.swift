@@ -45,7 +45,7 @@ class LoginVM {
     func setMyInfo() {
         let token = tokenRepository.getToken()
         guard let token = token else { return }
-        userRepository.getUserInfo(token) { [weak self] result in
+        userRepository.getMyUserInfo(token) { [weak self] result in
             switch result {
             case .success(let myInfo):
                 self?.userRepository.setMyInfoAtDevice(myInfo)
