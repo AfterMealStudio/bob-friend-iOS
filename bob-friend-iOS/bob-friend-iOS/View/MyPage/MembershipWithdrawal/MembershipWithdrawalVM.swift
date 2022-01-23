@@ -39,33 +39,3 @@ protocol MembershipWithdrawalProtocol: AnyObject {
     func didWithdrawalAccount()
     func didFailWithdrawalAccount()
 }
-
-protocol APIpro {
-    var path: String { get }
-    var method: HTTPMethod { get }
-}
-
-enum testAPI: APIpro {
-    case hey
-
-    var path: String {
-        switch self {
-        case .hey:
-            return "api/"
-        }
-    }
-
-    var method: HTTPMethod {
-        switch self {
-        case .hey:
-            return .get
-        }
-    }
-
-}
-
-let b: () -> Void = {
-    let a = testAPI.hey
-    a.method
-    a.path
-}
