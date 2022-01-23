@@ -46,12 +46,12 @@ final class Network {
         }
     }
 
-    func checkEmailDuplicationRequest(email: String, completion: @escaping (Result<DuplicationCheckResultModel?, Error>) -> Void) {
-        request(api: UserAPI.checkEmailIsUsing(email: email), type: DuplicationCheckResultModel.self, completion: completion)
+    func checkEmailDuplicationRequest(email: String, completion: @escaping (Result<ExistCheckResultModel?, Error>) -> Void) {
+        request(api: UserAPI.checkEmailIsUsing(email: email), type: ExistCheckResultModel.self, completion: completion)
     }
 
-    func checkNicknameDuplicationRequest(nickname: String, completion: @escaping (Result<DuplicationCheckResultModel?, Error>) -> Void) {
-        request(api: UserAPI.checkNicknameIsUsing(nickname: nickname), type: DuplicationCheckResultModel.self, completion: completion)
+    func checkNicknameDuplicationRequest(nickname: String, completion: @escaping (Result<ExistCheckResultModel?, Error>) -> Void) {
+        request(api: UserAPI.checkNicknameIsUsing(nickname: nickname), type: ExistCheckResultModel.self, completion: completion)
     }
 
     func signUpRequest(signUpInfo: SignUpModel, completion: @escaping (Result<SignUpResponseModel?, Error>) -> Void) {

@@ -45,6 +45,6 @@ struct SignUpResponseModel: Decodable {
     let active: Bool
 }
 
-struct DuplicationCheckResultModel: Decodable {
-    let duplicated: Bool
+struct ExistCheckResultModel: Decodable {
+    let exist: Bool
 }

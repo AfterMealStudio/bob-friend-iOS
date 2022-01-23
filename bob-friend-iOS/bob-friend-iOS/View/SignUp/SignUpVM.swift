@@ -24,7 +24,7 @@ class SignUpVM {
         network.checkEmailDuplicationRequest(email: email) { [weak self] result in
             switch result {
             case .success(let duplicationData):
-                if duplicationData?.duplicated == false {
+                if duplicationData?.exist == false {
                     self?.checkedEmail = email
                     self?.delegate?.showNotice(.validEmail)
                 } else {
@@ -48,7 +48,7 @@ class SignUpVM {
         network.checkNicknameDuplicationRequest(nickname: nickname) { [weak self] result in
             switch result {
             case .success(let duplicationData):
-                if duplicationData?.duplicated == false {
+                if duplicationData?.exist == false {
                     self?.checkedNickname = nickname
                     self?.delegate?.showNotice(.validNickname)
                 } else {
