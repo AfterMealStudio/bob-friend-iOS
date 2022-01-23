@@ -248,7 +248,7 @@ class WriteAppointmentVC: UIViewController {
 
         // keyboard
         enrollKeyboardNotification()
-        enrollRemoveKeyboard()
+        scrollView.delegate = self
 
         // textField
 
@@ -617,7 +617,10 @@ extension WriteAppointmentVC: PlaceSearchDelegate {
 }
 
 // MARK: - Keyboard
-extension WriteAppointmentVC {
+extension WriteAppointmentVC: UIScrollViewDelegate {
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        removeKeyboard()
+    }
 
     private func enrollKeyboardNotification() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -656,17 +659,6 @@ extension WriteAppointmentVC {
 
     private func removeKeyboard() {
         view.endEditing(true)
-    }
-
-    private func enrollRemoveKeyboard() {
-        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapOtherMethod))
-        scrollView.addGestureRecognizer(singleTapGestureRecognizer)
-
-    }
-
-    @objc
-    private func tapOtherMethod(sender: UITapGestureRecognizer) {
-        removeKeyboard()
     }
 
 }

@@ -140,6 +140,9 @@ extension PlaceSearchVC: UICollectionViewDelegate, UICollectionViewDataSource {
         navigationController?.popViewController(animated: true)
     }
 
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        removeKeyboard()
+    }
 }
 
 // MARK: - VM Delegate
