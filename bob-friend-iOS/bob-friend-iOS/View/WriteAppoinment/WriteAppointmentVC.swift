@@ -15,6 +15,9 @@ class WriteAppointmentVC: UIViewController {
         return $0
     }(UIScrollView())
 
+    private var scrollViewBottomConstraint: NSLayoutConstraint?
+    private var scrollViewBottomKeyboardConstraint: NSLayoutConstraint?
+
     let titleTextField: UITextField = {
         $0.placeholder = "제목을 입력하세요."
         $0.addBorder(.bottom, color: .lightGray, width: 1)
@@ -243,6 +246,10 @@ class WriteAppointmentVC: UIViewController {
         navigationAppearance.titleTextAttributes =  [.foregroundColor: UIColor.white]
         navigationController?.navigationBar.standardAppearance = navigationAppearance
 
+        // keyboard
+        enrollKeyboardNotification()
+        enrollRemoveKeyboard()
+
         // textField
 
         // layout
@@ -268,11 +275,20 @@ class WriteAppointmentVC: UIViewController {
 
         let safeArea = view.safeAreaLayoutGuide
 
+        scrollViewBottomConstraint = scrollView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor)
+        scrollViewBottomKeyboardConstraint = scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+
+        scrollViewBottomConstraint?.priority = .defaultHigh
+        scrollViewBottomKeyboardConstraint?.priority = .defaultLow
+
+        guard let scrollViewBottomConstraint = scrollViewBottomConstraint, let scrollViewBottomKeyboardConstraint = scrollViewBottomKeyboardConstraint else { return }
+
         // MARK: scrollView
         view.addSubview(scrollView)
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: safeArea.topAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: safeArea.bottomAnchor),
+            scrollViewBottomConstraint,
+            scrollViewBottomKeyboardConstraint,
             scrollView.leadingAnchor.constraint(equalTo: safeArea.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor)
         ])
@@ -598,4 +614,59 @@ extension WriteAppointmentVC: PlaceSearchDelegate {
         self.longitude = longitude
         self.latitude = latitude
     }
+}
+
+// MARK: - Keyboard
+extension WriteAppointmentVC {
+
+    private func enrollKeyboardNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
+    @objc
+    private func keyboardWillShow(_ sender: Notification) {
+
+        if let scrollViewBottomKeyboardConstraint = scrollViewBottomKeyboardConstraint, scrollViewBottomKeyboardConstraint.constant == 0 {
+            guard let userInfo = sender.userInfo,
+                  let keyboardFrame: NSValue = userInfo[ UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            let keyboardHeight = keyboardRectangle.height
+
+            scrollViewBottomKeyboardConstraint.constant = -keyboardHeight
+        }
+
+        scrollViewBottomConstraint?.priority = .defaultLow
+        scrollViewBottomKeyboardConstraint?.priority = .defaultHigh
+
+    }
+
+    @objc
+    private func keyboardWillHide(_ sender: Notification) {
+
+        if let scrollViewBottomKeyboardConstraint = scrollViewBottomKeyboardConstraint, scrollViewBottomKeyboardConstraint.constant != 0 {
+            scrollViewBottomKeyboardConstraint.constant = 0
+        }
+
+        scrollViewBottomConstraint?.priority = .defaultHigh
+        scrollViewBottomKeyboardConstraint?.priority = .defaultLow
+
+    }
+
+    private func removeKeyboard() {
+        view.endEditing(true)
+    }
+
+    private func enrollRemoveKeyboard() {
+        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapOtherMethod))
+        scrollView.addGestureRecognizer(singleTapGestureRecognizer)
+
+    }
+
+    @objc
+    private func tapOtherMethod(sender: UITapGestureRecognizer) {
+        removeKeyboard()
+    }
+
 }
