@@ -140,9 +140,7 @@ final class Network {
 
     func withdrawalMembership(password: String, completion: @escaping(Result<Void?, Error>) -> Void) {
         let data = WithdrawalMembershipModel(password: password)
-        requestWithAuth(api: UserAPI.deleteUser, parameter: data) { _ in
-
-        }
+        requestWithAuth(api: UserAPI.deleteUser, parameter: data, completion: completion)
     }
 
 }
