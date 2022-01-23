@@ -19,12 +19,15 @@ final class SignUpGenderSelectView: UIView {
             case .male:
                 maleButton.isSelected = true
                 femaleButton.isSelected = false
+                noneButton.isSelected = false
             case .female:
                 maleButton.isSelected = false
                 femaleButton.isSelected = true
+                noneButton.isSelected = false
             case .none:
                 maleButton.isSelected = false
                 femaleButton.isSelected = false
+                noneButton.isSelected = true
             }
         }
     }
@@ -59,6 +62,18 @@ final class SignUpGenderSelectView: UIView {
         return $0
     }(UIButton())
 
+    private let noneButton: UIButton = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.setTitle("  비공개", for: .normal)
+        $0.setTitleColor(.black, for: .normal)
+        $0.setImage(UIImage(systemName: "circle"), for: .normal)
+        $0.setImage(UIImage(systemName: "circle.circle"), for: .selected)
+        $0.tintColor = UIColor(named: "MainColor1")
+        $0.isEnabled = true
+        $0.addTarget(self, action: #selector(noneButtonClicked), for: .touchUpInside)
+        return $0
+    }(UIButton())
+
     private let genderNoticeLabel: UILabel = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.font = UIFont.systemFont(ofSize: 10)
@@ -84,6 +99,11 @@ final class SignUpGenderSelectView: UIView {
     @objc
     func femaleButtonClicked() {
         gender = .female
+    }
+
+    @objc
+    func noneButtonClicked() {
+        gender = .none
     }
 
 }
@@ -117,8 +137,8 @@ extension SignUpGenderSelectView {
             buttonStackView.rightAnchor.constraint(equalTo: rightAnchor, constant: -30)
         ])
 
-        let genderButtons = [maleButton, femaleButton]
-        for i in 0..<2 {
+        let genderButtons = [maleButton, femaleButton, noneButton]
+        for i in 0..<genderButtons.count {
             let genderButton = genderButtons[i]
             let contentView: UIView = {
                 $0.translatesAutoresizingMaskIntoConstraints = false

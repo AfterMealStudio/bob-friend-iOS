@@ -28,7 +28,7 @@ enum Gender: String, Codable {
         case .female:
             return "여성"
         case .none:
-            return "해당없음"
+            return "비공개"
         }
     }
 }
