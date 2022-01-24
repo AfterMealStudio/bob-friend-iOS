@@ -88,22 +88,12 @@ extension MyPageVM {
         override var sectionTitle: String? { return "계정" }
         override var rows: [(String, () -> Void)] {
             return [("회원 정보 수정", toEditUserInfo),
-                    ("정보 동의 설정", toSetAgreement),
-                    ("알림 설정", toSetAlert),
                     ("로그아웃", toLogout),
                     ("회원탈퇴", toMembershipWithdrawal)]
         }
 
         func toEditUserInfo() {
             parent.delegate?.toEditUserInfo()
-        }
-
-        func toSetAgreement() {
-            parent.delegate?.toSetAgreement()
-        }
-
-        func toSetAlert() {
-            parent.delegate?.toSetAlert()
         }
 
         func toLogout() {
@@ -156,8 +146,6 @@ protocol MyPageDelegate: AnyObject {
     func toJoinedAppointments()
 
     func toEditUserInfo()
-    func toSetAgreement()
-    func toSetAlert()
     func toLogout()
     func toMembershipWithdrawal()
 
