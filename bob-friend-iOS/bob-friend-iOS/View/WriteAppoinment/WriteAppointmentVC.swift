@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import NMapsMap
 
 class WriteAppointmentVC: UIViewController {
 
@@ -17,6 +18,30 @@ class WriteAppointmentVC: UIViewController {
 
     private var scrollViewBottomConstraint: NSLayoutConstraint?
     private var scrollViewBottomKeyboardConstraint: NSLayoutConstraint?
+
+    let mapView: NMFMapView = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.isTiltGestureEnabled = false
+        $0.isRotateGestureEnabled = false
+        $0.isZoomGestureEnabled = false
+        $0.isScrollGestureEnabled = false
+        return $0
+    }(NMFMapView())
+
+    var marker: NMFMarker? {
+        willSet {
+            if let marker = marker {
+                marker.mapView = nil
+            }
+        }
+        didSet {
+            if let marker = marker {
+                marker.mapView = mapView
+                let cameraUpdate = NMFCameraUpdate(scrollTo: marker.position)
+                mapView.moveCamera(cameraUpdate)
+            }
+        }
+    }
 
     let titleTextField: UITextField = {
         $0.placeholder = "제목을 입력하세요."
@@ -338,11 +363,6 @@ class WriteAppointmentVC: UIViewController {
             return $0
         }(UIView())
 
-        let mapView: MTMapView = {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-            return $0
-        }(MTMapView())
-
         let restaurantNameFormLabel: UILabel = {
             $0.translatesAutoresizingMaskIntoConstraints = false
             $0.text = "선택 식당"
@@ -613,6 +633,8 @@ extension WriteAppointmentVC: PlaceSearchDelegate {
         self.restaurantAddress = restaurantAddress
         self.longitude = longitude
         self.latitude = latitude
+
+        marker = NMFMarker(position: NMGLatLng(lat: latitude, lng: longitude))
     }
 }
 
