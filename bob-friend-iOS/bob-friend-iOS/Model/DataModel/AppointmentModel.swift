@@ -64,3 +64,14 @@ struct AppointmentListModel: Decodable {
     let last: Bool
     let totalPages: Int
 }
+
+struct AppointmentLocationModel: Decodable {
+    let latitude: Double
+    let longitude: Double
+    let address: String
+    let count: Int
+}
+
+struct AppointmentLocationListModel: Decodable {
+    let addresses: [AppointmentLocationModel]
+}

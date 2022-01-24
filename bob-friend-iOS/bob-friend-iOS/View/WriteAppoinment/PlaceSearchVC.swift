@@ -146,8 +146,13 @@ extension PlaceSearchVC: UICollectionViewDelegate, UICollectionViewDataSource {
 }
 
 // MARK: - VM Delegate
+// TODO: - MainMap과 Delegate 분리하기
 extension PlaceSearchVC: MainMapDelegate {
-    func mainMap(searchResults: KakaoKeywordSearchResultModel) {
+    func didGetAppointmentLocations(locations: AppointmentLocationListModel) {
+
+    }
+
+    func didSearchPlace(searchResults: KakaoKeywordSearchResultModel) {
         self.searchResults = searchResults
         removeKeyboard()
     }

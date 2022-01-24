@@ -11,6 +11,7 @@ protocol AppointmentRepository {
 
     func getAllAppointments(page: Int, type: AppointmentGetRequestType, completion: ((Result<AppointmentListModel, Error>) -> Void)?)
     func getSearchAppointments(searchWord: String, selectedTime: (String, String)?, onlyEnterable: Bool, searchType: SearchCategory, page: Int, completion: ((Result<AppointmentListModel, Error>) -> Void)?)
+    func getAllAppointmentLocations(completion: ((Result<AppointmentLocationListModel, Error>) -> Void)?)
 }
 
 enum AppointmentGetRequestType: String {
@@ -57,6 +58,26 @@ class AppointmentRepositoryImpl: AppointmentRepository {
                 completion(Result.failure(error))
             }
         }
+    }
+
+    func getAllAppointmentLocations(completion: ((Result<AppointmentLocationListModel, Error>) -> Void)?) {
+
+        network.getAllAppointmentLocations { result in
+            guard let completion = completion else { return }
+
+            switch result {
+            case .success(let locations):
+                guard let locations = locations else {
+                    completion(.failure(ResponedError.error))
+                    return
+                }
+                completion(.success(locations))
+
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+
     }
 
 }

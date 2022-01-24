@@ -46,6 +46,24 @@ class MainMapVC: UIViewController {
         }
     }
 
+    var appointmentLocatoins: [AppointmentLocationModel] = [] {
+        didSet {
+            for marker in markers {
+                marker.mapView = nil
+            }
+
+            markers = []
+
+            for location in appointmentLocatoins {
+                let marker = NMFMarker()
+                marker.position = NMGLatLng(lat: location.latitude, lng: location.longitude)
+                markers.append(marker)
+                marker.mapView = mapView
+            }
+        }
+    }
+    var markers: [NMFMarker] = []
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -69,14 +87,22 @@ class MainMapVC: UIViewController {
 
         // layout
         layout()
+
+        // load appointments
+        mainMapVM.getAllAppointmentLocations()
+
     }
 
 }
 
 // MARK: - MainMapVM Delegate
 extension MainMapVC: MainMapDelegate {
-    func mainMap(searchResults: KakaoKeywordSearchResultModel) {
+    func didSearchPlace(searchResults: KakaoKeywordSearchResultModel) {
         self.searchResults = searchResults
+    }
+
+    func didGetAppointmentLocations(locations: AppointmentLocationListModel) {
+        appointmentLocatoins = locations.addresses
     }
 
     func occuredSearchError(errMessage: String) {

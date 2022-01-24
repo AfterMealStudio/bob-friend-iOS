@@ -143,6 +143,12 @@ final class Network {
         requestWithAuth(api: UserAPI.deleteUser, parameter: data, completion: completion)
     }
 
+    func getAllAppointmentLocations(completion: @escaping(Result<AppointmentLocationListModel?, Error>) -> Void) {
+        let parameters: Parameters = ["zoom": 5, "latitude": 33.4566084914484, "longitude": 126.56207301534569]
+        requestWithAuth(api: AppointmentAPI.getAllAppointmentLocations, type: AppointmentLocationListModel.self, parameter: parameters, completion: completion)
+
+    }
+
 }
 
 extension Network {
