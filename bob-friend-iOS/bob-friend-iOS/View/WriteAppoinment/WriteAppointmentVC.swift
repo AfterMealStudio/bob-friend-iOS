@@ -419,6 +419,20 @@ class WriteAppointmentVC: UIViewController {
             mapView.bottomAnchor.constraint(equalTo: placeInnerContentView.bottomAnchor)
         ])
 
+        let mapWrapperView: UIView = {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.backgroundColor = .clear
+            return $0
+        }(UIView())
+        placeInnerContentView.addSubview(mapWrapperView)
+
+        NSLayoutConstraint.activate([
+            mapWrapperView.topAnchor.constraint(equalTo: mapView.topAnchor),
+            mapWrapperView.bottomAnchor.constraint(equalTo: mapView.bottomAnchor),
+            mapWrapperView.leadingAnchor.constraint(equalTo: mapView.leadingAnchor),
+            mapWrapperView.trailingAnchor.constraint(equalTo: mapView.trailingAnchor)
+        ])
+
         let placeView: AppointmentVC.AppointmentDetailView = {
             return $0
         }(AppointmentVC.AppointmentDetailView(title: "약속 장소", contentView: placeInnerContentView))
