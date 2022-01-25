@@ -34,10 +34,6 @@ class MyPageVM {
         }
     }
 
-    func withdrawalMembership(completion: @escaping(() -> Void)) {
-
-    }
-
     func logout() {
         Network.refreshToken = ""
         Network.accessToken = ""
