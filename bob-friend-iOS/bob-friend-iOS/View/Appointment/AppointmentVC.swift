@@ -729,7 +729,7 @@ extension AppointmentVC {
 
             let mapWrapperView: UIView = {
                 $0.translatesAutoresizingMaskIntoConstraints = false
-                $0.backgroundColor = UIColor(red: 1, green: 1, blue: 1, a: 0)
+                $0.backgroundColor = .clear
                 return $0
             }(UIView())
             placeAndTimeContentView.addSubview(mapWrapperView)
