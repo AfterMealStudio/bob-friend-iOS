@@ -10,14 +10,10 @@ import Foundation
 struct AppointmentSimpleModel: Decodable {
     let id: Int
     let title: String
-//    let content: String
     let author: User
     let amountOfComments: Int
     let totalNumberOfPeople: Int
     let currentNumberOfPeople: Int
-//    let full: Bool
-//    let sexRestriction
-//    let appointmentTime: String?
     let createdAt: String
 }
 
@@ -31,11 +27,10 @@ struct AppointmentModel: Decodable {
     let comments: [CommentModel]
     let totalNumberOfPeople: Int
     let currentNumberOfPeople: Int
-//    let full: Bool
     let restaurantName: String
     let restaurantAddress: String
-    let latitude: Float
-    let longitude: Float
+    let latitude: Double
+    let longitude: Double
     let sexRestriction: Gender
     let ageRestrictionStart: Int?
     let ageRestrictionEnd: Int?

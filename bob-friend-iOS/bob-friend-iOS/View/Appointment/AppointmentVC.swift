@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import NMapsMap
 
 class AppointmentVC: UIViewController {
 
@@ -108,6 +109,7 @@ class AppointmentVC: UIViewController {
             guard let section1Header = self?.headerViews[1] as? MapPlaceTimeView else { return }
             section1Header.place = appointment.restaurantName
             section1Header.time = appointment.appointmentTime ?? ""
+            section1Header.marker = NMFMarker(position: NMGLatLng(lat: appointment.latitude, lng: appointment.longitude))
 
             guard let section2Header = self?.headerViews[2] as? MemberJoinView else { return }
             section2Header.nowMemberCount = appointment.currentNumberOfPeople
@@ -625,10 +627,24 @@ extension AppointmentVC {
         var place: String = " " { didSet { placeLabel.text = place } }
         var time: String = " " { didSet { timeLabel.text = time } }
 
-        private let mapView: MTMapView = {
+        private let mapView: NMFMapView = {
             $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.isTiltGestureEnabled = false
+            $0.isRotateGestureEnabled = false
+            $0.isZoomGestureEnabled = false
+            $0.isScrollGestureEnabled = false
             return $0
-        }(MTMapView())
+        }(NMFMapView())
+
+        var marker: NMFMarker? {
+            didSet {
+                if let marker = marker {
+                    marker.mapView = mapView
+                    let cameraUpdate = NMFCameraUpdate(scrollTo: marker.position)
+                    mapView.moveCamera(cameraUpdate)
+                }
+            }
+        }
 
         private let placeLabel: UILabel = {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -711,6 +727,20 @@ extension AppointmentVC {
 
             ])
 
+            let mapWrapperView: UIView = {
+                $0.translatesAutoresizingMaskIntoConstraints = false
+                $0.backgroundColor = UIColor(red: 1, green: 1, blue: 1, a: 0)
+                return $0
+            }(UIView())
+            placeAndTimeContentView.addSubview(mapWrapperView)
+
+            NSLayoutConstraint.activate([
+                mapWrapperView.topAnchor.constraint(equalTo: mapView.topAnchor),
+                mapWrapperView.bottomAnchor.constraint(equalTo: mapView.bottomAnchor),
+                mapWrapperView.leadingAnchor.constraint(equalTo: mapView.leadingAnchor),
+                mapWrapperView.trailingAnchor.constraint(equalTo: mapView.trailingAnchor)
+            ])
+
             let placeAndTimeView: AppointmentDetailView = {
                 $0.translatesAutoresizingMaskIntoConstraints = false
                 return $0
@@ -723,6 +753,7 @@ extension AppointmentVC {
                 placeAndTimeView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
                 placeAndTimeView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
             ])
+
         }
 
     }
