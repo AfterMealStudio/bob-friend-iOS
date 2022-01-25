@@ -12,7 +12,7 @@ class PlaceSearchListView: UICollectionView {
     public override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = .clear
+        backgroundColor = UIColor(red: 0, green: 0, blue: 0, a: 64)
     }
 
     required init?(coder: NSCoder) {

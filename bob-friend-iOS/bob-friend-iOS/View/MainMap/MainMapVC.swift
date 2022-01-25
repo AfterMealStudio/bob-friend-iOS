@@ -135,7 +135,7 @@ extension MainMapVC {
 
 extension MainMapVC: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let searchResults = searchResults else { return 10 }
+        guard let searchResults = searchResults else { return 0 }
         return searchResults.documents.count
     }
 
