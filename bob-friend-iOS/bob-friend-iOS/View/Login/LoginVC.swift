@@ -159,18 +159,7 @@ extension LoginVC { // keyboard Management
 
     @objc
     private func keyboardWillHide(_ sender: Notification) {
-
-        if scrollViewContentLayoutBottomConstraint.constant != 0 {
-            guard let userInfo = sender.userInfo,
-                  let keyboardFrame: NSValue = userInfo[ UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-
-            let keyboardRectangle = keyboardFrame.cgRectValue
-            let keyboardHeight = keyboardRectangle.height
-
-            scrollViewContentLayoutBottomConstraint.constant -= keyboardHeight
-
-        }
-
+        scrollViewContentLayoutBottomConstraint.constant = 0
     }
 
     private func removeKeyboard() {

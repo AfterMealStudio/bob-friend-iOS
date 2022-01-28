@@ -27,7 +27,7 @@ final class SignUpTextField: UIView {
         return $0
     }(UILabel())
 
-    private let textField: UITextField = {
+    let textField: UITextField = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.font = UIFont.systemFont(ofSize: 20)
         $0.addBorder()

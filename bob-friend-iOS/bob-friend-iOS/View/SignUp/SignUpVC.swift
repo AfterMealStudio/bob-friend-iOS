@@ -19,6 +19,8 @@ class SignUpVC: UIViewController {
     private let emailTextField: SignUpTextField = {
         $0.title = "이메일 주소"
         $0.placeholder = "이메일 주소"
+        $0.textField.keyboardType = .emailAddress
+        $0.textField.textContentType = .emailAddress
         return $0
     }(SignUpTextField(hasCheckButton: true))
 
@@ -31,18 +33,25 @@ class SignUpVC: UIViewController {
     private let passwordTextField: SignUpTextField = {
         $0.title = "비밀번호"
         $0.placeholder = "비밀번호"
+        $0.textField.keyboardType = .asciiCapable
+        $0.textField.textContentType = .password
+        $0.textField.isSecureTextEntry = true
         return $0
     }(SignUpTextField())
 
     private let passwordCheckTextField: SignUpTextField = {
         $0.title = "비밀번호 확인"
         $0.placeholder = "비밀번호 확인"
+        $0.textField.keyboardType = .asciiCapable
+        $0.textField.textContentType = .password
+        $0.textField.isSecureTextEntry = true
         return $0
     }(SignUpTextField())
 
     private let birthTextField: SignUpTextField = {
         $0.title = "생년월일"
         $0.placeholder = "ex)19900101"
+        $0.textField.keyboardType = .asciiCapableNumberPad
         return $0
     }(SignUpTextField())
 
