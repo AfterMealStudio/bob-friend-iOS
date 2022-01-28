@@ -781,7 +781,6 @@
 		0B2978E426D617B4002AD75A = {
 			isa = PBXGroup;
 			children = (
-				0BA000C3276C312B006A7DA7 /* LoadingView */,
 				0BDDC25C26EF36C7008C9363 /* .swiftlint.yml */,
 				0B2978EF26D617B4002AD75A /* bob-friend-iOS */,
 				0B29790626D617B7002AD75A /* bob-friend-iOSTests */,
@@ -950,6 +949,7 @@
 		0BA000ED27788F17006A7DA7 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				0BA000C3276C312B006A7DA7 /* LoadingView */,
 				0BA2F3B7278BF3560048A49A /* AppointmentLists */,
 				0BAF7CAE2768896E002406D2 /* MyPage */,
 				0B95E52B274B579A00D090C5 /* WriteAppoinment */,
