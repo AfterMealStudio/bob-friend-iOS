@@ -73,12 +73,15 @@ class SignUpVM {
 
         let signUpModel: SignUpModel = SignUpModel(email: email, nickname: nickname, password: password, sex: gender, birth: birth, agree: agree)
 
-        network.signUpRequest(signUpInfo: signUpModel) { result in
+        delegate?.didStartLoading()
+        network.signUpRequest(signUpInfo: signUpModel) { [weak self] result in
+            self?.delegate?.didStopLoading()
+
             switch result {
             case .success:
-                self.delegate?.didSuccessSignUp(true)
+                self?.delegate?.didSuccessSignUp(true)
             case .failure:
-                self.delegate?.didSuccessSignUp(false)
+                self?.delegate?.didSuccessSignUp(false)
             }
         }
 
@@ -132,6 +135,9 @@ protocol SignUpDelegate: AnyObject {
     func showNotice(_ notice: SignUpNotice)
     func didSuccessSignUp(_ didSuccess: Bool)
     func occuredNetworkError()
+
+    func didStartLoading()
+    func didStopLoading()
 }
 
 enum SignUpNotice {

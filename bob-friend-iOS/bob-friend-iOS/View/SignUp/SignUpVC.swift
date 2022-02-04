@@ -73,6 +73,11 @@ class SignUpVC: UIViewController {
         return $0
     }(UIButton())
 
+    private let loadingView: LoadingView = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        return $0
+    }(LoadingView())
+
     var signUpVM: SignUpVM = SignUpVM()
 
     override func viewDidLoad() {
@@ -113,6 +118,22 @@ class SignUpVC: UIViewController {
 // MARK: - VM delegate
 
 extension SignUpVC: SignUpDelegate {
+
+    func didStartLoading() {
+        view.addSubview(loadingView)
+        NSLayoutConstraint.activate([
+            loadingView.topAnchor.constraint(equalTo: view.topAnchor),
+            loadingView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            loadingView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            loadingView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+        loadingView.startLoadingAnimation()
+    }
+
+    func didStopLoading() {
+        loadingView.stopLoadingAnimation()
+        loadingView.removeFromSuperview()
+    }
 
     func showNotice(_ notice: SignUpNotice) {
         signUpNoticeHandeler(notice)
