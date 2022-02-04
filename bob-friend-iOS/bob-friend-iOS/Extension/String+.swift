@@ -46,4 +46,15 @@ extension String {
         } else { return false }
     }
 
+    func dateFormatTransForUser() -> String? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+
+        guard let date = dateFormatter.date(from: self) else { return nil }
+
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+
+        return dateFormatter.string(from: date)
+    }
+
 }

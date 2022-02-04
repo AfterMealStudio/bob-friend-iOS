@@ -108,7 +108,7 @@ class AppointmentVC: UIViewController {
 
             guard let section1Header = self?.headerViews[1] as? MapPlaceTimeView else { return }
             section1Header.place = appointment.restaurantName
-            section1Header.time = appointment.appointmentTime ?? ""
+            section1Header.time = appointment.appointmentTime?.dateFormatTransForUser() ?? ""
             section1Header.marker = NMFMarker(position: NMGLatLng(lat: appointment.latitude, lng: appointment.longitude))
 
             guard let section2Header = self?.headerViews[2] as? MemberJoinView else { return }
