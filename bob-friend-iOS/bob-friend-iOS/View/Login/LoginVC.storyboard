@@ -63,7 +63,7 @@
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="oie-uN-Ute">
                                                         <rect key="frame" x="0.0" y="0.0" width="300" height="76"/>
                                                         <subviews>
-                                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="아이디(이메일)" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gV8-6f-fhi">
+                                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="아이디(이메일)" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="gV8-6f-fhi">
                                                                 <rect key="frame" x="0.0" y="0.0" width="300" height="34"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="34" id="Quf-vs-sL8"/>
