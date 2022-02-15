@@ -80,6 +80,7 @@ class WriteAppointmentVC: UIViewController {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.addBorder(.bottom, color: .lightGray, width: 1)
         $0.placeholder = "ex) 4"
+        $0.keyboardType = .numberPad
         return $0
     }(UITextField())
 
