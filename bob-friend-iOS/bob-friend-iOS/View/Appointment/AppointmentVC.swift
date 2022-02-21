@@ -437,23 +437,40 @@ extension AppointmentVC: AppointmentDelegate {
     }
 
     func didReportAppointment() {
+        noticeMessage(title: "신고되었습니다.", msg: nil)
         viewDidLoad()
     }
 
     func didDeleteAppointment() {
-        navigationController?.popViewController(animated: true)
+        noticeMessage(title: "게시글이 삭제되었습니다.", msg: nil) { [weak self] in
+            guard let listVC = self?.navigationController?.viewControllers[0] as? AppointmentListVC else {
+                self?.navigationController?.popViewController(animated: true)
+                return
+            }
+            listVC.pullToRefresh()
+            self?.navigationController?.popViewController(animated: true)
+        }
     }
 
     func didReportCommentOrReply() {
+        noticeMessage(title: "신고되었습니다.", msg: nil)
         viewDidLoad()
     }
 
     func didDeleteCommentOrReply() {
+        noticeMessage(title: "삭제되었습니다.", msg: nil)
         viewDidLoad()
     }
 
     func didCloseAppointment() {
-        viewDidLoad()
+        noticeMessage(title: "마감되었습니다.", msg: nil) { [weak self] in
+            guard let listVC = self?.navigationController?.viewControllers[0] as? AppointmentListVC else {
+                self?.navigationController?.popViewController(animated: true)
+                return
+            }
+            listVC.pullToRefresh()
+            self?.navigationController?.popViewController(animated: true)
+        }
     }
 
     func didJoinOrCancelAppointment() {
@@ -1094,4 +1111,25 @@ class MemberListCell: UITableViewCell {
         ])
 
     }
+}
+
+// MARK: - Alert
+extension AppointmentVC {
+
+    func noticeMessage(title: String, msg: String?, completion: (() -> Void)? = nil) {
+        let alertController = UIAlertController(title: title, message: msg, preferredStyle: .alert)
+        let okBtn = UIAlertAction(title: "확인", style: .default, handler: { _ in
+            if let completion = completion {
+                completion()
+            }
+        })
+
+        alertController.addAction(okBtn)
+
+        DispatchQueue.main.async {
+            [weak self] in
+            self?.present(alertController, animated: true, completion: nil)
+        }
+    }
+
 }
