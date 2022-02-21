@@ -553,6 +553,11 @@ extension WriteAppointmentVC {
 
         guard let title = titleTextField.text, let content = contentTextView.text, let strMemberAmount = memberAmountTextField.text, let totalNumberOfPeople = Int(strMemberAmount), let longitude = longitude, let latitude = latitude else { return }
 
+        if totalNumberOfPeople < 2 {
+            noticeMessage(title: "인원은 2인보다 적을 수 없습니다.", msg: nil)
+            return
+        }
+
         if willConsiderAge {
             guard let strMinAge = minAgeTextField.text, let minAge = Int(strMinAge), let strMaxAge = maxAgeTextField.text, let maxAge = Int(strMaxAge) else { return }
             if maxAge < minAge || minAge < 1 || minAge > 100 || maxAge < 1 || maxAge > 100 { return }
@@ -732,11 +737,7 @@ extension WriteAppointmentVC {
 
     func noticeMessage(title: String, msg: String?) {
         let alertController = UIAlertController(title: title, message: msg, preferredStyle: .alert)
-        let okBtn = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
-            self?.dismiss(animated: true) { [weak self] in
-                self?.dismiss(animated: true, completion: nil)
-            }
-        }
+        let okBtn = UIAlertAction(title: "확인", style: .default, handler: nil)
 
         alertController.addAction(okBtn)
 
