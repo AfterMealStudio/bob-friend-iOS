@@ -643,6 +643,18 @@ extension WriteAppointmentVC: WriteAppointmentDelegate {
         let alertController = UIAlertController(title: "게시글이 등록되었습니다.", message: nil, preferredStyle: .alert)
         let okBtn = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
             self?.resetVC()
+
+            guard let listNaviVC = self?.tabBarController?.viewControllers?[1] as? UINavigationController else { return }
+            let appointmentListVC = AppointmentListVC()
+            appointmentListVC.tabBarItem = UITabBarItem(title: "약속목록", image: UIImage(systemName: "list.bullet"), selectedImage: UIImage(systemName: "list.bullet"))
+            listNaviVC.viewControllers = [appointmentListVC]
+
+            let newWriteAppointmentVC = WriteAppointmentVC()
+            newWriteAppointmentVC.tabBarItem = UITabBarItem(title: "약속작성", image: UIImage(systemName: "plus.app"), selectedImage: UIImage(systemName: "plus.app.fill"))
+            let writeNaviVC = self?.tabBarController?.viewControllers?[2] as? UINavigationController
+
+            writeNaviVC?.viewControllers = [newWriteAppointmentVC]
+            self?.dismiss(animated: true, completion: nil)
         }
 
         alertController.addAction(okBtn)
@@ -652,8 +664,6 @@ extension WriteAppointmentVC: WriteAppointmentDelegate {
             self?.present(alertController, animated: true, completion: nil)
         }
 
-        guard let naviVC = tabBarController?.viewControllers?[1] as? UINavigationController else { return }
-        naviVC.viewControllers = [AppointmentListVC()]
     }
 
 }
