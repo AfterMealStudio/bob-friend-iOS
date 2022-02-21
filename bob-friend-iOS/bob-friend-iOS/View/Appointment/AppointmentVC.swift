@@ -74,6 +74,9 @@ class AppointmentVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // keyboard가 존재할 때 viewDidLoad의 재호출로 인한 layout오류 방지
+        removeKeyboard()
+
         view.backgroundColor = UIColor(named: "MainColor1")
 
         // navigationBar
@@ -499,6 +502,7 @@ extension AppointmentVC {
     private func keyboardWillHide(_ sender: Notification) {
         guard let commentWritingViewKeyboardBottomConstraint = commentWritingViewKeyboardBottomConstraint else { return }
         if commentWritingViewKeyboardBottomConstraint.constant != 0 {
+            print("keyboard will hide")
             commentWritingViewKeyboardBottomConstraint.isActive = false
             commentWritingViewKeyboardBottomConstraint.constant = 0
         }
