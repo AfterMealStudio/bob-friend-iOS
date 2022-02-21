@@ -62,7 +62,8 @@ class WriteAppointmentVC: UIViewController {
 
     let timePicker: UIDatePicker = {
         $0.translatesAutoresizingMaskIntoConstraints = false
-        $0.preferredDatePickerStyle = .inline
+        $0.preferredDatePickerStyle = .compact
+        $0.minimumDate = Date()
         return $0
     }(UIDatePicker())
 
@@ -281,6 +282,9 @@ class WriteAppointmentVC: UIViewController {
         // layout
         layout()
 
+        // timePickerSet
+        setTimePicker()
+
     }
 
     func resetVC() {
@@ -294,6 +298,13 @@ class WriteAppointmentVC: UIViewController {
         didDontMentionGenderButtonClicked()
         didDontConsiderAgeButtonClicked()
         scrollView.scrollsToTop = true
+    }
+
+    func setTimePicker() {
+        let timePickerEventAction = UIAction { [weak self] _ in
+            self?.timePicker.minimumDate = Date()
+        }
+        timePicker.addAction(timePickerEventAction, for: .allEditingEvents)
     }
 
     // MARK: - layout
@@ -552,6 +563,12 @@ extension WriteAppointmentVC {
         if title == "" || content == "" || restaurantName == "" || restaurantAddress == "" { return }
 
         let dateAndTime = timePicker.date
+
+        if dateAndTime < Date() {
+            noticeMessage(title: "약속 시간은 현재보다 이를 수 없습니다.", msg: nil)
+            return
+        }
+
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "YYYY-MM-dd"
         let timeFormatter = DateFormatter()
@@ -696,6 +713,27 @@ extension WriteAppointmentVC: UIScrollViewDelegate {
 
     private func removeKeyboard() {
         view.endEditing(true)
+    }
+
+}
+
+// MARK: - Alert
+extension WriteAppointmentVC {
+
+    func noticeMessage(title: String, msg: String?) {
+        let alertController = UIAlertController(title: title, message: msg, preferredStyle: .alert)
+        let okBtn = UIAlertAction(title: "확인", style: .default) { [weak self] _ in
+            self?.dismiss(animated: true) { [weak self] in
+                self?.dismiss(animated: true, completion: nil)
+            }
+        }
+
+        alertController.addAction(okBtn)
+
+        DispatchQueue.main.async {
+            [weak self] in
+            self?.present(alertController, animated: true, completion: nil)
+        }
     }
 
 }
